@@ -16,6 +16,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 // @RunWith : JUnit 프레임워크가 테스트를 실행할 시 테스트 실행방법을 확장할 때 쓰는 어노테이션
 @RunWith(SpringRunner.class)
+/*
+ * @WebMvcTest : MVC를 위한 테스트, 컨트롤러가 예상대로 동작하는지 테스트하는데 사용됩니다. Web과 관련된 어노테이션만 스캔합니다.
+ * @Controller, @ControllerAdvice, @JsonComponent, Converter, GenericConverter, Filter, HandlerInterceptor, WebMvcConfigurer, HandlerMethodArgumentResolver
+*/
 @WebMvcTest
 class UserControllerTest {
 
