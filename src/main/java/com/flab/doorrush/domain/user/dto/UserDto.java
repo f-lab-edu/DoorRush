@@ -1,10 +1,12 @@
 package com.flab.doorrush.domain.user.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
+@Builder
 public class UserDto {
 
     private String userId;
@@ -22,8 +24,5 @@ public class UserDto {
         this.userPhoneNumber = userPhoneNumber;
         this.userDefaultAddr = userDefaultAddr;
         this.userEmail = userEmail;
-    }
-
-    public UserDto(String userId, String userName) {
     }
 }

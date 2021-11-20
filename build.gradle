@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
     implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
+
     //임시 in-memory databases인 h2 DB 설정
     runtimeOnly 'com.h2database:h2'
     // runtimeOnly 'mysql:mysql-connector-java'

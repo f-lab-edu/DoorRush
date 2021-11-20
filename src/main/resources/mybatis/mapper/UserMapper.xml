@@ -18,8 +18,16 @@
            , #{userDefaultAddr}
            , #{userEmail})
   </insert>
-  <select id="testSelect">
-        SELECT USER_ID, USER_NAME FROM USER
+
+  <select id="getUserById" parameterType="String" resultType="com.flab.doorrush.domain.user.dto.UserDto">
+    SELECT USER_ID,
+           PASSWORD,
+           USER_NAME,
+           USER_PHONE_NUMBER,
+           USER_DEFAULT_ADDR,
+           USER_EMAIL
+    FROM USER
+    WHERE USER_ID = #{userId}
   </select>
 
 </mapper>
