@@ -3,16 +3,18 @@ package com.flab.doorrush.domain.user.service;
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    // 회원 insert 
+    public UserServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+    // 회원 insert
     @Override
     public void joinUser(UserDto userDto) {
         userMapper.joinUser(userDto);
