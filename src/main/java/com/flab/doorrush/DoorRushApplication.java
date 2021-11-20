@@ -1,5 +1,6 @@
 package com.flab.doorrush;
 
+import java.net.URL;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

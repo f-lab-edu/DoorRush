@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.doorrush.domain.user.dao.UserMapper">
+  <insert id="joinUser" parameterType="com.flab.doorrush.domain.user.dto.UserDto">
+    INSERT INTO USER (USER_ID,
+                      PASSWORD,
+                      USER_NAME,
+                      USER_PHONE_NUMBER,
+                      USER_DEFAULT_ADDR,
+                      USER_EMAIL)
+    values ( #{userId}
+           , #{password}
+           , #{userName}
+           , #{userPhoneNumber}
+           , #{userDefaultAddr}
+           , #{userEmail})
+  </insert>
+  <select id="testSelect">
+        SELECT USER_ID, USER_NAME FROM USER
+  </select>
+
+</mapper>
