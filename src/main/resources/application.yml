@@ -9,11 +9,24 @@ spring:
       path: /h2-console
   datasource:
     username: sa
-    url: jdbc:h2:~/test;AUTO_SERVER=true
+    url: jdbc:h2:~/test;AUTO_SERVER=true;
     driverClassName: org.h2.Driver
     password: ''
+
+  # JPA setting
+  # spring.jpa.hibernate.ddl-auto : create 기존에 존재하는 스키마를 삭제하고 새로 생성한다.
+  # spring.jpa.generate-ddl : spring.jpa.hibernate.ddl-auto 속성 사용 여부를 결정하는 옵션. 기본 false
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    generate-ddl: true
+    show-sql: true
+
+  # spring.sql.init.mode : 유형에 관계없이 항상 SQL 데이터베이스를 초기화
+  sql:
+    init:
+      mode: always
 
 #mybatis
 mybatis:
