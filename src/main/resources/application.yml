@@ -18,10 +18,6 @@ spring:
   # spring.jpa.generate-ddl : spring.jpa.hibernate.ddl-auto 속성 사용 여부를 결정하는 옵션. 기본 false
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
-    generate-ddl: true
-    show-sql: true
 
   # spring.sql.init.mode : 유형에 관계없이 항상 SQL 데이터베이스를 초기화
   sql:
