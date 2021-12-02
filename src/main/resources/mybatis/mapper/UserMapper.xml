@@ -5,30 +5,40 @@
 
 <mapper namespace="com.flab.doorrush.domain.user.dao.UserMapper">
 
-  <insert id="joinUser" parameterType="com.flab.doorrush.domain.user.dto.UserDto">
-    INSERT INTO USER (USER_ID,
+  <insert id="insertUser" parameterType="com.flab.doorrush.domain.user.dto.UserDto">
+    INSERT INTO USER (ID,
                       PASSWORD,
-                      USER_NAME,
-                      USER_PHONE_NUMBER,
-                      USER_DEFAULT_ADDR,
-                      USER_EMAIL)
-    values ( #{userId}
+                      NAME,
+                      PHONE_NUMBER,
+                      DEFAULT_ADDRESS,
+                      EMAIL)
+    values ( #{id}
            , #{password}
-           , #{userName}
-           , #{userPhoneNumber}
-           , #{userDefaultAddr}
-           , #{userEmail})
+           , #{name}
+           , #{phoneNumber}
+           , #{defaultAddress}
+           , #{email})
+    <selectKey resultType="java.lang.String" keyColumn="ID" keyProperty="id" order="AFTER">
+      SELECT ID FROM USER WHERE ID = #{id}
+    </selectKey>
   </insert>
 
-  <select id="getUserById" parameterType="String" resultType="com.flab.doorrush.domain.user.dto.UserDto">
-    SELECT USER_ID,
+  <select id="getUserById" parameterType="String"
+    resultType="com.flab.doorrush.domain.user.domain.User">
+    SELECT ID,
            PASSWORD,
-           USER_NAME,
-           USER_PHONE_NUMBER,
-           USER_DEFAULT_ADDR,
-           USER_EMAIL
+           NAME,
+           PHONE_NUMBER,
+           DEFAULT_ADDRESS,
+           EMAIL
     FROM USER
-    WHERE USER_ID = #{userId}
+    WHERE ID = #{id}
+  </select>
+
+  <select id="getCountId" parameterType="String" resultType="int">
+    SELECT COUNT(*)
+    FROM USER
+    WHERE ID = #{id}
   </select>
 
 </mapper>

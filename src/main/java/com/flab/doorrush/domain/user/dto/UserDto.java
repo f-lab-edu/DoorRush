@@ -1,28 +1,53 @@
 package com.flab.doorrush.domain.user.dto;
 
+import com.flab.doorrush.domain.user.domain.User;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
-    private String userId;
-    private String password;
-    private String userName;
-    private String userPhoneNumber;
-    private String userDefaultAddr;
-    private String userEmail;
+    @NotNull
+    private String id;
 
-    public UserDto(String userId, String password, String userName, String userPhoneNumber,
-        String userDefaultAddr, String userEmail) {
-        this.userId = userId;
-        this.password = password;
-        this.userName = userName;
-        this.userPhoneNumber = userPhoneNumber;
-        this.userDefaultAddr = userDefaultAddr;
-        this.userEmail = userEmail;
+    @NotNull
+    private String password;
+
+    @NotNull
+    private String name;
+
+    @NotNull
+    private String phoneNumber;
+
+    @NotNull
+    private String defaultAddress;
+
+    private String email;
+
+    public UserDto(UserDto userDto) {
+        this.id = userDto.getId();
+        this.password = userDto.getPassword();
+        this.name = userDto.getName();
+        this.defaultAddress = userDto.getDefaultAddress();
+        this.phoneNumber = userDto.getPhoneNumber();
+        this.email = userDto.getEmail();
     }
+
+    public User toUser(UserDto userDto) {
+        return User.builder()
+            .id(userDto.getId())
+            .password(userDto.getPassword())
+            .name(userDto.getName())
+            .defaultAddress(userDto.getDefaultAddress())
+            .email(userDto.getEmail())
+            .phoneNumber(userDto.getPhoneNumber())
+            .build();
+    }
+
 }
