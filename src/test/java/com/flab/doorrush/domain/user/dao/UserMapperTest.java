@@ -17,6 +17,7 @@ class UserMapperTest {
     @Test
     public void userInsertTest() {
 
+        // Given
         String userId = "testID1234";
         String password = "testPW";
         String name = "yeonjae";
@@ -24,8 +25,11 @@ class UserMapperTest {
         String defaultAddress = "aaa";
         String email = "yj@naver.com";
 
+        // When
         User user = new User(userId, password, name, phoneNo, defaultAddress, email);
         int insertResult = userMapper.insertUser(user);
+
+        // Then
         assertThat(insertResult).isEqualTo(1);
 
     }
@@ -33,8 +37,13 @@ class UserMapperTest {
 
     @Test
     public void getUserByIdTest() {
+        // Given
         String id = "testID1";
+
+        // When
         Optional<User> user = userMapper.getUserById(id);
+
+        // Then
         if (user.isPresent()) {
             assertThat(user.get().getName()).isEqualTo("11");
         } else {

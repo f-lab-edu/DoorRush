@@ -8,7 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 
     int insertUser(User user);
+
     Optional<User> getUserById(String id);
+
     int getCountId(String id);
 }
 

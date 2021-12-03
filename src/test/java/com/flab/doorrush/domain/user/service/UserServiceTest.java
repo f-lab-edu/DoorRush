@@ -23,18 +23,23 @@ class UserServiceTest {
 
     @Test
     public void getUserById_success_test() {
+        // Given , When
         UserDto user = userService.getUserById("test1");
+
+        // Then
         assertThat(user.getId()).isEqualTo("test1");
         assertThat(user.getName()).isEqualTo("11");
     }
 
     @Test
     public void getUserById_fail_test() {
+        // Given, When, Then
         assertThrows(UserNotFoundException.class, () -> userService.getUserById("test1234234"));
     }
 
     @Test
     public void isDuplicatedId_fail_test() {
+        // Given, When, Then
         assertThrows(DuplicateUserIdException.class, () -> userService.joinUser(User.builder()
             .id("test1")
             .password("1234")
@@ -43,6 +48,7 @@ class UserServiceTest {
 
     @Test
     public void joinUser_success_test() {
+        // Given
         userService.joinUser(User.builder()
             .id("testId")
             .password("aaasssddd")
@@ -52,7 +58,10 @@ class UserServiceTest {
             .phoneNumber("01077778888")
             .build());
 
+        // When
         UserDto user = userService.getUserById("testId");
+
+        // Then
         assertThat(user.getId()).isEqualTo("testId");
         assertThat(user.getName()).isEqualTo("aaasssddd");
     }

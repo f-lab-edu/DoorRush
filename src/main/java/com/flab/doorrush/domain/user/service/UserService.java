@@ -22,8 +22,8 @@ public class UserService {
     }
 
     public void joinUser(User user) {
-        boolean isDuplicate = isDuplicatedId(user.getId());
-        if (isDuplicate) {
+        boolean isDuplicated = isDuplicatedId(user.getId());
+        if (isDuplicated) {
             throw new DuplicateUserIdException("이미 사용중인 아이디입니다.");
         }
         int insertResult = userMapper.insertUser(user);
