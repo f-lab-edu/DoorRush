@@ -27,13 +27,7 @@ repositories {
 dependencies {
     /* spring-boot-starter-web : Spring MVC를 사용한 RESTful서비스를 개발하는데 사용합니다. */
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-test:2.4.12'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
-    implementation 'org.modelmapper:modelmapper:2.4.2'
-
     //임시 in-memory databases인 h2 DB 설정
     runtimeOnly 'com.h2database:h2'
     // runtimeOnly 'mysql:mysql-connector-java'

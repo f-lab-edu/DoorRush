@@ -30,3 +30,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       working-directory: ${{ env.working-directory }}
+    - name: build result to slack
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{job.status}}
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        author_name: Door rush CI
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
