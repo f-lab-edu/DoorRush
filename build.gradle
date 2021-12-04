@@ -37,14 +37,12 @@ dependencies {
     /* spring-boot-starter-test : JUnit Jupiter, Hamcrest 및 Mockito 를 포함한 라이브러리로 Spring Boot 애플리케이션을 테스트하기 위한 스타터 */
     implementation 'org.springframework.boot:spring-boot-starter-test:2.4.12'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
-    implementation 'junit:junit:4.13.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
-
     //임시 in-memory database 인 h2 DB 설정
     runtimeOnly 'com.h2database:h2'
     // runtimeOnly 'mysql:mysql-connector-java'
-    /**
-     *  롬복 설정 : 어노테이션 기반으로 코드를 자동화해주는 라이브러리로
+    /* 롬복 설정 : 어노테이션 기반으로 코드를 자동화해주는 라이브러리로
      * @setter @getter 뿐만 아니라,
      * @AllArgsConstructor 는 사용하여 모든 변수를 사용하는 생성자를
      * @NoArgsConstructor 는 기본 생성자를 만들어줍니다. 그 외에도 많은 기능 제공

@@ -1,0 +1,23 @@
+# YAML 파일은 사람이 쉽게 읽을 수 있는 데이터 직렬화 양식이다.
+# properties 보다 가독성이 좋다.
+
+# Spring
+spring:
+  h2:
+    console:
+      enabled: 'true'
+      path: /h2-console
+  datasource:
+    username: sa
+    url: jdbc:h2:~/test;AUTO_SERVER=true;
+    driverClassName: org.h2.Driver
+    password: ''
+
+  # spring.sql.init.mode : 유형에 관계없이 항상 SQL 데이터베이스를 초기화
+  sql:
+    init:
+      mode: always
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*Mapper.xml
