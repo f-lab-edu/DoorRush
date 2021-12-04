@@ -1,11 +1,11 @@
 package com.flab.doorrush.domain.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.UserDto;
-import com.flab.doorrush.domain.user.exception.DuplicateUserIdException;
+import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ class UserServiceTest {
     UserService userService;
 
     @Test
-    public void getUserById_success_test() {
+    public void getUserByIdSuccessTest() {
         // Given , When
         UserDto user = userService.getUserById("test1");
 
@@ -32,29 +32,28 @@ class UserServiceTest {
     }
 
     @Test
-    public void getUserById_fail_test() {
+    public void getUserByIdFailTest() {
         // Given, When, Then
         assertThrows(UserNotFoundException.class, () -> userService.getUserById("test1234234"));
     }
 
     @Test
-    public void isDuplicatedId_fail_test() {
+    public void isDuplicatedIdFailTest() {
         // Given, When, Then
-        assertThrows(DuplicateUserIdException.class, () -> userService.joinUser(User.builder()
+        assertThrows(DuplicatedUserIdException.class, () -> userService.joinUser(User.builder()
             .id("test1")
             .password("1234")
             .build()));
     }
 
     @Test
-    public void joinUser_success_test() {
+    public void joinUserSuccessTest() {
         // Given
         userService.joinUser(User.builder()
             .id("testId")
             .password("aaasssddd")
             .email("aaasssddd@naver.com")
             .name("aaasssddd")
-            .defaultAddress("경기도")
             .phoneNumber("01077778888")
             .build());
 

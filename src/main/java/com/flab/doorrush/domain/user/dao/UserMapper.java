@@ -11,6 +11,6 @@ public interface UserMapper {
 
     Optional<User> getUserById(String id);
 
-    int getCountId(String id);
+    int getCountById(String id);
 }
 

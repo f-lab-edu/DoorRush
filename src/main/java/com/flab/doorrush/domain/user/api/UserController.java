@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/users")
+// @RequiredArgsConstructor : 초기화되지 않은 final 필드를 매개변수로 받는 생성자를 생성하는 어노테이션입니다.
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<UserDto> joinUser(@RequestBody UserDto userDto) {
         userService.joinUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);

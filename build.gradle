@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.5.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    /* JaCoCo(Java Code Coverage 라이브러리) 플러그인과의 통합을 통해 자바 코드에 대한 코드 커버리지 측정을 제공 */
+    id 'jacoco'
 }
 
 group = 'com.flab'
@@ -18,17 +20,26 @@ repositories {
     mavenCentral()
 }
 
+jacoco {
+    toolVersion = "0.8.7"
+    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
 /*
   - dependencies : 라이브러리 같은 의존성 추가 시 작성하는 곳
   - implementation : 개발할 때 내가 필요한 라이브러리를 적는 부분. 해당 부분에 적힌 라이브러리를 가져온다.
-  - testImplmentation :  JAVA에서 테스트 코드를 작성할 때에 필요한 라이브러리를 적는 곳
+  - Implmentation :  JAVA 에서 테스트 코드를 작성할 때에 필요한 라이브러리를 적는 곳
   - runtimeOnly : 런타임 시 구동할 것 작성
 */
 dependencies {
-    /* spring-boot-starter-web : Spring MVC를 사용한 RESTful서비스를 개발하는데 사용합니다. */
+    /* spring-boot-starter-web : Spring MVC 를 사용한 restful 서비스를 개발하는데 사용합니다. */
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    /* spring-boot-starter-test : JUnit Jupiter, Hamcrest 및 Mockito 를 포함한 라이브러리로 Spring Boot 애플리케이션을 테스트하기 위한 스타터 */
+    implementation 'org.springframework.boot:spring-boot-starter-test:2.4.12'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
-    //임시 in-memory databases인 h2 DB 설정
+    //임시 in-memory database 인 h2 DB 설정
     runtimeOnly 'com.h2database:h2'
     // runtimeOnly 'mysql:mysql-connector-java'
     /* 롬복 설정 : 어노테이션 기반으로 코드를 자동화해주는 라이브러리로
@@ -37,10 +48,55 @@ dependencies {
      * @NoArgsConstructor 는 기본 생성자를 만들어줍니다. 그 외에도 많은 기능 제공
      * */
     annotationProcessor 'org.projectlombok:lombok'
-    /* Junit, Hamcrest, Mockito를 포함하는 스프링 어플리케이션을 테스트 가능하도록 합니다. */
+    /* Junit, Hamcrest, Mockito 포함하는 스프링 어플리케이션을 테스트 가능하도록 합니다. */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
     useJUnitPlatform()
+    /**
+     * JaCoCo 에이전트와 함께 실행하도록 구성된 작업은 작업 실행이 시작될 때 실행 데이터의 대상 파일을 삭제합니다.
+     * 이렇게 하면 실행 데이터에 오래된 적용 데이터가 존재하지 않습니다.
+     * */
+    finalizedBy jacocoTestReport
 }
+
+jacocoTestReport {
+    dependsOn test
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "com/flab/doorrush/domain/user/dto/UserDto/*",
+                    "**/Q*.class"
+            ])
+        }))
+    }
+    reports {
+        xml.required = false
+        csv.required = false
+        html.required = true
+    }
+
+    finalizedBy jacocoTestCoverageVerification
+}
+
+/**
+ * violationRules : 이 작업에 대해 설정된 위반 규칙입니다 .
+ * rule : 선언된 규칙을 위반하면 check 작업을 실행할 때 빌드가 자동으로 실패합니다 .
+ * */
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true;
+            element = 'CLASS'
+            excludes = ['com.flab.doorrush.domain.**.dto.*']
+
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.5
+            }
+        }
+    }
+}
+

@@ -10,13 +10,11 @@
                       PASSWORD,
                       NAME,
                       PHONE_NUMBER,
-                      DEFAULT_ADDRESS,
                       EMAIL)
     values ( #{id}
            , #{password}
            , #{name}
            , #{phoneNumber}
-           , #{defaultAddress}
            , #{email})
     <selectKey resultType="java.lang.String" keyColumn="ID" keyProperty="id" order="AFTER">
       SELECT ID FROM USER WHERE ID = #{id}
@@ -29,13 +27,12 @@
            PASSWORD,
            NAME,
            PHONE_NUMBER,
-           DEFAULT_ADDRESS,
            EMAIL
     FROM USER
     WHERE ID = #{id}
   </select>
 
-  <select id="getCountId" parameterType="String" resultType="int">
+  <select id="getCountById" parameterType="String" resultType="int">
     SELECT COUNT(*)
     FROM USER
     WHERE ID = #{id}

@@ -11,22 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.doorrush.domain.user.dto.UserDto;
-import com.flab.doorrush.domain.user.exception.DuplicateUserIdException;
-import com.flab.doorrush.domain.user.service.UserService;
+import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.util.NestedServletException;
 
 /* @RunWith : JUnit 프레임워크가 테스트를 실행할 시 테스트 실행방법을 확장할 때 쓰는 어노테이션
@@ -44,7 +35,7 @@ class UserControllerTest {
     ObjectMapper objectMapper;
 
     @Test // @Test : 테스트가 수행되는 메소드를 가르킨다.
-    public void joinUser_success_test() throws Exception {
+    public void joinUserSuccessTest() throws Exception {
 
         // Given
         UserDto userDto = UserDto.builder()
@@ -52,14 +43,13 @@ class UserControllerTest {
             .password("yeojae")
             .name("yeojae")
             .phoneNumber("01012341234")
-            .defaultAddress("seoul")
             .email("yeojae@naver.com")
             .build();
 
         String content = objectMapper.writeValueAsString(userDto);
 
         // When
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/users/")
                 .content(content)
                 //json 형식으로 데이터를 보낸다고 명시
                 .contentType(MediaType.APPLICATION_JSON)
@@ -76,7 +66,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void joinUser_fail_test() throws Exception {
+    public void joinUserFailTest() throws Exception {
 
         // Given
         UserDto userDto = UserDto.builder()
@@ -84,7 +74,6 @@ class UserControllerTest {
             .password("test1")
             .name("test")
             .phoneNumber("01011112222")
-            .defaultAddress("seoul")
             .email("aaa@naver.com")
             .build();
 
@@ -94,7 +83,7 @@ class UserControllerTest {
         Exception e = assertThrows(NestedServletException.class,
             () -> {
                 // When
-                mockMvc.perform(post("/users")
+                mockMvc.perform(post("/users/")
                         .content(content)
                         //json 형식으로 데이터를 보낸다고 명시
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,7 +92,7 @@ class UserControllerTest {
                     .andDo(print());
             });
 
-        assertEquals(DuplicateUserIdException.class, e.getCause().getClass());
+        assertEquals(DuplicatedUserIdException.class, e.getCause().getClass());
 
 
     }

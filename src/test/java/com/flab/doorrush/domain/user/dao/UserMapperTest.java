@@ -3,6 +3,7 @@ package com.flab.doorrush.domain.user.dao;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.flab.doorrush.domain.user.domain.User;
+import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,20 @@ class UserMapperTest {
     public void userInsertTest() {
 
         // Given
-        String userId = "testID1234";
+        String id = "testID1234";
         String password = "testPW";
         String name = "yeonjae";
-        String phoneNo = "0102222333";
-        String defaultAddress = "aaa";
+        String phoneNumber = "0102222333";
         String email = "yj@naver.com";
 
         // When
-        User user = new User(userId, password, name, phoneNo, defaultAddress, email);
-        int insertResult = userMapper.insertUser(user);
+        int insertResult = userMapper.insertUser(User.builder()
+            .id(id)
+            .password(password)
+            .phoneNumber(phoneNumber)
+            .email(email)
+            .name(name)
+            .build());
 
         // Then
         assertThat(insertResult).isEqualTo(1);
@@ -38,7 +43,7 @@ class UserMapperTest {
     @Test
     public void getUserByIdTest() {
         // Given
-        String id = "testID1";
+        String id = "test1";
 
         // When
         Optional<User> user = userMapper.getUserById(id);
@@ -47,7 +52,7 @@ class UserMapperTest {
         if (user.isPresent()) {
             assertThat(user.get().getName()).isEqualTo("11");
         } else {
-            System.out.println("not found");
+            throw new UserNotFoundException("회원정보가 없습니다.");
         }
     }
 }

@@ -23,26 +23,13 @@ public class UserDto {
     @NotNull
     private String phoneNumber;
 
-    @NotNull
-    private String defaultAddress;
-
     private String email;
-
-    public UserDto(UserDto userDto) {
-        this.id = userDto.getId();
-        this.password = userDto.getPassword();
-        this.name = userDto.getName();
-        this.defaultAddress = userDto.getDefaultAddress();
-        this.phoneNumber = userDto.getPhoneNumber();
-        this.email = userDto.getEmail();
-    }
 
     public User toUser(UserDto userDto) {
         return User.builder()
             .id(userDto.getId())
             .password(userDto.getPassword())
             .name(userDto.getName())
-            .defaultAddress(userDto.getDefaultAddress())
             .email(userDto.getEmail())
             .phoneNumber(userDto.getPhoneNumber())
             .build();

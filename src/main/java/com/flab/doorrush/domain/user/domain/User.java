@@ -19,7 +19,6 @@ public class User {
     private String password;
     private String name;
     private String phoneNumber;
-    private String defaultAddress;
     private String email;
 
     public UserDto toUserDto(User user) {
@@ -27,7 +26,6 @@ public class User {
             .id(user.getId())
             .password(user.getPassword())
             .name(user.getName())
-            .defaultAddress(user.getDefaultAddress())
             .email(user.getEmail())
             .phoneNumber(user.getPhoneNumber())
             .build();
