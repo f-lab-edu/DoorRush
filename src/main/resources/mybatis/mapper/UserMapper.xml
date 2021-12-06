@@ -38,4 +38,11 @@
     WHERE ID = #{id}
   </select>
 
+  <select id="getUserPasswordById" parameterType="String" resultType="String">
+    SELECT PASSWORD
+    FROM USER
+    WHERE ID = #{id}
+  </select>
+
+
 </mapper>

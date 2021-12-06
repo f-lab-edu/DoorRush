@@ -12,5 +12,7 @@ public interface UserMapper {
     Optional<User> getUserById(String id);
 
     int getCountById(String id);
+
+    String getUserPasswordById(String id);
 }
 
