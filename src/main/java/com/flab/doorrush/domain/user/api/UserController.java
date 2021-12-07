@@ -36,10 +36,7 @@ public class UserController {
 
   @PostMapping("/logout")
   public ResponseEntity<HttpStatus> logout(HttpSession session) {
-    if (session.getAttribute("login") != null) {
-      session.removeAttribute("login");
-      return new ResponseEntity<>(HttpStatus.OK);
-    }
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    HttpStatus result = userService.logout(session);
+    return new ResponseEntity<>(result);
   }
 }

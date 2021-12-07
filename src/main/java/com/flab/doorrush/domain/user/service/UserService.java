@@ -10,6 +10,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -55,6 +56,16 @@ public class UserService {
 
     if (dbPassword.equals(loginDto.getPassword())) {
       session.setAttribute("login", "yes");
+      result = HttpStatus.OK;
+    }
+    return result;
+  }
+
+  public HttpStatus logout(HttpSession session) {
+
+    HttpStatus result = HttpStatus.NOT_FOUND;
+    if (session.getAttribute("login").equals("yes")) {
+      session.removeAttribute("login");
       result = HttpStatus.OK;
     }
     return result;
