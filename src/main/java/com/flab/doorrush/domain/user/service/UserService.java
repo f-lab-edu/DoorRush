@@ -34,7 +34,10 @@ public class UserService {
     }
 
     public FindUserResponse getUserById(String userId) {
-        return FindUserResponse.createFindUserResponse(userMapper.getUserById(userId)
-            .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다.")));
+
+        User user = userMapper.getUserById(userId)
+            .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
+
+        return FindUserResponse.createFindUserResponse(user);
     }
 }

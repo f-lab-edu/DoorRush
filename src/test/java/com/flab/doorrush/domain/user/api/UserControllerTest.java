@@ -57,6 +57,7 @@ class UserControllerTest {
             .andDo(print())
             // Then
             .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.user.userSeq").isNotEmpty())
             .andExpect(jsonPath("$.user.loginId").value("yeojae"))
             .andExpect(jsonPath("$.user.password").value("yeojae"))
             .andExpect(jsonPath("$.user.name").value("yeojae"))
