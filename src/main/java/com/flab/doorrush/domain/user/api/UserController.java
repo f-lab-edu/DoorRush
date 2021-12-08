@@ -19,7 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<JoinUserResponse> joinUser(@RequestBody JoinUserRequest joinUserRequest) {
         JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
