@@ -89,12 +89,15 @@ jacocoTestCoverageVerification {
         rule {
             enabled = true;
             element = 'CLASS'
-            excludes = ['com.flab.doorrush.domain.**.dto.*']
+            excludes = ['com.flab.doorrush.domain.**.dto.**.*',
+                        'com.flab.doorrush.domain.**.domain.*',
+                        'com.flab.doorrush.domain.**.dto.*'
+            ]
 
             limit {
-                counter = 'METHOD'
+                counter = 'CLASS'
                 value = 'COVEREDRATIO'
-                minimum = 0.5
+                minimum = 0.7
             }
         }
     }

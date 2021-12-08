@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ class UserMapperTest {
     UserMapper userMapper;
 
     @Test
+    @DisplayName("사용자 insert 테스트 userSeq 값이 반환된다.")
     public void userInsertTest() {
 
         // Given
@@ -25,22 +27,25 @@ class UserMapperTest {
         String phoneNumber = "0102222333";
         String email = "yj@naver.com";
 
-        // When
-        int insertResult = userMapper.insertUser(User.builder()
-            .id(id)
+        User user = User.builder()
+            .loginId(id)
             .password(password)
             .phoneNumber(phoneNumber)
             .email(email)
             .name(name)
-            .build());
+            .build();
+
+        // When
+        userMapper.insertUser(user);
 
         // Then
-        assertThat(insertResult).isEqualTo(1);
+        assertThat(user.getUserSeq()).isNotNull();
 
     }
 
 
     @Test
+    @DisplayName("아이디로 사용자 조회 테스트")
     public void getUserByIdTest() {
         // Given
         String id = "test1";
@@ -55,4 +60,5 @@ class UserMapperTest {
             throw new UserNotFoundException("회원정보가 없습니다.");
         }
     }
+
 }

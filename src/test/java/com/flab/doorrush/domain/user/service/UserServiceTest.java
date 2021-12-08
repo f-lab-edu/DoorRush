@@ -3,10 +3,11 @@ package com.flab.doorrush.domain.user.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.flab.doorrush.domain.user.domain.User;
-import com.flab.doorrush.domain.user.dto.UserDto;
+import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,35 +23,44 @@ class UserServiceTest {
     UserService userService;
 
     @Test
+    @DisplayName("아이디로 사용자 정보 조회결과가 예상한 결과값과 동일하다.")
     public void getUserByIdSuccessTest() {
         // Given , When
-        UserDto user = userService.getUserById("test1");
+        JoinUserResponse user = userService.getUserById("test1");
 
         // Then
-        assertThat(user.getId()).isEqualTo("test1");
-        assertThat(user.getName()).isEqualTo("11");
+        assertThat(user.getUser().getLoginId()).isEqualTo("test1");
+        assertThat(user.getUser().getName()).isEqualTo("11");
     }
 
     @Test
+    @DisplayName("아이디로 사용자 정보 조회 후 없으면 예외를 발생시킨다.")
     public void getUserByIdFailTest() {
         // Given, When, Then
         assertThrows(UserNotFoundException.class, () -> userService.getUserById("test1234234"));
     }
 
     @Test
+    @DisplayName("아이디 중복 테스트 중복된 아이디일 경우 예외를 발생시킨다.")
     public void isDuplicatedIdFailTest() {
+        JoinUserRequest joinUserRequest = JoinUserRequest.builder()
+            .loginId("test1")
+            .password("password")
+            .name("testName")
+            .phoneNumber("01011112222")
+            .email("testEmail@naver.com")
+            .build();
+
         // Given, When, Then
-        assertThrows(DuplicatedUserIdException.class, () -> userService.joinUser(User.builder()
-            .id("test1")
-            .password("1234")
-            .build()));
+        assertThrows(DuplicatedUserIdException.class, () -> userService.joinUser(joinUserRequest));
     }
 
     @Test
+    @DisplayName("사용자 회원가입 테스트 정상적으로 회원가입된다.")
     public void joinUserSuccessTest() {
         // Given
-        userService.joinUser(User.builder()
-            .id("testId")
+        userService.joinUser(JoinUserRequest.builder()
+            .loginId("testId")
             .password("aaasssddd")
             .email("aaasssddd@naver.com")
             .name("aaasssddd")
@@ -58,10 +68,11 @@ class UserServiceTest {
             .build());
 
         // When
-        UserDto user = userService.getUserById("testId");
+        JoinUserResponse user = userService.getUserById("testId");
 
         // Then
-        assertThat(user.getId()).isEqualTo("testId");
-        assertThat(user.getName()).isEqualTo("aaasssddd");
+        assertThat(user.getUser().getUserSeq()).isNotNull();
+        assertThat(user.getUser().getLoginId()).isEqualTo("testId");
+        assertThat(user.getUser().getName()).isEqualTo("aaasssddd");
     }
 }

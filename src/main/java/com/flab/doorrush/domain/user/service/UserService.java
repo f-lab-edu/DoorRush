@@ -2,7 +2,8 @@ package com.flab.doorrush.domain.user.service;
 
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
-import com.flab.doorrush.domain.user.dto.UserDto;
+import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import java.util.Optional;
@@ -16,32 +17,28 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public void joinUser(UserDto userDto) {
-        User user = userDto.toUser(userDto);
-        joinUser(user);
-    }
+    public JoinUserResponse joinUser(JoinUserRequest joinUserRequest) {
+        User user = JoinUserRequest.toUser(joinUserRequest);
 
-    public void joinUser(User user) {
-        boolean isDuplicated = isDuplicatedId(user.getId());
+        boolean isDuplicated = isDuplicatedId(user.getLoginId());
         if (isDuplicated) {
             throw new DuplicatedUserIdException("이미 사용중인 아이디입니다.");
         }
-        int insertResult = userMapper.insertUser(user);
-        if (insertResult != 1) {
-            throw new DuplicatedUserIdException("회원가입이 실패하였습니다.");
-        }
+        userMapper.insertUser(user);
+        return JoinUserResponse.createJoinUserResponse(user);
     }
+
 
     public boolean isDuplicatedId(String id) {
-        return userMapper.getCountById(id) == 1;
+        return userMapper.getCountById(id);
     }
 
-    public UserDto getUserById(String userId) {
+    public JoinUserResponse getUserById(String userId) {
 
         Optional<User> user = userMapper.getUserById(userId);
         if (user.isEmpty()) {
             throw new UserNotFoundException("회원정보가 없습니다.");
         }
-        return user.get().toUserDto(user.get());
+        return JoinUserResponse.createJoinUserResponse(user.get());
     }
 }

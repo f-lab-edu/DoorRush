@@ -2,16 +2,15 @@ package com.flab.doorrush.domain.user.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flab.doorrush.domain.user.dto.UserDto;
+import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,18 +34,19 @@ class UserControllerTest {
     ObjectMapper objectMapper;
 
     @Test // @Test : 테스트가 수행되는 메소드를 가르킨다.
+    @DisplayName("회원가입 성공 테스트 상태값 201을 반환한다.")
     public void joinUserSuccessTest() throws Exception {
 
         // Given
-        UserDto userDto = UserDto.builder()
-            .id("yeojae")
+        JoinUserRequest joinUserRequest = JoinUserRequest.builder()
+            .loginId("yeojae")
             .password("yeojae")
             .name("yeojae")
             .phoneNumber("01012341234")
             .email("yeojae@naver.com")
             .build();
 
-        String content = objectMapper.writeValueAsString(userDto);
+        String content = objectMapper.writeValueAsString(joinUserRequest);
 
         // When
         mockMvc.perform(post("/users/")
@@ -57,27 +57,28 @@ class UserControllerTest {
             .andDo(print())
             // Then
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value("yeojae"))
-            .andExpect(jsonPath("$.password").value("yeojae"))
-            .andExpect(jsonPath("$.name").value("yeojae"))
-            .andExpect(jsonPath("$.phoneNumber").value("01012341234"))
-            .andExpect(jsonPath("$.email").value("yeojae@naver.com"));
+            .andExpect(jsonPath("$.user.loginId").value("yeojae"))
+            .andExpect(jsonPath("$.user.password").value("yeojae"))
+            .andExpect(jsonPath("$.user.name").value("yeojae"))
+            .andExpect(jsonPath("$.user.phoneNumber").value("01012341234"))
+            .andExpect(jsonPath("$.user.email").value("yeojae@naver.com"));
 
     }
 
     @Test
+    @DisplayName("회원가입 실패 테스트 아이디 중복으로 예외를 발생시킨다.")
     public void joinUserFailTest() throws Exception {
 
         // Given
-        UserDto userDto = UserDto.builder()
-            .id("test1")
+        JoinUserRequest joinUserRequest = JoinUserRequest.builder()
+            .loginId("test1")
             .password("test1")
             .name("test")
             .phoneNumber("01011112222")
             .email("aaa@naver.com")
             .build();
 
-        String content = objectMapper.writeValueAsString(userDto);
+        String content = objectMapper.writeValueAsString(joinUserRequest);
 
         // Then
         Exception e = assertThrows(NestedServletException.class,
