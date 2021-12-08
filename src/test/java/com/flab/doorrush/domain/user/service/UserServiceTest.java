@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
-import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
+import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class UserServiceTest {
     @DisplayName("아이디로 사용자 정보 조회결과가 예상한 결과값과 동일하다.")
     public void getUserByIdSuccessTest() {
         // Given , When
-        JoinUserResponse user = userService.getUserById("test1");
+        FindUserResponse user = userService.getUserById("test1");
 
         // Then
         assertThat(user.getUser().getLoginId()).isEqualTo("test1");
@@ -68,7 +68,7 @@ class UserServiceTest {
             .build());
 
         // When
-        JoinUserResponse user = userService.getUserById("testId");
+        FindUserResponse user = userService.getUserById("testId");
 
         // Then
         assertThat(user.getUser().getUserSeq()).isNotNull();

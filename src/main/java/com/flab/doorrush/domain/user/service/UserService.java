@@ -3,10 +3,10 @@ package com.flab.doorrush.domain.user.service;
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +33,8 @@ public class UserService {
         return userMapper.getCountById(id);
     }
 
-    public JoinUserResponse getUserById(String userId) {
-
-        Optional<User> user = userMapper.getUserById(userId);
-        if (user.isEmpty()) {
-            throw new UserNotFoundException("회원정보가 없습니다.");
-        }
-        return JoinUserResponse.createJoinUserResponse(user.get());
+    public FindUserResponse getUserById(String userId) {
+        return FindUserResponse.createFindUserResponse(userMapper.getUserById(userId)
+            .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다.")));
     }
 }
