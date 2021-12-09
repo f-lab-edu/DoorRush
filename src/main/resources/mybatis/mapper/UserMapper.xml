@@ -38,10 +38,16 @@
     WHERE ID = #{id}
   </select>
 
-  <select id="getUserPasswordById" parameterType="String" resultType="String">
-    SELECT PASSWORD
+  <select id="checkUserPasswordById" parameterType="String" resultType="String">
+    SELECT
+
+      CASE PASSWORD
+        WHEN #{password} THEN 'success'
+        ELSE 'fail'
+        END
+
     FROM USER
-    WHERE ID = #{id}
+    WHERE ID = #{id};
   </select>
 
 

@@ -4,6 +4,7 @@ import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.service.UserService;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UserController {
 
   private final UserService userService;
 
-  @PostMapping("/")
+  @PostMapping()
   public ResponseEntity<UserDto> joinUser(@RequestBody UserDto userDto) {
     userService.joinUser(userDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
@@ -30,13 +31,23 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto,
       HttpSession session) {
-    HttpStatus result = userService.login(loginDto, session);
-    return new ResponseEntity<>(result);
+
+    HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+    String serviceResult = userService.login(loginDto, session);
+    if ("success".equals(serviceResult)) {
+      httpStatus = HttpStatus.OK;
+    }
+    return new ResponseEntity<>(httpStatus);
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<HttpStatus> logout(HttpSession session) {
-    HttpStatus result = userService.logout(session);
-    return new ResponseEntity<>(result);
+  public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
+    String serviceResult = userService.logout(session);
+    HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+    if (serviceResult.equals("success")) {
+      httpStatus = HttpStatus.OK;
+    }
+    return new ResponseEntity<>(httpStatus);
   }
 }

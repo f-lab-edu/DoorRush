@@ -4,13 +4,12 @@ import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
+import com.flab.doorrush.domain.user.dto.UserJoinRequestDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,8 +40,8 @@ public class UserService {
   }
 
 
-  public UserDto getUserById(String userId) {
-    Optional<User> user = userMapper.getUserById(userId);
+  public UserDto getUserById(String id) {
+    Optional<User> user = userMapper.getUserById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException("회원정보가 없습니다.");
     }
@@ -50,25 +49,21 @@ public class UserService {
   }
 
 
-  public HttpStatus login(LoginDto loginDto, HttpSession session) {
-    HttpStatus result = HttpStatus.NOT_FOUND;
-    String dbPassword = userMapper.getUserPasswordById(loginDto.getId());
+  public String login(LoginDto loginDto, HttpSession session) {
 
-    if (dbPassword.equals(loginDto.getPassword())) {
+    String result = userMapper.checkUserPasswordById(loginDto.getId(), loginDto.getPassword());
+    if (result.equals("success")) {
       session.setAttribute("login", "yes");
-      result = HttpStatus.OK;
     }
     return result;
   }
 
-  public HttpStatus logout(HttpSession session) {
-
-    HttpStatus result = HttpStatus.NOT_FOUND;
-    if (session.getAttribute("login").equals("yes")) {
-      session.removeAttribute("login");
-      result = HttpStatus.OK;
+  public String logout(HttpSession session) {
+    String result = "fail";
+    if (("yes").equals(session.getAttribute("login"))) {
+      result = "success";
+      session.invalidate();
     }
     return result;
   }
-
 }

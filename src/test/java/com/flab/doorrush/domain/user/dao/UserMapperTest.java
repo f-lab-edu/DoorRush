@@ -1,6 +1,8 @@
 package com.flab.doorrush.domain.user.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
@@ -12,47 +14,61 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class UserMapperTest {
 
-    @Autowired
-    UserMapper userMapper;
+  @Autowired
+  UserMapper userMapper;
 
-    @Test
-    public void userInsertTest() {
+  @Test
+  public void userInsertTest() {
 
-        // Given
-        String id = "testID1234";
-        String password = "testPW";
-        String name = "yeonjae";
-        String phoneNumber = "0102222333";
-        String email = "yj@naver.com";
+    // Given
+    String id = "testID1234";
+    String password = "testPW";
+    String name = "yeonjae";
+    String phoneNumber = "0102222333";
+    String email = "yj@naver.com";
 
-        // When
-        int insertResult = userMapper.insertUser(User.builder()
-            .id(id)
-            .password(password)
-            .phoneNumber(phoneNumber)
-            .email(email)
-            .name(name)
-            .build());
+    // When
+    int insertResult = userMapper.insertUser(User.builder()
+        .id(id)
+        .password(password)
+        .phoneNumber(phoneNumber)
+        .email(email)
+        .name(name)
+        .build());
 
-        // Then
-        assertThat(insertResult).isEqualTo(1);
+    // Then
+    assertThat(insertResult).isEqualTo(1);
 
+  }
+
+
+  @Test
+  public void getUserByIdTest() {
+    // Given
+    String id = "test1";
+
+    // When
+    Optional<User> user = userMapper.getUserById(id);
+
+    // Then
+    if (user.isPresent()) {
+      assertThat(user.get().getName()).isEqualTo("11");
+    } else {
+      throw new UserNotFoundException("회원정보가 없습니다.");
     }
+  }
 
+  @Test
+  public void checkUserPasswordById() {
+    // Given
+    String id = "test1";
+    String password = "test1pw";
 
-    @Test
-    public void getUserByIdTest() {
-        // Given
-        String id = "test1";
+    // When
+    String result = userMapper.checkUserPasswordById(id, password);
 
-        // When
-        Optional<User> user = userMapper.getUserById(id);
+    // Then
+    assertEquals(result,"success");
 
-        // Then
-        if (user.isPresent()) {
-            assertThat(user.get().getName()).isEqualTo("11");
-        } else {
-            throw new UserNotFoundException("회원정보가 없습니다.");
-        }
-    }
+  }
 }
