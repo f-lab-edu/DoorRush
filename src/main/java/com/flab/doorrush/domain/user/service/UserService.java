@@ -1,5 +1,9 @@
 package com.flab.doorrush.domain.user.service;
 
+import static com.flab.doorrush.domain.user.common.LoginEnum.Fail;
+import static com.flab.doorrush.domain.user.common.LoginEnum.SUCCESS;
+
+import com.flab.doorrush.domain.user.common.LoginEnum;
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.LoginDto;
@@ -8,6 +12,7 @@ import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,21 +53,22 @@ public class UserService {
   }
 
 
-  public String login(LoginDto loginDto, HttpSession session) {
+  public LoginEnum login(LoginDto loginDto, HttpSession session) {
 
     String result = userMapper.checkUserPasswordById(loginDto.getId(), loginDto.getPassword());
     if (result.equals("success")) {
       session.setAttribute("login", "yes");
+      return SUCCESS;
     }
-    return result;
+    return Fail;
   }
 
-  public String logout(HttpSession session) {
-    String result = "fail";
+  public LoginEnum logout(@NotNull HttpSession session) {
+
     if (("yes").equals(session.getAttribute("login"))) {
-      result = "success";
       session.invalidate();
+      return SUCCESS;
     }
-    return result;
+    return Fail;
   }
 }

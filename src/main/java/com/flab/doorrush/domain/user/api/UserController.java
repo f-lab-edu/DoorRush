@@ -1,5 +1,6 @@
 package com.flab.doorrush.domain.user.api;
 
+import com.flab.doorrush.domain.user.common.LoginEnum;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.service.UserService;
@@ -32,22 +33,15 @@ public class UserController {
   public ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto,
       HttpSession session) {
 
-    HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-    String serviceResult = userService.login(loginDto, session);
-    if ("success".equals(serviceResult)) {
-      httpStatus = HttpStatus.OK;
-    }
-    return new ResponseEntity<>(httpStatus);
+    LoginEnum serviceResult = userService.login(loginDto, session);
+
+    return new ResponseEntity<>(serviceResult.getValue());
   }
 
   @PostMapping("/logout")
   public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
-    String serviceResult = userService.logout(session);
-    HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+    LoginEnum serviceResult = userService.logout(session);
 
-    if (serviceResult.equals("success")) {
-      httpStatus = HttpStatus.OK;
-    }
-    return new ResponseEntity<>(httpStatus);
+    return new ResponseEntity<>(serviceResult.getValue());
   }
 }

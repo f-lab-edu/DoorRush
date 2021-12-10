@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.flab.doorrush.domain.user.common.LoginEnum;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
@@ -13,6 +14,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpSession;
 
 /*
@@ -76,10 +78,10 @@ class UserServiceTest {
     LoginDto loginDto = new LoginDto("test1", "test1pw");
 
     // When
-    String result = userService.login(loginDto, session);
+    LoginEnum result = userService.login(loginDto, session);
 
     // Then
-    MatcherAssert.assertThat("success", is(result));
+    MatcherAssert.assertThat(HttpStatus.OK, is(result.getValue()));
     //MatcherAssert.assertThat("fail", is(incorrectInput));
   }
 
@@ -90,9 +92,35 @@ class UserServiceTest {
     LoginDto loginDto = new LoginDto("test1", "test222222222pw");
 
     // When
-    String result = userService.login(loginDto, session);
+    LoginEnum result = userService.login(loginDto, session);
 
     // Then
-    MatcherAssert.assertThat("fail", is(result));
+    MatcherAssert.assertThat(HttpStatus.NOT_FOUND, is(result.getValue()));
+  }
+
+  @Test
+  public void logoutSuccessTest() {
+    // Given
+    MockHttpSession session = new MockHttpSession();
+    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    userService.login(loginDto, session);
+
+    // When
+    LoginEnum result = userService.logout(session);
+    // Then
+    MatcherAssert.assertThat(HttpStatus.OK, is(result.getValue()));
+  }
+
+  @Test
+  public void logoutFailTest() {
+    // Given
+    MockHttpSession session = new MockHttpSession();
+    LoginDto loginDto = new LoginDto("test1", "test1dfdfdpw");
+    userService.login(loginDto, session);
+
+    // When
+    LoginEnum result = userService.logout(session);
+    // Then
+    MatcherAssert.assertThat(HttpStatus.NOT_FOUND, is(result.getValue()));
   }
 }
