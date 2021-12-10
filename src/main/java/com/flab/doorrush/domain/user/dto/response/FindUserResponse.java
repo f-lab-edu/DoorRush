@@ -4,15 +4,17 @@ import com.flab.doorrush.domain.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class FindUserResponse {
 
-    private final User user;
+    private User user;
 
-    public static FindUserResponse createFindUserResponse(User user) {
+    public FindUserResponse createFindUserResponse(User user) {
         return new FindUserResponse(user);
     }
 }

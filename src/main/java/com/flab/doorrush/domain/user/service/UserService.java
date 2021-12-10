@@ -18,19 +18,17 @@ public class UserService {
     private final UserMapper userMapper;
 
     public JoinUserResponse joinUser(JoinUserRequest joinUserRequest) {
-        User user = JoinUserRequest.toUser(joinUserRequest);
-
-        boolean isDuplicated = isDuplicatedId(user.getLoginId());
-        if (isDuplicated) {
+        User user = joinUserRequest.toUser(joinUserRequest);
+        if (isDuplicatedId(user.getLoginId())) {
             throw new DuplicatedUserIdException("이미 사용중인 아이디입니다.");
         }
         userMapper.insertUser(user);
-        return JoinUserResponse.createJoinUserResponse(user);
+        return new JoinUserResponse().createJoinUserResponse(user);
     }
 
 
-    public boolean isDuplicatedId(String id) {
-        return userMapper.getCountById(id);
+    private boolean isDuplicatedId(String id) {
+        return userMapper.countById(id) == 1;
     }
 
     public FindUserResponse getUserById(String userId) {
@@ -38,6 +36,6 @@ public class UserService {
         User user = userMapper.getUserById(userId)
             .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
 
-        return FindUserResponse.createFindUserResponse(user);
+        return new FindUserResponse().createFindUserResponse(user);
     }
 }

@@ -8,18 +8,15 @@
   <insert id="insertUser" parameterType="com.flab.doorrush.domain.user.domain.User"
     keyProperty="userSeq" useGeneratedKeys="true">
     INSERT INTO USER (LOGIN_ID,
-                      PASSWORD,
-                      NAME,
-                      PHONE_NUMBER,
-                      EMAIL)
-    VALUES (  #{loginId}
-            , #{password}
-            , #{name}
-            , #{phoneNumber}
-            , #{email})
-    <selectKey resultType="Long" keyProperty="userSeq" order="AFTER">
-      SELECT USER_SEQ FROM USER WHERE LOGIN_ID = #{loginId}
-    </selectKey>
+    PASSWORD,
+    NAME,
+    PHONE_NUMBER,
+    EMAIL)
+    VALUES ( #{loginId}
+    , #{password}
+    , #{name}
+    , #{phoneNumber}
+    , #{email})
   </insert>
 
   <select id="getUserById" parameterType="String"
@@ -34,9 +31,10 @@
     WHERE LOGIN_ID = #{loginId}
   </select>
 
-  <select id="getCountById" parameterType="String" resultType="boolean">
-    SELECT EXISTS
-             (SELECT USER_SEQ FROM USER WHERE LOGIN_ID = #{loginId})
+  <select id="countById" parameterType="String" resultType="int">
+    SELECT COUNT(*)
+    FROM USER
+    WHERE LOGIN_ID = #{loginId}
   </select>
 
 </mapper>

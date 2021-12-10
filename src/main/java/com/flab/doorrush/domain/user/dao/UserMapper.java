@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
 
-    long insertUser(User user);
+    void insertUser(User user);
 
     Optional<User> getUserById(String id);
 
-    boolean getCountById(String id);
+    int countById(String id);
 
 }
 
