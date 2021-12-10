@@ -1,6 +1,6 @@
 package com.flab.doorrush.domain.user.service;
 
-import static com.flab.doorrush.domain.user.common.LoginEnum.Fail;
+import static com.flab.doorrush.domain.user.common.LoginEnum.FAIL;
 import static com.flab.doorrush.domain.user.common.LoginEnum.SUCCESS;
 
 import com.flab.doorrush.domain.user.common.LoginEnum;
@@ -60,7 +60,7 @@ public class UserService {
       session.setAttribute("login", "yes");
       return SUCCESS;
     }
-    return Fail;
+    return FAIL;
   }
 
   public LoginEnum logout(@NotNull HttpSession session) {
@@ -69,6 +69,6 @@ public class UserService {
       session.invalidate();
       return SUCCESS;
     }
-    return Fail;
+    return FAIL;
   }
 }
