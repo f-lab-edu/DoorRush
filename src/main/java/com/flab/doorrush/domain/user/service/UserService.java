@@ -43,28 +43,29 @@ public class UserService {
     return userMapper.getCountById(id) == 1;
   }
 
-
   public UserDto getUserById(String id) {
-    Optional<User> user = userMapper.getUserById(id);
+    Optional<User> user = userMapper.selectUserById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException("회원정보가 없습니다.");
     }
     return user.get().toUserDto(user.get());
   }
 
-
   public LoginEnum login(LoginDto loginDto, HttpSession session) {
 
-    String result = userMapper.checkUserPasswordById(loginDto.getId(), loginDto.getPassword());
-    if (result.equals("success")) {
+    try{
+      User user = Optional.ofNullable(userMapper.selectUserByColumns("ID", loginDto.getId(), "PASSWORD",
+          loginDto.getPassword())).orElseThrow( );
       session.setAttribute("login", "yes");
       return SUCCESS;
+
+    }catch (Exception e){
+      e.printStackTrace();
+      return FAIL;
     }
-    return FAIL;
   }
 
   public LoginEnum logout(@NotNull HttpSession session) {
-
     if (("yes").equals(session.getAttribute("login"))) {
       session.invalidate();
       return SUCCESS;

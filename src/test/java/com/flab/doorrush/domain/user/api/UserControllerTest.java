@@ -131,9 +131,8 @@ class UserControllerTest {
   }
 
   @Test
-  public void logoutTest() throws Exception {
+  public void logoutSuccessTest() throws Exception {
     // Given
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
     MockHttpSession mockHttpSession = new MockHttpSession();
     mockHttpSession.setAttribute("login", "yes");
 
@@ -145,5 +144,21 @@ class UserControllerTest {
         .andDo(print())
         // Then
         .andExpect(status().isOk());
+  }
+
+  @Test
+  public void logoutFailTest() throws Exception {
+    // Given
+    MockHttpSession mockHttpSession = new MockHttpSession();
+    mockHttpSession.setAttribute("login", "no");
+
+    // When
+    mockMvc.perform(post("/users/logout")
+            .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isNotFound());
   }
 }

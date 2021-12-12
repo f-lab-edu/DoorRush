@@ -95,9 +95,9 @@ jacocoTestCoverageVerification {
             ]
 
             limit {
-                counter = 'METHOD'
+                counter = 'CLASS'
                 value = 'COVEREDRATIO'
-                minimum = 0.5
+                minimum = 0.7
             }
         }
     }

@@ -43,12 +43,12 @@ class UserMapperTest {
 
 
   @Test
-  public void getUserByIdTest() {
+  public void selectUserByIdTest() {
     // Given
     String id = "test1";
 
     // When
-    Optional<User> user = userMapper.getUserById(id);
+    Optional<User> user = userMapper.selectUserById(id);
 
     // Then
     if (user.isPresent()) {

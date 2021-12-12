@@ -72,7 +72,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void loginUserSuccessTest() {
+  public void loginSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
     LoginDto loginDto = new LoginDto("test1", "test1pw");
@@ -86,7 +86,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void loginUserFailTest() {
+  public void loginFailTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
     LoginDto loginDto = new LoginDto("test1", "test222222222pw");
@@ -115,8 +115,7 @@ class UserServiceTest {
   public void logoutFailTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1dfdfdpw");
-    userService.login(loginDto, session);
+    session.setAttribute("login","no");
 
     // When
     LoginEnum result = userService.logout(session);

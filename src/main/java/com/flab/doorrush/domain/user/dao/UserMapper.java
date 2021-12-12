@@ -9,10 +9,12 @@ public interface UserMapper {
 
   int insertUser(User user);
 
-  Optional<User> getUserById(String id);
+  Optional<User> selectUserById(String id);
 
   int getCountById(String id);
 
   String checkUserPasswordById(String id, String password);
+
+  User selectUserByColumns(String column1, String value1, String column2, String value2);
 }
 

@@ -7,21 +7,21 @@
 
   <insert id="insertUser" parameterType="com.flab.doorrush.domain.user.dto.UserDto">
     INSERT INTO USER (ID,
-                      PASSWORD,
-                      NAME,
-                      PHONE_NUMBER,
-                      EMAIL)
+    PASSWORD,
+    NAME,
+    PHONE_NUMBER,
+    EMAIL)
     values ( #{id}
-           , #{password}
-           , #{name}
-           , #{phoneNumber}
-           , #{email})
+    , #{password}
+    , #{name}
+    , #{phoneNumber}
+    , #{email})
     <selectKey resultType="java.lang.String" keyColumn="ID" keyProperty="id" order="AFTER">
       SELECT ID FROM USER WHERE ID = #{id}
     </selectKey>
   </insert>
 
-  <select id="getUserById" parameterType="String"
+  <select id="selectUserById" parameterType="String"
     resultType="com.flab.doorrush.domain.user.domain.User">
     SELECT ID,
            PASSWORD,
@@ -39,15 +39,20 @@
   </select>
 
   <select id="checkUserPasswordById" parameterType="String" resultType="String">
-    SELECT
-
-      CASE PASSWORD
-        WHEN #{password} THEN 'success'
-        ELSE 'fail'
-        END
+    SELECT CASE PASSWORD
+             WHEN #{password} THEN 'success'
+             ELSE 'fail'
+             END
 
     FROM USER
     WHERE ID = #{id};
+  </select>
+
+  <select id="selectUserByColumns" parameterType="String"
+    resultType="com.flab.doorrush.domain.user.domain.User" >
+    SELECT *
+    FROM USER
+    WHERE ${column1} = #{value1} AND ${column2} = #{value2};
   </select>
 
 
