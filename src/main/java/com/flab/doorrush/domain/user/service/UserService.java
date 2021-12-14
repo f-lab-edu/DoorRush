@@ -1,15 +1,16 @@
 package com.flab.doorrush.domain.user.service;
 
-import static com.flab.doorrush.domain.user.common.LoginEnum.FAIL;
-import static com.flab.doorrush.domain.user.common.LoginEnum.SUCCESS;
+import static java.util.Objects.isNull;
 
-import com.flab.doorrush.domain.user.common.LoginEnum;
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
+import com.flab.doorrush.domain.user.exception.loginException.IdNotFoundException;
+import com.flab.doorrush.domain.user.exception.loginException.InvalidPasswordException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
+import com.flab.doorrush.domain.user.exception.loginException.SessionLoginIdNotFoundException;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -23,10 +24,12 @@ public class UserService {
 
   private final UserMapper userMapper;
 
+
   public void joinUser(UserDto userDto) {
     User user = userDto.toUser(userDto);
     joinUser(user);
   }
+
 
   public void joinUser(User user) {
     boolean isDuplicated = isDuplicatedId(user.getId());
@@ -39,9 +42,11 @@ public class UserService {
     }
   }
 
+
   public boolean isDuplicatedId(String id) {
     return userMapper.getCountById(id) == 1;
   }
+
 
   public UserDto getUserById(String id) {
     Optional<User> user = userMapper.selectUserById(id);
@@ -51,25 +56,27 @@ public class UserService {
     return user.get().toUserDto(user.get());
   }
 
-  public LoginEnum login(LoginDto loginDto, HttpSession session) {
 
-    try{
-      User user = Optional.ofNullable(userMapper.selectUserByColumns("ID", loginDto.getId(), "PASSWORD",
-          loginDto.getPassword())).orElseThrow( );
-      session.setAttribute("login", "yes");
-      return SUCCESS;
+  public void login(LoginDto loginDto, HttpSession session) {
+    Optional<User> userForCheckingId = Optional.ofNullable(
+        userMapper.selectUserById(loginDto.getId())
+            .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다.")));
 
-    }catch (Exception e){
-      e.printStackTrace();
-      return FAIL;
-    }
+    User userForCheckingPassword = Optional.ofNullable(
+            userMapper.selectUserByColumns("ID", loginDto.getId(), "PASSWORD",
+                loginDto.getPassword()))
+        .orElseThrow(() -> new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다."));
+
+    session.setAttribute("loginId", loginDto.getId());
   }
 
-  public LoginEnum logout(@NotNull HttpSession session) {
-    if (("yes").equals(session.getAttribute("login"))) {
+
+  public void logout(@NotNull HttpSession session) {
+    if (!isNull(session.getAttribute("loginId"))) {
       session.invalidate();
-      return SUCCESS;
+    } else {
+      throw new SessionLoginIdNotFoundException("세션정보를 찾을 수 없습니다.");
     }
-    return FAIL;
   }
+
 }

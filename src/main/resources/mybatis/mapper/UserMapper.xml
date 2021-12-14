@@ -38,21 +38,13 @@
     WHERE ID = #{id}
   </select>
 
-  <select id="checkUserPasswordById" parameterType="String" resultType="String">
-    SELECT CASE PASSWORD
-             WHEN #{password} THEN 'success'
-             ELSE 'fail'
-             END
-
-    FROM USER
-    WHERE ID = #{id};
-  </select>
 
   <select id="selectUserByColumns" parameterType="String"
-    resultType="com.flab.doorrush.domain.user.domain.User" >
+    resultType="com.flab.doorrush.domain.user.domain.User">
     SELECT *
     FROM USER
-    WHERE ${column1} = #{value1} AND ${column2} = #{value2};
+    WHERE ${column1} = #{value1}
+      AND ${column2} = #{value2};
   </select>
 
 

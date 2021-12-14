@@ -11,13 +11,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
+import com.flab.doorrush.domain.user.exception.loginException.InvalidPasswordException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.util.NestedServletException;
 
 /* @RunWith : JUnit 프레임워크가 테스트를 실행할 시 테스트 실행방법을 확장할 때 쓰는 어노테이션
@@ -37,7 +40,6 @@ class UserControllerTest {
 
   @Test // @Test : 테스트가 수행되는 메소드를 가르킨다.
   public void joinUserSuccessTest() throws Exception {
-
     // Given
     UserDto userDto = UserDto.builder()
         .id("yeojae")
@@ -63,12 +65,11 @@ class UserControllerTest {
         .andExpect(jsonPath("$.name").value("yeojae"))
         .andExpect(jsonPath("$.phoneNumber").value("01012341234"))
         .andExpect(jsonPath("$.email").value("yeojae@naver.com"));
-
   }
+
 
   @Test
   public void joinUserFailTest() throws Exception {
-
     // Given
     UserDto userDto = UserDto.builder()
         .id("test1")
@@ -134,7 +135,7 @@ class UserControllerTest {
   public void logoutSuccessTest() throws Exception {
     // Given
     MockHttpSession mockHttpSession = new MockHttpSession();
-    mockHttpSession.setAttribute("login", "yes");
+    mockHttpSession.setAttribute("loginId", "yes");
 
     // When
     mockMvc.perform(post("/users/logout")
@@ -150,7 +151,7 @@ class UserControllerTest {
   public void logoutFailTest() throws Exception {
     // Given
     MockHttpSession mockHttpSession = new MockHttpSession();
-    mockHttpSession.setAttribute("login", "no");
+    System.out.println("loginId 체크 : " + mockHttpSession.getAttribute("loginId"));
 
     // When
     mockMvc.perform(post("/users/logout")

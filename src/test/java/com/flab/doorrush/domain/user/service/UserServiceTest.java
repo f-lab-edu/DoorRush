@@ -3,18 +3,18 @@ package com.flab.doorrush.domain.user.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.flab.doorrush.domain.user.common.LoginEnum;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
+import com.flab.doorrush.domain.user.exception.loginException.IdNotFoundException;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpSession;
 
 /*
@@ -78,10 +78,10 @@ class UserServiceTest {
     LoginDto loginDto = new LoginDto("test1", "test1pw");
 
     // When
-    LoginEnum result = userService.login(loginDto, session);
+    userService.login(loginDto, session);
 
     // Then
-    MatcherAssert.assertThat(HttpStatus.OK, is(result.getValue()));
+    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test1"));
     //MatcherAssert.assertThat("fail", is(incorrectInput));
   }
 
@@ -89,13 +89,18 @@ class UserServiceTest {
   public void loginFailTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test222222222pw");
+    LoginDto IdNotFoundExceptionLoginDto = new LoginDto("test111111", "test22222222pw");
+    // Then                                     // When
+    assertThrows(IdNotFoundException.class,
+        () -> userService.login(IdNotFoundExceptionLoginDto, session));
 
-    // When
-    LoginEnum result = userService.login(loginDto, session);
-
+    // Given
+    LoginDto InvalidPasswordException = new LoginDto("test1", "test222222222pw");
     // Then
-    MatcherAssert.assertThat(HttpStatus.NOT_FOUND, is(result.getValue()));
+    assertThrows(
+        com.flab.doorrush.domain.user.exception.loginException.InvalidPasswordException.class,
+        // When
+        () -> userService.login(InvalidPasswordException, session));
   }
 
   @Test
@@ -106,20 +111,10 @@ class UserServiceTest {
     userService.login(loginDto, session);
 
     // When
-    LoginEnum result = userService.logout(session);
+    userService.logout(session);
     // Then
-    MatcherAssert.assertThat(HttpStatus.OK, is(result.getValue()));
+    assertTrue(session.isInvalid());
   }
 
-  @Test
-  public void logoutFailTest() {
-    // Given
-    MockHttpSession session = new MockHttpSession();
-    session.setAttribute("login","no");
 
-    // When
-    LoginEnum result = userService.logout(session);
-    // Then
-    MatcherAssert.assertThat(HttpStatus.NOT_FOUND, is(result.getValue()));
-  }
 }

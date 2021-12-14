@@ -13,8 +13,6 @@ public interface UserMapper {
 
   int getCountById(String id);
 
-  String checkUserPasswordById(String id, String password);
-
   User selectUserByColumns(String column1, String value1, String column2, String value2);
 }
 

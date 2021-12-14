@@ -2,7 +2,6 @@ package com.flab.doorrush.domain.user.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
@@ -59,16 +58,16 @@ class UserMapperTest {
   }
 
   @Test
-  public void checkUserPasswordById() {
+  public void selectUserByColumns() {
     // Given
     String id = "test1";
     String password = "test1pw";
 
     // When
-    String result = userMapper.checkUserPasswordById(id, password);
+    User result = userMapper.selectUserByColumns("ID", id, "PASSWORD", password);
 
     // Then
-    assertEquals(result,"success");
-
+    assertEquals(result.getId(), id);
+    assertEquals(result.getPassword(), password);
   }
 }
