@@ -31,10 +31,4 @@
     WHERE LOGIN_ID = #{loginId}
   </select>
 
-  <select id="countById" parameterType="String" resultType="int">
-    SELECT COUNT(*)
-    FROM USER
-    WHERE LOGIN_ID = #{loginId}
-  </select>
-
 </mapper>

@@ -5,12 +5,10 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter // getter 메소드를 생성해주는 어노테이션입니다.
 @Builder // 디자인 패턴 중 하나인 빌더 패턴 (Builder pattern)를 사용가능하게 해주는 어노테이션입니다.
 @AllArgsConstructor
-@NoArgsConstructor
 public class JoinUserRequest {
 
     @NotNull
@@ -27,13 +25,13 @@ public class JoinUserRequest {
 
     private String email;
 
-    public User toUser(JoinUserRequest joinUserRequest) {
+    public User toEntity() {
         return User.builder()
-            .loginId(joinUserRequest.getLoginId())
-            .password(joinUserRequest.getPassword())
-            .name(joinUserRequest.getName())
-            .email(joinUserRequest.getEmail())
-            .phoneNumber(joinUserRequest.getPhoneNumber())
+            .loginId(this.getLoginId())
+            .password(this.getPassword())
+            .name(this.getName())
+            .email(this.getEmail())
+            .phoneNumber(this.getPhoneNumber())
             .build();
     }
 
