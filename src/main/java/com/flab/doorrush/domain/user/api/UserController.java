@@ -2,9 +2,6 @@ package com.flab.doorrush.domain.user.api;
 
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
-import com.flab.doorrush.domain.user.exception.IdNotFoundException;
-import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
-import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import com.flab.doorrush.domain.user.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -12,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,15 +38,6 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @ExceptionHandler
-  public ResponseEntity<HttpStatus> loginExceptionHandler(IdNotFoundException e) {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  }
-
-  @ExceptionHandler
-  public ResponseEntity<HttpStatus> loginExceptionHandler(InvalidPasswordException e) {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  }
 
   @PostMapping("/logout")
   public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
@@ -58,9 +45,4 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @ExceptionHandler
-  public ResponseEntity<HttpStatus> sessionLoginIdNotFoundException(
-      SessionLoginIdNotFoundException e) {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  }
 }
