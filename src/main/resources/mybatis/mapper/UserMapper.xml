@@ -5,37 +5,30 @@
 
 <mapper namespace="com.flab.doorrush.domain.user.dao.UserMapper">
 
-  <insert id="insertUser" parameterType="com.flab.doorrush.domain.user.dto.UserDto">
-    INSERT INTO USER (ID,
+  <insert id="insertUser" parameterType="com.flab.doorrush.domain.user.domain.User"
+    keyProperty="userSeq" useGeneratedKeys="true">
+    INSERT INTO USER (LOGIN_ID,
                       PASSWORD,
                       NAME,
                       PHONE_NUMBER,
                       EMAIL)
-    values ( #{id}
+    VALUES ( #{loginId}
            , #{password}
            , #{name}
            , #{phoneNumber}
            , #{email})
-    <selectKey resultType="java.lang.String" keyColumn="ID" keyProperty="id" order="AFTER">
-      SELECT ID FROM USER WHERE ID = #{id}
-    </selectKey>
   </insert>
 
   <select id="getUserById" parameterType="String"
     resultType="com.flab.doorrush.domain.user.domain.User">
-    SELECT ID,
+    SELECT USER_SEQ,
+           LOGIN_ID,
            PASSWORD,
            NAME,
            PHONE_NUMBER,
            EMAIL
     FROM USER
-    WHERE ID = #{id}
-  </select>
-
-  <select id="getCountById" parameterType="String" resultType="int">
-    SELECT COUNT(*)
-    FROM USER
-    WHERE ID = #{id}
+    WHERE LOGIN_ID = #{loginId}
   </select>
 
 </mapper>
