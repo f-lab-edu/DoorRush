@@ -57,17 +57,4 @@ class UserMapperTest {
     }
   }
 
-  @Test
-  public void selectUserByColumns() {
-    // Given
-    String id = "test1";
-    String password = "test1pw";
-
-    // When
-    User result = userMapper.selectUserByColumns("ID", id, "PASSWORD", password);
-
-    // Then
-    assertEquals(result.getId(), id);
-    assertEquals(result.getPassword(), password);
-  }
 }

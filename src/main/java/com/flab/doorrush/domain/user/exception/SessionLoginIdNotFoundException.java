@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.user.exception.loginException;
+package com.flab.doorrush.domain.user.exception;
 
 
 public class SessionLoginIdNotFoundException extends RuntimeException {

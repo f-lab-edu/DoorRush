@@ -7,10 +7,10 @@ import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
-import com.flab.doorrush.domain.user.exception.loginException.IdNotFoundException;
-import com.flab.doorrush.domain.user.exception.loginException.InvalidPasswordException;
+import com.flab.doorrush.domain.user.exception.IdNotFoundException;
+import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
-import com.flab.doorrush.domain.user.exception.loginException.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -58,16 +58,14 @@ public class UserService {
 
 
   public void login(LoginDto loginDto, HttpSession session) {
-    Optional<User> userForCheckingId = Optional.ofNullable(
-        userMapper.selectUserById(loginDto.getId())
-            .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다.")));
+    User user = userMapper.selectUserById(loginDto.getId())
+        .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
 
-    User userForCheckingPassword = Optional.ofNullable(
-            userMapper.selectUserByColumns("ID", loginDto.getId(), "PASSWORD",
-                loginDto.getPassword()))
-        .orElseThrow(() -> new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다."));
-
-    session.setAttribute("loginId", loginDto.getId());
+    if (loginDto.getPassword().equals(user.getPassword())) {
+      session.setAttribute("loginId", loginDto.getId());
+    } else {
+      throw new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다.");
+    }
   }
 
 

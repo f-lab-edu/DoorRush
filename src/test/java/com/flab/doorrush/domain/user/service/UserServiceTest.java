@@ -10,7 +10,7 @@ import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
-import com.flab.doorrush.domain.user.exception.loginException.IdNotFoundException;
+import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +98,7 @@ class UserServiceTest {
     LoginDto InvalidPasswordException = new LoginDto("test1", "test222222222pw");
     // Then
     assertThrows(
-        com.flab.doorrush.domain.user.exception.loginException.InvalidPasswordException.class,
+        com.flab.doorrush.domain.user.exception.InvalidPasswordException.class,
         // When
         () -> userService.login(InvalidPasswordException, session));
   }

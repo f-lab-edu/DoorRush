@@ -2,9 +2,9 @@ package com.flab.doorrush.domain.user.api;
 
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
-import com.flab.doorrush.domain.user.exception.loginException.IdNotFoundException;
-import com.flab.doorrush.domain.user.exception.loginException.InvalidPasswordException;
-import com.flab.doorrush.domain.user.exception.loginException.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.user.exception.IdNotFoundException;
+import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
+import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import com.flab.doorrush.domain.user.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
