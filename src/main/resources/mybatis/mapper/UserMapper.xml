@@ -19,7 +19,7 @@
            , #{email})
   </insert>
 
-  <select id="getUserById" parameterType="String"
+  <select id="selectUserById" parameterType="String"
     resultType="com.flab.doorrush.domain.user.domain.User">
     SELECT USER_SEQ,
            LOGIN_ID,
@@ -30,5 +30,4 @@
     FROM USER
     WHERE LOGIN_ID = #{loginId}
   </select>
-
 </mapper>

@@ -9,7 +9,7 @@ public interface UserMapper {
 
   void insertUser(User user);
 
-  Optional<User> getUserById(String id);
+  Optional<User> selectUserById(String loginId);
 
 }
 

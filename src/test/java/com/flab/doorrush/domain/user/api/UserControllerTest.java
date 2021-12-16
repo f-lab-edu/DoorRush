@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.util.NestedServletException;
 
@@ -92,5 +94,71 @@ class UserControllerTest {
         });
 
     assertEquals(DuplicatedUserIdException.class, e.getCause().getClass());
+  }
+
+
+  @Test
+  public void loginSuccessTest() throws Exception {
+    // Given
+    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    String content = objectMapper.writeValueAsString(loginDto);
+    MockHttpSession mockHttpSession = new MockHttpSession();
+
+    // When
+    mockMvc.perform(post("/users/login").content(content)
+            .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void loginFailTest() throws Exception {
+    // Given
+    LoginDto loginDto = new LoginDto("test1", "test12345567pw");
+    String content = objectMapper.writeValueAsString(loginDto);
+    MockHttpSession mockHttpSession = new MockHttpSession();
+
+    // When
+    mockMvc.perform(post("/users/login").content(content)
+            .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void logoutSuccessTest() throws Exception {
+    // Given
+    MockHttpSession mockHttpSession = new MockHttpSession();
+    mockHttpSession.setAttribute("loginId", "yes");
+
+    // When
+    mockMvc.perform(post("/users/logout")
+            .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void logoutFailTest() throws Exception {
+    // Given
+    MockHttpSession mockHttpSession = new MockHttpSession();
+
+    // When
+    mockMvc.perform(post("/users/logout")
+            .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isNotFound());
   }
 }

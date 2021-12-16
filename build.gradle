@@ -89,9 +89,9 @@ jacocoTestCoverageVerification {
         rule {
             enabled = true;
             element = 'CLASS'
-            excludes = ['com.flab.doorrush.domain.**.dto.**.*',
+            excludes = ['com.flab.doorrush.domain.**.dto.*',
                         'com.flab.doorrush.domain.**.domain.*',
-                        'com.flab.doorrush.domain.**.dto.*'
+                        'com.flab.doorrush.domain.**.exception.*'
             ]
 
             limit {

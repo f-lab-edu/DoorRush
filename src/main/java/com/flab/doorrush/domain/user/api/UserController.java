@@ -2,7 +2,10 @@ package com.flab.doorrush.domain.user.api;
 
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
+import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.service.UserService;
+import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,21 @@ public class UserController {
   public ResponseEntity<JoinUserResponse> joinUser(@RequestBody JoinUserRequest joinUserRequest) {
     JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+  }
+
+
+  @PostMapping("/login")
+  public ResponseEntity<HttpStatus> login(@RequestBody LoginDto loginDto,
+      HttpSession session) {
+    userService.login(loginDto, session);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+
+  @PostMapping("/logout")
+  public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
+    userService.logout(session);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
 }

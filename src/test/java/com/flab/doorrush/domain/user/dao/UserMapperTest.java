@@ -16,9 +16,9 @@ class UserMapperTest {
   @Autowired
   UserMapper userMapper;
 
-    @Test
-    @DisplayName("사용자 insert 테스트 userSeq 값이 반환된다.")
-    public void userInsertTest() {
+  @Test
+  @DisplayName("사용자 insert 테스트 userSeq 값이 반환된다.")
+  public void userInsertTest() {
 
     // Given
     String id = "testID1234";
@@ -45,12 +45,12 @@ class UserMapperTest {
 
   @Test
   @DisplayName("아이디로 사용자 조회 테스트")
-  public void getUserByIdTest() {
+  public void selectUserByIdTest() {
     // Given
     String id = "test1";
 
     // When
-    Optional<User> user = userMapper.getUserById(id);
+    Optional<User> user = userMapper.selectUserById(id);
 
     // Then
     if (user.isPresent()) {
