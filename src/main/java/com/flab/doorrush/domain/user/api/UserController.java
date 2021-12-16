@@ -1,5 +1,7 @@
 package com.flab.doorrush.domain.user.api;
 
+import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.service.UserService;
@@ -19,7 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class UserController {
 
-  private final UserService userService;
+    private final UserService userService;
+
+  @PostMapping
+  public ResponseEntity<JoinUserResponse> joinUser(@RequestBody JoinUserRequest joinUserRequest) {
+    JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+  }
 
 
   @PostMapping()

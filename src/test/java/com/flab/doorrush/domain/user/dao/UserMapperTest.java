@@ -1,11 +1,11 @@
 package com.flab.doorrush.domain.user.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,8 +16,9 @@ class UserMapperTest {
   @Autowired
   UserMapper userMapper;
 
-  @Test
-  public void userInsertTest() {
+    @Test
+    @DisplayName("사용자 insert 테스트 userSeq 값이 반환된다.")
+    public void userInsertTest() {
 
     // Given
     String id = "testID1234";
@@ -26,28 +27,30 @@ class UserMapperTest {
     String phoneNumber = "0102222333";
     String email = "yj@naver.com";
 
-    // When
-    int insertResult = userMapper.insertUser(User.builder()
-        .id(id)
+    User user = User.builder()
+        .loginId(id)
         .password(password)
         .phoneNumber(phoneNumber)
         .email(email)
         .name(name)
-        .build());
+        .build();
+
+    // When
+    userMapper.insertUser(user);
 
     // Then
-    assertThat(insertResult).isEqualTo(1);
+    assertThat(user.getUserSeq()).isNotNull();
 
   }
 
-
   @Test
-  public void selectUserByIdTest() {
+  @DisplayName("아이디로 사용자 조회 테스트")
+  public void getUserByIdTest() {
     // Given
     String id = "test1";
 
     // When
-    Optional<User> user = userMapper.selectUserById(id);
+    Optional<User> user = userMapper.getUserById(id);
 
     // Then
     if (user.isPresent()) {
