@@ -10,12 +10,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class JoinUserResponse {
 
-    private User user;
+  private User user;
 
-    public static JoinUserResponse from(User user) {
-        return JoinUserResponse.builder()
-            .user(user)
-            .build();
-    }
+  public static JoinUserResponse from(User user) {
+    return JoinUserResponse.builder()
+        .user(user)
+        .build();
+  }
 
 }

@@ -8,15 +8,15 @@
   <insert id="insertUser" parameterType="com.flab.doorrush.domain.user.domain.User"
     keyProperty="userSeq" useGeneratedKeys="true">
     INSERT INTO USER (LOGIN_ID,
-    PASSWORD,
-    NAME,
-    PHONE_NUMBER,
-    EMAIL)
+                      PASSWORD,
+                      NAME,
+                      PHONE_NUMBER,
+                      EMAIL)
     VALUES ( #{loginId}
-    , #{password}
-    , #{name}
-    , #{phoneNumber}
-    , #{email})
+           , #{password}
+           , #{name}
+           , #{phoneNumber}
+           , #{email})
   </insert>
 
   <select id="getUserById" parameterType="String"

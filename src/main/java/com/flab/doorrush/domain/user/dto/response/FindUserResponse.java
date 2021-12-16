@@ -10,11 +10,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class FindUserResponse {
 
-    private User user;
+  private User user;
 
-    public static FindUserResponse from(User user) {
-        return FindUserResponse.builder()
-            .user(user)
-            .build();
-    }
+  public static FindUserResponse from(User user) {
+    return FindUserResponse.builder()
+        .user(user)
+        .build();
+  }
 }

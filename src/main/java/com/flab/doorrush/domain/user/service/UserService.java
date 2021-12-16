@@ -15,22 +15,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserMapper userMapper;
+  private final UserMapper userMapper;
 
-    public JoinUserResponse joinUser(JoinUserRequest joinUserRequest) {
-        userMapper.getUserById(joinUserRequest.getLoginId()).ifPresent(user -> {
-            throw new DuplicatedUserIdException("이미 사용중인 아이디입니다.");
-        });
-        User user = joinUserRequest.toEntity();
-        userMapper.insertUser(user);
-        return JoinUserResponse.from(user);
-    }
+  public JoinUserResponse joinUser(JoinUserRequest joinUserRequest) {
+    userMapper.getUserById(joinUserRequest.getLoginId()).ifPresent(user -> {
+      throw new DuplicatedUserIdException("이미 사용중인 아이디입니다.");
+    });
+    User user = joinUserRequest.toEntity();
+    userMapper.insertUser(user);
+    return JoinUserResponse.from(user);
+  }
 
-    public FindUserResponse getUserById(String userId) {
+  public FindUserResponse getUserById(String userId) {
+    User user = userMapper.getUserById(userId)
+        .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
 
-        User user = userMapper.getUserById(userId)
-            .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
-
-        return FindUserResponse.from(user);
-    }
+    return FindUserResponse.from(user);
+  }
 }

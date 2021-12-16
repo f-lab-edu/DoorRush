@@ -9,11 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class User {
 
-    private Long userSeq;
-    private String loginId;
-    private String password;
-    private String name;
-    private String phoneNumber;
-    private String email;
+  private Long userSeq;
+  private String loginId;
+  private String password;
+  private String name;
+  private String phoneNumber;
+  private String email;
 
 }

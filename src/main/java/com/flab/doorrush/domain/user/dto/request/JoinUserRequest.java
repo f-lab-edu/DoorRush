@@ -11,28 +11,28 @@ import lombok.Getter;
 @AllArgsConstructor
 public class JoinUserRequest {
 
-    @NotNull
-    private String loginId;
+  @NotNull
+  private String loginId;
 
-    @NotNull
-    private String password;
+  @NotNull
+  private String password;
 
-    @NotNull
-    private String name;
+  @NotNull
+  private String name;
 
-    @NotNull
-    private String phoneNumber;
+  @NotNull
+  private String phoneNumber;
 
-    private String email;
+  private String email;
 
-    public User toEntity() {
-        return User.builder()
-            .loginId(this.getLoginId())
-            .password(this.getPassword())
-            .name(this.getName())
-            .email(this.getEmail())
-            .phoneNumber(this.getPhoneNumber())
-            .build();
-    }
+  public User toEntity() {
+    return User.builder()
+        .loginId(this.getLoginId())
+        .password(this.getPassword())
+        .name(this.getName())
+        .email(this.getEmail())
+        .phoneNumber(this.getPhoneNumber())
+        .build();
+  }
 
 }

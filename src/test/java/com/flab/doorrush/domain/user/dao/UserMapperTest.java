@@ -13,52 +13,51 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class UserMapperTest {
 
-    @Autowired
-    UserMapper userMapper;
+  @Autowired
+  UserMapper userMapper;
 
     @Test
     @DisplayName("사용자 insert 테스트 userSeq 값이 반환된다.")
     public void userInsertTest() {
 
-        // Given
-        String id = "testID1234";
-        String password = "testPW";
-        String name = "yeonjae";
-        String phoneNumber = "0102222333";
-        String email = "yj@naver.com";
+    // Given
+    String id = "testID1234";
+    String password = "testPW";
+    String name = "yeonjae";
+    String phoneNumber = "0102222333";
+    String email = "yj@naver.com";
 
-        User user = User.builder()
-            .loginId(id)
-            .password(password)
-            .phoneNumber(phoneNumber)
-            .email(email)
-            .name(name)
-            .build();
+    User user = User.builder()
+        .loginId(id)
+        .password(password)
+        .phoneNumber(phoneNumber)
+        .email(email)
+        .name(name)
+        .build();
 
-        // When
-        userMapper.insertUser(user);
+    // When
+    userMapper.insertUser(user);
 
-        // Then
-        assertThat(user.getUserSeq()).isNotNull();
+    // Then
+    assertThat(user.getUserSeq()).isNotNull();
 
+  }
+
+  @Test
+  @DisplayName("아이디로 사용자 조회 테스트")
+  public void getUserByIdTest() {
+    // Given
+    String id = "test1";
+
+    // When
+    Optional<User> user = userMapper.getUserById(id);
+
+    // Then
+    if (user.isPresent()) {
+      assertThat(user.get().getName()).isEqualTo("11");
+    } else {
+      throw new UserNotFoundException("회원정보가 없습니다.");
     }
-
-
-    @Test
-    @DisplayName("아이디로 사용자 조회 테스트")
-    public void getUserByIdTest() {
-        // Given
-        String id = "test1";
-
-        // When
-        Optional<User> user = userMapper.getUserById(id);
-
-        // Then
-        if (user.isPresent()) {
-            assertThat(user.get().getName()).isEqualTo("11");
-        } else {
-            throw new UserNotFoundException("회원정보가 없습니다.");
-        }
-    }
+  }
 
 }
