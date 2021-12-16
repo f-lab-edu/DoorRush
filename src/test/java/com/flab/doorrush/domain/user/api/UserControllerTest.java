@@ -151,7 +151,6 @@ class UserControllerTest {
   public void logoutFailTest() throws Exception {
     // Given
     MockHttpSession mockHttpSession = new MockHttpSession();
-    System.out.println("loginId 체크 : " + mockHttpSession.getAttribute("loginId"));
 
     // When
     mockMvc.perform(post("/users/logout")

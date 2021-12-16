@@ -3,7 +3,6 @@ package com.flab.doorrush.domain.user.api;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.LoginDto;
-import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+  private final UserService userService;
 
   @PostMapping
   public ResponseEntity<JoinUserResponse> joinUser(@RequestBody JoinUserRequest joinUserRequest) {
@@ -30,19 +29,10 @@ public class UserController {
   }
 
 
-  @PostMapping()
-  public ResponseEntity<UserDto> joinUser(@RequestBody UserDto userDto) {
-    userService.joinUser(userDto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
-  }
-
-
   @PostMapping("/login")
   public ResponseEntity<HttpStatus> login(@RequestBody LoginDto loginDto,
       HttpSession session) {
-
     userService.login(loginDto, session);
-
     return new ResponseEntity<>(HttpStatus.OK);
   }
 

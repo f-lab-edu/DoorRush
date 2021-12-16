@@ -8,7 +8,6 @@ import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.LoginDto;
-import com.flab.doorrush.domain.user.dto.UserDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
@@ -27,7 +26,7 @@ public class UserService {
   private final UserMapper userMapper;
 
   public JoinUserResponse joinUser(JoinUserRequest joinUserRequest) {
-    userMapper.getUserById(joinUserRequest.getLoginId()).ifPresent(user -> {
+    userMapper.selectUserById(joinUserRequest.getLoginId()).ifPresent(user -> {
       throw new DuplicatedUserIdException("이미 사용중인 아이디입니다.");
     });
     User user = joinUserRequest.toEntity();
@@ -36,7 +35,7 @@ public class UserService {
   }
 
   public FindUserResponse getUserById(String userId) {
-    User user = userMapper.getUserById(userId)
+    User user = userMapper.selectUserById(userId)
         .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
 
     return FindUserResponse.from(user);

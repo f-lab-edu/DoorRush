@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 
   void insertUser(User user);
-  Optional<User> selectUserById(String id);
-  Optional<User> getUserById(String id);
+
+  Optional<User> selectUserById(String loginId);
 
 }
 
