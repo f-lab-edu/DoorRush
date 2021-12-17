@@ -52,7 +52,6 @@ class UserControllerTest {
     // When
     mockMvc.perform(post("/users/")
             .content(content)
-            //json 형식으로 데이터를 보낸다고 명시
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
@@ -60,7 +59,6 @@ class UserControllerTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.user.userSeq").isNotEmpty())
         .andExpect(jsonPath("$.user.loginId").value("yeojae"))
-        .andExpect(jsonPath("$.user.password").value("yeojae"))
         .andExpect(jsonPath("$.user.name").value("yeojae"))
         .andExpect(jsonPath("$.user.phoneNumber").value("01012341234"))
         .andExpect(jsonPath("$.user.email").value("yeojae@naver.com"));

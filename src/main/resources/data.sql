@@ -3,5 +3,7 @@ VALUES ('1', 'test1', 'test1pw', '11', '01000000001', '1@naver.com'),
        ('4', 'test2', 'test2pw', '22', '01000000001', '2@naver.com'),
        ('6', 'test3', 'test3pw', '33', '01000000001', '3@naver.com'),
        ('8', 'test4', 'test4pw', '44', '01000000001', '4@naver.com'),
-       ('23', 'test5', 'test5pw', '55', '01000000001', '5@naver.com');
+       ('23', 'test5', 'test5pw', '55', '01000000001', '5@naver.com'),
+       ('25', 'test6', '$2a$10$n87tHz0k0YzazutVDnZg3.BcD5kvDiPM/osWDhlKcZCDCf2g7zCse', '66', '01000000001', '6@naver.com');
+
 

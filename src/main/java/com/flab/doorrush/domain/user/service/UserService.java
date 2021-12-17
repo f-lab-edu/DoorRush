@@ -16,6 +16,7 @@ import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,11 +25,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;
 
   public JoinUserResponse joinUser(JoinUserRequest joinUserRequest) {
     userMapper.selectUserById(joinUserRequest.getLoginId()).ifPresent(user -> {
       throw new DuplicatedUserIdException("이미 사용중인 아이디입니다.");
     });
+    joinUserRequest.setPassword(passwordEncoder.encode(joinUserRequest.getPassword()));
     User user = joinUserRequest.toEntity();
     userMapper.insertUser(user);
     return JoinUserResponse.from(user);
