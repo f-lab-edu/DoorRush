@@ -2,6 +2,7 @@ package com.flab.doorrush.domain.user.api;
 
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
+import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +29,12 @@ public class GlobalExceptionHandler {
       SessionLoginIdNotFoundException e) {
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
+
+  @ExceptionHandler
+  public ResponseEntity<HttpStatus> sessionAuthenticationException(
+      SessionAuthenticationException e) {
+    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+  }
+
+
 }
