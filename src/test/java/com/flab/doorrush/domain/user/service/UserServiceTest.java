@@ -148,8 +148,11 @@ class UserServiceTest {
   @Test
   @DisplayName("아이디로 회원 정보 조회 후 암호화된 비밀번호 매칭 테스트")
   public void passwordEncryptWhtigetUserByIdTest() {
-    FindUserResponse user = userService.getUserById("test6");
-
+    // Given
+    String reqLoginId = "test6";
+    // When
+    FindUserResponse user = userService.getUserById(reqLoginId);
+    // Then
     assertTrue(passwordEncoder.matches("test6pw", user.getUser().getPassword()));
   }
 }
