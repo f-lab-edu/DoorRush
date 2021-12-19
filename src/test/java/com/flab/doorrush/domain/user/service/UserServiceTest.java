@@ -116,6 +116,20 @@ class UserServiceTest {
   }
 
   @Test
+  public void loginFailDuplicatedLoginTest() {
+    // Given
+    MockHttpSession session = new MockHttpSession();
+    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    userService.login(loginDto, session);
+
+    // Then
+    assertThrows(
+        com.flab.doorrush.domain.user.exception.SessionAuthenticationException.class,
+        // When
+        () -> userService.login(loginDto, session));
+  }
+
+  @Test
   public void logoutSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
