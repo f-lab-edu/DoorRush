@@ -11,6 +11,7 @@ import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
+import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import javax.servlet.http.HttpSession;
@@ -46,6 +47,10 @@ public class UserService {
 
 
   public void login(LoginDto loginDto, HttpSession session) {
+    if (loginDto.getId().equals(session.getAttribute("loginId"))) {
+      throw new SessionAuthenticationException("이미 해당 아이디로 로그인 중 입니다.");
+    }
+
     User user = userMapper.selectUserById(loginDto.getId())
         .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
 

@@ -130,6 +130,31 @@ class UserControllerTest {
   }
 
   @Test
+  public void loginFailDuplicatedLoginTest() throws Exception {
+    // Given
+    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    String content = objectMapper.writeValueAsString(loginDto);
+    MockHttpSession mockHttpSession = new MockHttpSession();
+
+    mockMvc.perform(post("/users/login").content(content)
+            .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+
+    // When
+    mockMvc.perform(post("/users/login").content(content)
+            .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isForbidden());
+
+  }
+
+  @Test
   public void logoutSuccessTest() throws Exception {
     // Given
     MockHttpSession mockHttpSession = new MockHttpSession();
