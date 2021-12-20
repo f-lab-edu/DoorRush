@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.config;
+package com.flab.doorrush.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
