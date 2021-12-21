@@ -35,11 +35,11 @@ dependencies {
     /* spring-boot-starter-web : Spring MVC 를 사용한 restful 서비스를 개발하는데 사용합니다. */
     implementation 'org.springframework.boot:spring-boot-starter-web'
     /* spring-boot-starter-test : JUnit Jupiter, Hamcrest 및 Mockito 를 포함한 라이브러리로 Spring Boot 애플리케이션을 테스트하기 위한 스타터 */
-    implementation 'org.springframework.boot:spring-boot-starter-test:2.4.12'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    /* spring-boot-starter-security : Spring Security 사용을 위한 스타터 */
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.1'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    /* spring-security-crypto : 대칭 암호화, 키 생성, 비밀번호 인코딩을 지원합니다. 스프링 시큐리티 코드에 대한 의존성이 없습니다. */
+    implementation 'org.springframework.security:spring-security-crypto'
     compileOnly 'org.projectlombok:lombok'
     //임시 in-memory database 인 h2 DB 설정
     runtimeOnly 'com.h2database:h2'
