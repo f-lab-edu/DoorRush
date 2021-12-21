@@ -1,5 +1,6 @@
 package com.flab.doorrush.domain.user.api;
 
+import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
@@ -34,6 +35,11 @@ public class GlobalExceptionHandler {
   public ResponseEntity<HttpStatus> sessionAuthenticationException(
       SessionAuthenticationException e) {
     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(DuplicatedUserIdException.class)
+  public ResponseEntity<String> duplicatedUserIdException(DuplicatedUserIdException e) {
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
 

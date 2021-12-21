@@ -1,16 +1,13 @@
 package com.flab.doorrush.domain.user.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.LoginDto;
-import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
+import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.util.NestedServletException;
 
 /* @RunWith : JUnit 프레임워크가 테스트를 실행할 시 테스트 실행방법을 확장할 때 쓰는 어노테이션
  * @WebMvcTest : MVC를 위한 테스트, 컨트롤러가 예상대로 동작하는지 테스트하는데 사용됩니다. Web과 관련된 다음 어노테이션만 스캔합니다.
@@ -65,7 +61,7 @@ class UserControllerTest {
   }
 
   @Test
-  @DisplayName("회원가입 실패 테스트 아이디 중복으로 예외를 발생시킨다.")
+  @DisplayName("회원가입 실패 테스트 상태값 400을 발생시킨다.")
   public void joinUserFailTest() throws Exception {
     // Given
     JoinUserRequest joinUserRequest = JoinUserRequest.builder()
@@ -78,20 +74,16 @@ class UserControllerTest {
 
     String content = objectMapper.writeValueAsString(joinUserRequest);
 
-    // Then
-    Exception e = assertThrows(NestedServletException.class,
-        () -> {
-          // When
-          mockMvc.perform(post("/users/")
-                  .content(content)
-                  //json 형식으로 데이터를 보낸다고 명시
-                  .contentType(MediaType.APPLICATION_JSON)
-                  .accept(MediaType.APPLICATION_JSON))
-              .andExpect(status().isCreated())
-              .andDo(print());
-        });
+    // When
+    mockMvc.perform(post("/users/")
+            .content(content)
+            //json 형식으로 데이터를 보낸다고 명시
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        // Then
+        .andExpect(status().isBadRequest())
+        .andDo(print());
 
-    assertEquals(DuplicatedUserIdException.class, e.getCause().getClass());
   }
 
 
