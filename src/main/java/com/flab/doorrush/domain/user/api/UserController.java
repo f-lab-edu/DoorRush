@@ -49,7 +49,7 @@ public class UserController {
   }
 
   @PatchMapping("/{userSeq}/password")
-  public ResponseEntity<Boolean> changePassword(@NotNull @PathVariable Long userSeq,
+  public ResponseEntity<Boolean> changePassword(@PathVariable Long userSeq,
       @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
     return ResponseEntity.ok(userService.changePassword(userSeq, changePasswordRequest));
   }
