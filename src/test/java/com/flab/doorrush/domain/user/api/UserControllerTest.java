@@ -1,5 +1,6 @@
 package com.flab.doorrush.domain.user.api;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -7,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.doorrush.domain.user.dto.LoginDto;
+import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +39,7 @@ class UserControllerTest {
     // Given
     JoinUserRequest joinUserRequest = JoinUserRequest.builder()
         .loginId("yeojae")
-        .password("yeojae")
+        .password("yeojae123!")
         .name("yeojae")
         .phoneNumber("01012341234")
         .email("yeojae@naver.com")
@@ -69,7 +71,7 @@ class UserControllerTest {
         .password("test1")
         .name("test")
         .phoneNumber("01011112222")
-        .email("aaa@naver.com")
+        .email("aaanaver.com")
         .build();
 
     String content = objectMapper.writeValueAsString(joinUserRequest);
@@ -170,6 +172,50 @@ class UserControllerTest {
     // When
     mockMvc.perform(post("/users/logout")
             .session(mockHttpSession)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  @DisplayName("비밀번호 변경 성공 테스트 200을 반환")
+  public void changePasswordSuccessTest() throws Exception {
+    // Given
+    String originPassword = "test6pw";
+    String newPassword = "test6pwChange!";
+    ChangePasswordRequest changePasswordRequest = ChangePasswordRequest.builder()
+        .originPassword(originPassword).newPassword(newPassword)
+        .build();
+
+    String content = objectMapper.writeValueAsString(changePasswordRequest);
+
+    // When
+    mockMvc.perform(patch("/users/25/password")
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @DisplayName("비밀번호 변경 실패 테스트 404을 반환 (기존 비밀번호 불일치)")
+  public void changePasswordFailTest() throws Exception {
+    // Given
+    String originPassword = "test6pwFail";
+    String newPassword = "test6pwChange!";
+    ChangePasswordRequest changePasswordRequest = ChangePasswordRequest.builder()
+        .originPassword(originPassword).newPassword(newPassword)
+        .build();
+
+    String content = objectMapper.writeValueAsString(changePasswordRequest);
+
+    // When
+    mockMvc.perform(patch("/users/25/password")
+            .content(content)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
