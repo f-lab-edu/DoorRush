@@ -27,7 +27,8 @@ public class UserController {
   private final UserService userService;
 
   @PostMapping
-  public ResponseEntity<JoinUserResponse> joinUser(@Valid @RequestBody JoinUserRequest joinUserRequest) {
+  public ResponseEntity<JoinUserResponse> joinUser(
+      @Valid @RequestBody JoinUserRequest joinUserRequest) {
     JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
   }
