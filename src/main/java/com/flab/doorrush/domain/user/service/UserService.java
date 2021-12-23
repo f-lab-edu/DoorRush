@@ -54,7 +54,7 @@ public class UserService {
     User user = userMapper.selectUserById(loginDto.getId())
         .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
 
-    if (loginDto.getPassword().equals(user.getPassword())) {
+    if (passwordEncoder.matches(loginDto.getPassword(),user.getPassword())) {
       session.setAttribute("loginId", loginDto.getId());
     } else {
       throw new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다.");

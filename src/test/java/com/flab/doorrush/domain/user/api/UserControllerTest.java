@@ -90,7 +90,7 @@ class UserControllerTest {
   @Test
   public void loginSuccessTest() throws Exception {
     // Given
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     String content = objectMapper.writeValueAsString(loginDto);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -107,7 +107,7 @@ class UserControllerTest {
   @Test
   public void loginFailTest() throws Exception {
     // Given
-    LoginDto loginDto = new LoginDto("test1", "test12345567pw");
+    LoginDto loginDto = new LoginDto("test6", "test12345567pw");
     String content = objectMapper.writeValueAsString(loginDto);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -124,7 +124,7 @@ class UserControllerTest {
   @Test
   public void loginFailDuplicatedLoginTest() throws Exception {
     // Given
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     String content = objectMapper.writeValueAsString(loginDto);
     MockHttpSession mockHttpSession = new MockHttpSession();
 

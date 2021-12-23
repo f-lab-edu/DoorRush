@@ -92,13 +92,13 @@ class UserServiceTest {
   public void loginSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
 
     // When
     userService.login(loginDto, session);
 
     // Then
-    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test1"));
+    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test6"));
     //MatcherAssert.assertThat("fail", is(incorrectInput));
   }
 
@@ -124,7 +124,7 @@ class UserServiceTest {
   public void loginFailDuplicatedLoginTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     userService.login(loginDto, session);
 
     // Then
@@ -138,7 +138,7 @@ class UserServiceTest {
   public void logoutSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     userService.login(loginDto, session);
 
     // When
