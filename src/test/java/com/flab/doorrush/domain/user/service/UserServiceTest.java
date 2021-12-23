@@ -2,6 +2,7 @@ package com.flab.doorrush.domain.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /*
  * @SpringBootTest : SpringBoot 기능을 제공해주며 SpringBoot 통합테스트를 할 때 사용되는 주석
@@ -27,6 +29,9 @@ class UserServiceTest {
 
   @Autowired
   UserService userService;
+
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
   @Test
   @DisplayName("아이디로 사용자 정보 조회결과가 예상한 결과값과 동일하다.")
@@ -142,4 +147,26 @@ class UserServiceTest {
     assertTrue(session.isInvalid());
   }
 
+  @Test
+  @DisplayName("비밀번호 암호화 테스트")
+  public void passwordEncryptTest() {
+    // Given
+    String password = "12345";
+    // When
+    String encodePassword = passwordEncoder.encode(password);
+    // Then
+    assertNotEquals(password, encodePassword);
+    assertTrue(passwordEncoder.matches(password, encodePassword));
+  }
+
+  @Test
+  @DisplayName("아이디로 회원 정보 조회 후 암호화된 비밀번호 매칭 테스트")
+  public void passwordEncryptWhtigetUserByIdTest() {
+    // Given
+    String reqLoginId = "test6";
+    // When
+    FindUserResponse user = userService.getUserById(reqLoginId);
+    // Then
+    assertTrue(passwordEncoder.matches("test6pw", user.getUser().getPassword()));
+  }
 }
