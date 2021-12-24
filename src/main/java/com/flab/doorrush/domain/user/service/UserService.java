@@ -75,10 +75,12 @@ public class UserService {
     if (!isValidPassword(userSeq, changePasswordRequest.getOriginPassword())) {
       throw new InvalidPasswordException("패스워드가 일치하지 않습니다.");
     }
-    return userMapper.updatePassword(
-        User.builder().userSeq(userSeq)
-            .password(passwordEncoder.encode(changePasswordRequest.getNewPassword())
-            ).build()) == 1;
+    User user = User.builder()
+        .userSeq(userSeq)
+        .password(passwordEncoder.encode(changePasswordRequest.getNewPassword()))
+        .build();
+
+    return userMapper.updatePassword(user) == 1;
   }
 
   private boolean isValidPassword(Long userSeq, String originPassword) {
