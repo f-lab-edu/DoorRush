@@ -206,7 +206,6 @@ class UserControllerTest {
   }
 
   @Test
-  @Transactional
   @DisplayName("비밀번호 변경 성공 테스트 200을 반환")
   public void changePasswordSuccessTest() throws Exception {
     // Given
