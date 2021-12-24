@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @SpringBootTest 어노테이션은 Spring Main Application(@SpringBootApplication)을 찾아가 하위의 모든 Bean을 Scan
  * */
 @SpringBootTest
+@Transactional
 class UserServiceTest {
 
   @Autowired
@@ -70,7 +71,6 @@ class UserServiceTest {
   }
 
   @Test
-  @Transactional
   @DisplayName("사용자 회원가입 테스트 정상적으로 회원가입된다.")
   public void joinUserSuccessTest() {
     // Given
@@ -175,7 +175,6 @@ class UserServiceTest {
   }
 
   @Test
-  @Transactional
   @DisplayName("비밀번호 변경 성공 테스트")
   public void changePasswordSuccessTest() {
     // Given

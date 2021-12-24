@@ -8,8 +8,8 @@ spring:
       enabled: 'true'
       path: /h2-console
   datasource:
-    username: mysql_dba
     url: jdbc:mysql://db-8sns8.pub-cdb.ntruss.com:3306/mysql_db
+    username: mysql_dba
     password: mysql_dba1
     driver-class-name: com.mysql.cj.jdbc.Driver
 
