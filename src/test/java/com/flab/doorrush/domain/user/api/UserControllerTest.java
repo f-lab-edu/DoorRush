@@ -1,5 +1,7 @@
 package com.flab.doorrush.domain.user.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -7,7 +9,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.doorrush.domain.user.dto.LoginDto;
+import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +41,27 @@ class UserControllerTest {
   @Autowired
   ObjectMapper objectMapper;
 
+  private static ValidatorFactory factory;
+  private static Validator validator;
+
+  @BeforeAll
+  public static void init() {
+    factory = Validation.buildDefaultValidatorFactory();
+    validator = factory.getValidator();
+  }
+
+  @AfterAll
+  public static void close() {
+    factory.close();
+  }
+
   @Test // @Test : 테스트가 수행되는 메소드를 가르킨다.
   @DisplayName("회원가입 성공 테스트 상태값 201을 반환한다.")
   public void joinUserSuccessTest() throws Exception {
     // Given
     JoinUserRequest joinUserRequest = JoinUserRequest.builder()
         .loginId("yeojae")
-        .password("yeojae")
+        .password("yeojae123!")
         .name("yeojae")
         .phoneNumber("01012341234")
         .email("yeojae@naver.com")
@@ -69,7 +93,7 @@ class UserControllerTest {
         .password("test1")
         .name("test")
         .phoneNumber("01011112222")
-        .email("aaa@naver.com")
+        .email("aaanaver.com")
         .build();
 
     String content = objectMapper.writeValueAsString(joinUserRequest);
@@ -176,4 +200,87 @@ class UserControllerTest {
         // Then
         .andExpect(status().isNotFound());
   }
+
+  @Test
+  @DisplayName("비밀번호 변경 성공 테스트 200을 반환")
+  public void changePasswordSuccessTest() throws Exception {
+    // Given
+    String originPassword = "test6pw";
+    String newPassword = "test6pwChange!";
+    ChangePasswordRequest changePasswordRequest = ChangePasswordRequest.builder()
+        .originPassword(originPassword).newPassword(newPassword)
+        .build();
+
+    String content = objectMapper.writeValueAsString(changePasswordRequest);
+
+    // When
+    mockMvc.perform(patch("/users/25/password")
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @DisplayName("비밀번호 변경 실패 테스트 404을 반환 (기존 비밀번호 불일치)")
+  public void changePasswordFailTest() throws Exception {
+    // Given
+    String originPassword = "test6pwFail";
+    String newPassword = "test6pwChange!";
+    ChangePasswordRequest changePasswordRequest = ChangePasswordRequest.builder()
+        .originPassword(originPassword).newPassword(newPassword)
+        .build();
+
+    String content = objectMapper.writeValueAsString(changePasswordRequest);
+
+    // When
+    mockMvc.perform(patch("/users/25/password")
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  @DisplayName("비밀번호 유효성 검사 실패 테스트")
+  public void passwordValidFailTest() {
+    // Given
+    String originPassword = "test6pw";
+    String newPassword = "t1!a";
+
+    // When
+    Set<ConstraintViolation<ChangePasswordRequest>> violations = validator.validate(
+        ChangePasswordRequest.builder()
+            .originPassword(originPassword).newPassword(newPassword)
+            .build());
+
+    // Then
+    assertThat(violations).isNotEmpty();
+    violations.forEach(
+        error -> {
+          assertThat(error.getMessage().contains("비밀번호는 숫자,문자,특수문자를 포함한 6~18로 입력해주세요."));
+        });
+  }
+
+  @Test
+  @DisplayName("비밀번호 유효성 검사 성공 테스트")
+  public void passwordValidSuccessTest() {
+    // Given
+    String originPassword = "test6pw";
+    String newPassword = "test6pw123!!!";
+
+    // When
+    Set<ConstraintViolation<ChangePasswordRequest>> violations = validator.validate(
+        ChangePasswordRequest.builder()
+            .originPassword(originPassword).newPassword(newPassword)
+            .build());
+
+    // Then
+    assertThat(violations).isEmpty();
+  }
+
 }

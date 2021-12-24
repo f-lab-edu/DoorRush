@@ -7,6 +7,7 @@ import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -42,5 +43,9 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
-
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+    return new ResponseEntity<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage(),
+        HttpStatus.BAD_REQUEST);
+  }
 }

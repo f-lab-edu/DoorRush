@@ -11,5 +11,8 @@ public interface UserMapper {
 
   Optional<User> selectUserById(String loginId);
 
+  Optional<User> selectUserByUserSeq(Long userSeq);
+
+  int updatePassword(User user);
 }
 
