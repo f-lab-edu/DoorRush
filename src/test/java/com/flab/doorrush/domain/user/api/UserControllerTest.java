@@ -26,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 /* @RunWith : JUnit 프레임워크가 테스트를 실행할 시 테스트 실행방법을 확장할 때 쓰는 어노테이션
  * @WebMvcTest : MVC를 위한 테스트, 컨트롤러가 예상대로 동작하는지 테스트하는데 사용됩니다. Web과 관련된 다음 어노테이션만 스캔합니다.
@@ -56,6 +57,7 @@ class UserControllerTest {
   }
 
   @Test // @Test : 테스트가 수행되는 메소드를 가르킨다.
+  @Transactional
   @DisplayName("회원가입 성공 테스트 상태값 201을 반환한다.")
   public void joinUserSuccessTest() throws Exception {
     // Given
@@ -202,6 +204,7 @@ class UserControllerTest {
   }
 
   @Test
+  @Transactional
   @DisplayName("비밀번호 변경 성공 테스트 200을 반환")
   public void changePasswordSuccessTest() throws Exception {
     // Given

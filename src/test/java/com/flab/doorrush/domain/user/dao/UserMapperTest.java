@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 class UserMapperTest {
@@ -17,6 +18,7 @@ class UserMapperTest {
   UserMapper userMapper;
 
   @Test
+  @Transactional
   @DisplayName("사용자 insert 테스트 userSeq 값이 반환된다.")
   public void userInsertTest() {
 

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
  * @SpringBootTest : SpringBoot 기능을 제공해주며 SpringBoot 통합테스트를 할 때 사용되는 주석
@@ -69,6 +70,7 @@ class UserServiceTest {
   }
 
   @Test
+  @Transactional
   @DisplayName("사용자 회원가입 테스트 정상적으로 회원가입된다.")
   public void joinUserSuccessTest() {
     // Given
@@ -173,6 +175,7 @@ class UserServiceTest {
   }
 
   @Test
+  @Transactional
   @DisplayName("비밀번호 변경 성공 테스트")
   public void changePasswordSuccessTest() {
     // Given
