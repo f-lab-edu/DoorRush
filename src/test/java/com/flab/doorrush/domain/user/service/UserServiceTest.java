@@ -91,20 +91,21 @@ class UserServiceTest {
 
 
   @Test
+  @DisplayName("로그인 성공 테스트 login메소드 실행 후 세션의 loginId 속성 값을 아이디 값과 비교한다.")
   public void loginSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
 
     // When
     userService.login(loginDto, session);
 
     // Then
-    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test1"));
-    //MatcherAssert.assertThat("fail", is(incorrectInput));
+    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test6"));
   }
 
   @Test
+  @DisplayName("로그인 실패 테스트 없는 아이디일 경우 또는 일치하지않는 비밀번호 입력할 경우 예외를 발생시킨다.")
   public void loginFailTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
@@ -123,10 +124,11 @@ class UserServiceTest {
   }
 
   @Test
+  @DisplayName("중복 로그인 실패 테스트 예외를 발생시킨다.")
   public void loginFailDuplicatedLoginTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     userService.login(loginDto, session);
 
     // Then
@@ -137,10 +139,11 @@ class UserServiceTest {
   }
 
   @Test
+  @DisplayName("로그아웃 성공 테스트 세션을 무효화한다.")
   public void logoutSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     userService.login(loginDto, session);
 
     // When

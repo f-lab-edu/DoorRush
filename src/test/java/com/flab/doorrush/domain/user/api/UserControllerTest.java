@@ -110,11 +110,11 @@ class UserControllerTest {
 
   }
 
-
   @Test
+  @DisplayName("로그인 성공 테스트 상태값 200을 발생시킨다.")
   public void loginSuccessTest() throws Exception {
     // Given
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     String content = objectMapper.writeValueAsString(loginDto);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -129,9 +129,10 @@ class UserControllerTest {
   }
 
   @Test
+  @DisplayName("로그인 실패 테스트 상태값 404를 발생시킨다.")
   public void loginFailTest() throws Exception {
     // Given
-    LoginDto loginDto = new LoginDto("test1", "test12345567pw");
+    LoginDto loginDto = new LoginDto("test6", "test12345567pw");
     String content = objectMapper.writeValueAsString(loginDto);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -146,9 +147,10 @@ class UserControllerTest {
   }
 
   @Test
+  @DisplayName("중복 로그인 실패 테스트 상태값 403을 발생시킨다.")
   public void loginFailDuplicatedLoginTest() throws Exception {
     // Given
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     String content = objectMapper.writeValueAsString(loginDto);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -171,6 +173,7 @@ class UserControllerTest {
   }
 
   @Test
+  @DisplayName("로그아웃 성공 테스트 상태값 200을 발생시킨다.")
   public void logoutSuccessTest() throws Exception {
     // Given
     MockHttpSession mockHttpSession = new MockHttpSession();
@@ -187,6 +190,7 @@ class UserControllerTest {
   }
 
   @Test
+  @DisplayName("로그아웃 실패 테스트 상태값 404를 발생시킨다.")
   public void logoutFailTest() throws Exception {
     // Given
     MockHttpSession mockHttpSession = new MockHttpSession();
