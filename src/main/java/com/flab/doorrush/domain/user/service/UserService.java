@@ -8,6 +8,7 @@ import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.LoginDto;
+import com.flab.doorrush.domain.user.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
@@ -45,10 +46,8 @@ public class UserService {
   public FindUserResponse getUserById(String userId) {
     User user = userMapper.selectUserById(userId)
         .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
-
     return FindUserResponse.from(user);
   }
-
 
   public void login(LoginDto loginDto, HttpSession session) {
     if (loginDto.getId().equals(session.getAttribute("loginId"))) {
@@ -63,9 +62,17 @@ public class UserService {
     }
   }
 
+  public void login(String autoLoginCookieValue, HttpSession session) {
+    User user = userMapper.selectUserBySEQ(Long.parseLong(autoLoginCookieValue))
+        .orElseThrow(() -> new AutoLoginFailException("자동 로그인에 실패했습니다."));
+    LoginDto loginDto = new LoginDto(user.getLoginId(), user.getPassword());
+    login(loginDto, session);
+  }
+
   public void setCookie(LoginDto loginDto, HttpServletResponse response) {
-    // 로그인 기능 암호화/복호화 PR이 머지되면 autoLoginCookieValue에 추가적으로 passwordEncoder을 적용할 예정입니다.
-    String autoLoginCookieValue = URLEncoder.encode(loginDto.getId() + "," + loginDto.getPassword(),
+    User user = userMapper.selectUserById(loginDto.getId())
+        .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
+    String autoLoginCookieValue = URLEncoder.encode(user.getUserSeq() + "",
         StandardCharsets.UTF_8);
     Cookie autoLoginCookie = new Cookie("AUTOLOGIN", autoLoginCookieValue);
     autoLoginCookie.setHttpOnly(true);
@@ -74,7 +81,6 @@ public class UserService {
     response.addCookie(autoLoginCookie);
   }
 
-
   public void logout(@NotNull HttpSession session) {
     if (!isNull(session.getAttribute("loginId"))) {
       session.invalidate();
@@ -82,5 +88,4 @@ public class UserService {
       throw new SessionLoginIdNotFoundException("세션정보를 찾을 수 없습니다.");
     }
   }
-
 }

@@ -9,7 +9,9 @@ public interface UserMapper {
 
   void insertUser(User user);
 
-  Optional<User> selectUserById(String loginId);
+  Optional<User> selectUserById(String id);
+
+  Optional<User> selectUserBySEQ(Long userSeq);
 
 }
 

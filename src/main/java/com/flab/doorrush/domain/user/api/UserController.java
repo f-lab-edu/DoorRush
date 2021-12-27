@@ -1,9 +1,11 @@
 package com.flab.doorrush.domain.user.api;
 
+import com.flab.doorrush.domain.user.dto.request.AutoLoginRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.service.UserService;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,18 @@ public class UserController {
   public ResponseEntity<HttpStatus> login(@RequestBody LoginDto loginDto,
       HttpSession session) {
     userService.login(loginDto, session);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PostMapping("/autoLogin")
+  public ResponseEntity<HttpStatus> login(@RequestBody AutoLoginRequest autoLoginRequest,
+      HttpSession session, HttpServletResponse response) {
+    LoginDto loginDto = new LoginDto(autoLoginRequest.getId(), autoLoginRequest.getPassword());
+    userService.login(loginDto, session);
+
+    if (autoLoginRequest.isAutoLogin()) {
+      userService.setCookie(loginDto, response);
+    }
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
