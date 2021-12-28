@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
+import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
@@ -74,5 +75,22 @@ public class UserService {
     } else {
       throw new SessionLoginIdNotFoundException("세션정보를 찾을 수 없습니다.");
     }
+  }
+
+  public boolean changePassword(Long userSeq, ChangePasswordRequest changePasswordRequest) {
+    if (!isValidPassword(userSeq, changePasswordRequest.getOriginPassword())) {
+      throw new InvalidPasswordException("패스워드가 일치하지 않습니다.");
+    }
+    User user = User.builder()
+        .userSeq(userSeq)
+        .password(passwordEncoder.encode(changePasswordRequest.getNewPassword()))
+        .build();
+    return userMapper.updatePassword(user) == 1;
+  }
+
+  private boolean isValidPassword(Long userSeq, String originPassword) {
+    User user = userMapper.selectUserByUserSeq(userSeq)
+        .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
+    return passwordEncoder.matches(originPassword, user.getPassword());
   }
 }

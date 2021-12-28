@@ -7,12 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.flab.doorrush.domain.user.dto.LoginDto;
+import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
-import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
+import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
+import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,12 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
  * @SpringBootTest : SpringBoot 기능을 제공해주며 SpringBoot 통합테스트를 할 때 사용되는 주석
  * @SpringBootTest 어노테이션은 Spring Main Application(@SpringBootApplication)을 찾아가 하위의 모든 Bean을 Scan
  * */
 @SpringBootTest
+@Transactional
 class UserServiceTest {
 
   @Autowired
@@ -195,5 +199,36 @@ class UserServiceTest {
     FindUserResponse user = userService.getUserById(reqLoginId);
     // Then
     assertTrue(passwordEncoder.matches("test6pw", user.getUser().getPassword()));
+  }
+
+  @Test
+  @DisplayName("비밀번호 변경 성공 테스트")
+  public void changePasswordSuccessTest() {
+    // Given
+    Long userSeq = 25L;
+    String originPassword = "test6pw";
+    String newPassword = "test6pwChange";
+    // When
+    boolean isUpdate = userService.changePassword(userSeq, ChangePasswordRequest.builder()
+        .originPassword(originPassword).newPassword(newPassword)
+        .build());
+    // Then
+    assertTrue(isUpdate);
+  }
+
+  @Test
+  @DisplayName("비밀번호 변경 실패 테스트 (기존 비밀번호 불일치)")
+  public void changePasswordFailTest() {
+    // Given
+    Long userSeq = 25L;
+    String originPassword = "test6pwfail";
+    String newPassword = "test6pwChange";
+    // Then
+    assertThrows(InvalidPasswordException.class,
+        // When
+        () -> userService.changePassword(userSeq, ChangePasswordRequest.builder()
+            .originPassword(originPassword).newPassword(newPassword)
+            .build()));
+
   }
 }

@@ -2,6 +2,7 @@ package com.flab.doorrush.domain.user.api;
 
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.request.AutoLoginRequest;
+import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
@@ -12,11 +13,14 @@ import java.nio.charset.StandardCharsets;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +34,8 @@ public class UserController {
   private final UserService userService;
 
   @PostMapping
-  public ResponseEntity<JoinUserResponse> joinUser(@RequestBody JoinUserRequest joinUserRequest) {
+  public ResponseEntity<JoinUserResponse> joinUser(
+      @Valid @RequestBody JoinUserRequest joinUserRequest) {
     JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
   }
@@ -59,5 +64,11 @@ public class UserController {
   public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
     userService.logout(session);
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PatchMapping("/{userSeq}/password")
+  public ResponseEntity<Boolean> changePassword(@PathVariable Long userSeq,
+      @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+    return ResponseEntity.ok(userService.changePassword(userSeq, changePasswordRequest));
   }
 }
