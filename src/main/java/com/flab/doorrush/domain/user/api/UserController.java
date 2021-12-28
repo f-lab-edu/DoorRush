@@ -1,10 +1,15 @@
 package com.flab.doorrush.domain.user.api;
 
+import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.request.AutoLoginRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.service.UserService;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -30,31 +35,29 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
   }
 
-
   @PostMapping("/login")
-  public ResponseEntity<HttpStatus> login(@RequestBody LoginDto loginDto,
-      HttpSession session) {
-    userService.login(loginDto, session);
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
-  @PostMapping("/autoLogin")
   public ResponseEntity<HttpStatus> login(@RequestBody AutoLoginRequest autoLoginRequest,
       HttpSession session, HttpServletResponse response) {
     LoginDto loginDto = new LoginDto(autoLoginRequest.getId(), autoLoginRequest.getPassword());
     userService.login(loginDto, session);
 
     if (autoLoginRequest.isAutoLogin()) {
-      userService.setCookie(loginDto, response);
+      FindUserResponse findUserResponse = userService.getUserById(autoLoginRequest.getId());
+      User user = findUserResponse.getUser();
+      String autoLoginCookieValue = URLEncoder.encode(user.getUserSeq() + "",
+          StandardCharsets.UTF_8);
+      Cookie autoLoginCookie = new Cookie("AUTOLOGIN", autoLoginCookieValue);
+      autoLoginCookie.setHttpOnly(true);
+      autoLoginCookie.setSecure(true);
+      autoLoginCookie.setMaxAge(60 * 60 * 24 * 30);
+      response.addCookie(autoLoginCookie);
     }
     return new ResponseEntity<>(HttpStatus.OK);
   }
-
 
   @PostMapping("/logout")
   public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
     userService.logout(session);
     return new ResponseEntity<>(HttpStatus.OK);
   }
-
 }

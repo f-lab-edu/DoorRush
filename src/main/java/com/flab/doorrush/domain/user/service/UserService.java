@@ -15,10 +15,6 @@ import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +51,9 @@ public class UserService {
     }
     User user = userMapper.selectUserById(loginDto.getId())
         .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
-    if (loginDto.getPassword().equals(user.getPassword())) {
+    if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+      session.setAttribute("loginId", loginDto.getId());
+    } else if (loginDto.getPassword().equals(user.getPassword())) {
       session.setAttribute("loginId", loginDto.getId());
     } else {
       throw new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다.");
@@ -65,20 +63,9 @@ public class UserService {
   public void login(String autoLoginCookieValue, HttpSession session) {
     User user = userMapper.selectUserBySEQ(Long.parseLong(autoLoginCookieValue))
         .orElseThrow(() -> new AutoLoginFailException("자동 로그인에 실패했습니다."));
-    LoginDto loginDto = new LoginDto(user.getLoginId(), user.getPassword());
+    String encodedPassword = user.getPassword();
+    LoginDto loginDto = new LoginDto(user.getLoginId(), encodedPassword);
     login(loginDto, session);
-  }
-
-  public void setCookie(LoginDto loginDto, HttpServletResponse response) {
-    User user = userMapper.selectUserById(loginDto.getId())
-        .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
-    String autoLoginCookieValue = URLEncoder.encode(user.getUserSeq() + "",
-        StandardCharsets.UTF_8);
-    Cookie autoLoginCookie = new Cookie("AUTOLOGIN", autoLoginCookieValue);
-    autoLoginCookie.setHttpOnly(true);
-    autoLoginCookie.setSecure(true);
-    autoLoginCookie.setMaxAge(60 * 60 * 24 * 30);
-    response.addCookie(autoLoginCookie);
   }
 
   public void logout(@NotNull HttpSession session) {

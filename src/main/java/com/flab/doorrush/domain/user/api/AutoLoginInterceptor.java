@@ -30,7 +30,6 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
         result = false;
       }
     } catch (Exception e) {
-      e.printStackTrace();
       result = true;
     } finally {
       return result;
@@ -40,6 +39,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
   @Override
   public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
       ModelAndView modelAndView) throws Exception {
+
     HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
   }
 

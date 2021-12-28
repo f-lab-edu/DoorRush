@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
+import com.flab.doorrush.domain.user.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
@@ -87,44 +88,26 @@ class UserServiceTest {
     assertThat(user.getUser().getName()).isEqualTo("aaasssddd");
   }
 
-
   @Test
+  @DisplayName("로그인 성공 테스트 login메소드 실행 후 세션의 loginId 속성 값을 아이디 값과 비교한다.")
   public void loginSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
 
     // When
     userService.login(loginDto, session);
 
     // Then
-    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test1"));
-    //MatcherAssert.assertThat("fail", is(incorrectInput));
+    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test6"));
   }
 
   @Test
-  public void loginFailTest() {
-    // Given
-    MockHttpSession session = new MockHttpSession();
-    LoginDto IdNotFoundExceptionLoginDto = new LoginDto("test111111", "test22222222pw");
-    // Then                                     // When
-    assertThrows(IdNotFoundException.class,
-        () -> userService.login(IdNotFoundExceptionLoginDto, session));
-
-    // Given
-    LoginDto InvalidPasswordException = new LoginDto("test1", "test222222222pw");
-    // Then
-    assertThrows(
-        com.flab.doorrush.domain.user.exception.InvalidPasswordException.class,
-        // When
-        () -> userService.login(InvalidPasswordException, session));
-  }
-
-  @Test
+  @DisplayName("로그인 실패 테스트 없는 아이디일 경우 또는 일치하지않는 비밀번호 입력할 경우 예외를 발생시킨다.")
   public void loginFailDuplicatedLoginTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     userService.login(loginDto, session);
 
     // Then
@@ -135,14 +118,58 @@ class UserServiceTest {
   }
 
   @Test
+  @DisplayName("자동 로그인 성공 테스트 AUTOLOGIN 쿠키 값으로 login 메서드 실행 후 확인")
+  void autoLoginSuccessTest() {
+    // Given
+    MockHttpSession session = new MockHttpSession();
+
+    // When
+    userService.login("25", session);
+
+    // Then
+    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test6"));
+  }
+
+  @Test
+  @DisplayName("자동 로그인 실패 테스트 AUTOLOGIN 쿠키 값으로 login 메서드 실행 후 확인")
+  void autoLoginFailTest() {
+    // Given
+    MockHttpSession session = new MockHttpSession();
+
+    // Then                                    // When
+    assertThrows(AutoLoginFailException.class, () -> userService.login("223112", session));
+  }
+
+  @Test
+  @DisplayName("중복 로그인 실패 테스트 예외를 발생시킨다.")
+  public void loginFailTest() {
+    // Given
+    MockHttpSession session = new MockHttpSession();
+    LoginDto IdNotFoundExceptionLoginDto = new LoginDto("test111111", "test22222222pw");
+    // Then                                     // When
+    assertThrows(IdNotFoundException.class,
+        () -> userService.login(IdNotFoundExceptionLoginDto, session));
+
+    // Given
+    LoginDto InvalidPasswordException = new LoginDto("test6", "test222222222pw");
+    // Then
+    assertThrows(
+        com.flab.doorrush.domain.user.exception.InvalidPasswordException.class,
+        // When
+        () -> userService.login(InvalidPasswordException, session));
+  }
+
+  @Test
+  @DisplayName("로그아웃 성공 테스트 세션을 무효화한다.")
   public void logoutSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test1", "test1pw");
+    LoginDto loginDto = new LoginDto("test6", "test6pw");
     userService.login(loginDto, session);
 
     // When
     userService.logout(session);
+
     // Then
     assertTrue(session.isInvalid());
   }
