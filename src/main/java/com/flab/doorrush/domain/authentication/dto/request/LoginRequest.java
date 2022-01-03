@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.user.dto;
+package com.flab.doorrush.domain.authentication.dto.request;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LoginDto {
+public class LoginRequest {
 
   @NotNull
   private String id;

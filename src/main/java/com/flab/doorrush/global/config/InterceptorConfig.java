@@ -1,13 +1,13 @@
-package com.flab.doorrush.config;
+package com.flab.doorrush.global.config;
 
-import com.flab.doorrush.domain.user.api.AutoLoginInterceptor;
+import com.flab.doorrush.domain.authentication.api.AutoLoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class InterceptorConfigurer implements WebMvcConfigurer {
+public class InterceptorConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {

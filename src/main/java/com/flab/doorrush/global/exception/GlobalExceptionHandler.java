@@ -1,11 +1,11 @@
-package com.flab.doorrush.domain.user.api;
+package com.flab.doorrush.global.exception;
 
-import com.flab.doorrush.domain.user.exception.AutoLoginFailException;
+import com.flab.doorrush.domain.authentication.exception.AutoLoginFailException;
+import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
+import com.flab.doorrush.domain.authentication.exception.SessionAuthenticationException;
+import com.flab.doorrush.domain.authentication.exception.SessionLoginIdNotFoundException;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
-import com.flab.doorrush.domain.user.exception.IdNotFoundException;
-import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
-import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
-import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

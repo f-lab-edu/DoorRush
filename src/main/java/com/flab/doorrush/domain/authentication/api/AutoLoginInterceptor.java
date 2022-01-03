@@ -1,6 +1,6 @@
-package com.flab.doorrush.domain.user.api;
+package com.flab.doorrush.domain.authentication.api;
 
-import com.flab.doorrush.domain.user.service.UserService;
+import com.flab.doorrush.domain.authentication.service.AuthenticationService;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AutoLoginInterceptor implements HandlerInterceptor {
 
   @Resource
-  UserService userService;
+  AuthenticationService authenticationService;
 
   @Override
   public boolean preHandle(@NotNull HttpServletRequest request, HttpServletResponse response,
@@ -25,7 +25,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
       Cookie autoLoginCookie = cookies[1];
       String autoLoginCookieValue = autoLoginCookie.getValue();
       if (autoLoginCookieValue != null) {
-        userService.login(autoLoginCookieValue, request.getSession());
+        authenticationService.login(autoLoginCookieValue, request.getSession());
         response.setStatus(200);
         result = false;
       }

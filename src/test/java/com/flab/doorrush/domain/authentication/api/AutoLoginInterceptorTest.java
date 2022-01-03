@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.user.api;
+package com.flab.doorrush.domain.authentication.api;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,20 +23,20 @@ class AutoLoginInterceptorTest {
   AutoLoginInterceptor autoLoginInterceptor;
 
   @Autowired
-  UserController userController;
+  AuthenticationController authenticationController;
 
-  MockHandler<UserController> handler;
+  MockHandler<AuthenticationController> handler;
 
   @BeforeEach
   public void setUp() {
-    handler = new MockHandler<UserController>() {
+    handler = new MockHandler<AuthenticationController>() {
       @Override
       public Object handle(Invocation invocation) throws Throwable {
-        return userController;
+        return authenticationController;
       }
 
       @Override
-      public MockCreationSettings<UserController> getMockSettings() {
+      public MockCreationSettings<AuthenticationController> getMockSettings() {
         return null;
       }
 

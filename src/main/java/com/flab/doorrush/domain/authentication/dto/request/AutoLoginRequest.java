@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.user.dto.request;
+package com.flab.doorrush.domain.authentication.dto.request;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
