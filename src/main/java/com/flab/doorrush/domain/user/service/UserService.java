@@ -45,7 +45,6 @@ public class UserService {
         .userSeq(userSeq)
         .password(passwordEncoder.encode(changePasswordRequest.getNewPassword()))
         .build();
-
     return userMapper.updatePassword(user) == 1;
   }
 
