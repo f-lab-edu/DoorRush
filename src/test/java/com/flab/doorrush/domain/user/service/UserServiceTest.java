@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
+import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
@@ -136,6 +138,5 @@ class UserServiceTest {
         () -> userService.changePassword(userSeq, ChangePasswordRequest.builder()
             .originPassword(originPassword).newPassword(newPassword)
             .build()));
-
   }
 }

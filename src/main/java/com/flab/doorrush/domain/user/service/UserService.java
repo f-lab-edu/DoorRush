@@ -1,5 +1,6 @@
 package com.flab.doorrush.domain.user.service;
 
+import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;

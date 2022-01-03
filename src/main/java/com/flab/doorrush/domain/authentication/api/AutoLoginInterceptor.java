@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,7 +15,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
   AuthenticationService authenticationService;
 
   @Override
-  public boolean preHandle(@NotNull HttpServletRequest request, HttpServletResponse response,
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
       Object handler) {
     boolean result = true;
     Cookie[] cookies = request.getCookies();

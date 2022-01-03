@@ -11,7 +11,10 @@ import java.nio.charset.StandardCharsets;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
+@Slf4j
 // @RequiredArgsConstructor : 초기화되지 않은 final 필드를 매개변수로 받는 생성자를 생성하는 어노테이션입니다.
 @RequiredArgsConstructor
 public class AuthenticationController {
@@ -27,8 +31,8 @@ public class AuthenticationController {
   private final AuthenticationService authenticationService;
 
   @PostMapping("/login")
-  public ResponseEntity<HttpStatus> login(@RequestBody AutoLoginRequest autoLoginRequest,
-      HttpSession session, HttpServletResponse response) {
+  public ResponseEntity<HttpStatus> login(@Valid @RequestBody AutoLoginRequest autoLoginRequest,
+      @NotNull HttpSession session, @NotNull HttpServletResponse response) {
     LoginRequest loginRequest = new LoginRequest(autoLoginRequest.getId(),
         autoLoginRequest.getPassword());
     authenticationService.login(loginRequest, session);
@@ -48,8 +52,10 @@ public class AuthenticationController {
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<HttpStatus> logout(HttpSession session) {
+  public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
     authenticationService.logout(session);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }
+
+
