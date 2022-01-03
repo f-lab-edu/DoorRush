@@ -8,6 +8,7 @@ import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -49,4 +50,9 @@ public class GlobalExceptionHandler {
   }
 
 
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+    return new ResponseEntity<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage(),
+        HttpStatus.BAD_REQUEST);
+  }
 }

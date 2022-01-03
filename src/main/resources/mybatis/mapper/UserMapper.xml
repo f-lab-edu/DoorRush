@@ -42,4 +42,22 @@
     FROM USER
     WHERE USER_SEQ = #{userSeq}
   </select>
+
+  <select id="selectUserByUserSeq" parameterType="Long"
+    resultType="com.flab.doorrush.domain.user.domain.User">
+    SELECT USER_SEQ,
+           LOGIN_ID,
+           PASSWORD,
+           NAME,
+           PHONE_NUMBER,
+           EMAIL
+    FROM USER
+    WHERE USER_SEQ = #{userSeq}
+  </select>
+
+  <update id="updatePassword" parameterType="com.flab.doorrush.domain.user.domain.User">
+    UPDATE USER
+    SET PASSWORD = #{password}
+    WHERE USER_SEQ = #{userSeq}
+  </update>
 </mapper>
