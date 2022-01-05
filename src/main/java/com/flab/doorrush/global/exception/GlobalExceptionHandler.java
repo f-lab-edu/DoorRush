@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 /* @ControllerAdvice : 예외 처리, 바인딩 설정, 모델 객체 등을 모든 컨트롤러 전반에 걸쳐 적용하고 싶은 경우에
  *  사용하는 ControllerAdvice 를 생성하기 위한 어노테이션입니다. */
 @ControllerAdvice
-/* @Slf4j : 로깅에 대한 추상 레이어를 제공하는 interface의 모음인 Slf4j */
-@Slf4j
+/* @Slf4j : 로깅에 대한 추상 레이어를 제공하는 interface의 모음인 Slf4을 사용하기 위한 어노테이션입니다.*/
+//@Slf4j
 public class GlobalExceptionHandler {
 
   private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler
   public ResponseEntity<HttpStatus> loginExceptionHandler(InvalidPasswordException e) {
-    logger.error("아이디 혹은 패스워드가 일치하지 않습니다.", InvalidPasswordException.class);
+    logger.error("아이디 혹은 패스워드가 일치하지 않습니다.!!", InvalidPasswordException.class);
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 

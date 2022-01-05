@@ -5,8 +5,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 
 public class AutoLoginInterceptor implements HandlerInterceptor {
@@ -20,32 +20,14 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
     boolean result = true;
     Cookie[] cookies = request.getCookies();
 
-    try {
-      Cookie autoLoginCookie = cookies[1];
-      String autoLoginCookieValue = autoLoginCookie.getValue();
-      if (autoLoginCookieValue != null) {
+    for (Cookie cookie : cookies) {
+      if (cookie.getName().equals("AUTOLOGIN")) {
+        String autoLoginCookieValue = cookie.getValue();
         authenticationService.login(autoLoginCookieValue, request.getSession());
-        response.setStatus(200);
+        response.setStatus(HttpStatus.OK.value());
         result = false;
       }
-    } catch (Exception e) {
-      result = true;
-    } finally {
-      return result;
     }
-  }
-
-  @Override
-  public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-      ModelAndView modelAndView) throws Exception {
-
-    HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
-  }
-
-  @Override
-  public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-      Object handler, Exception ex) throws Exception {
-
-    HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+    return result;
   }
 }

@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
-@Slf4j
 // @RequiredArgsConstructor : 초기화되지 않은 final 필드를 매개변수로 받는 생성자를 생성하는 어노테이션입니다.
 @RequiredArgsConstructor
 public class AuthenticationController {
@@ -40,12 +38,13 @@ public class AuthenticationController {
     if (autoLoginRequest.isAutoLogin()) {
       FindUserResponse findUserResponse = userService.getUserById(autoLoginRequest.getId());
       User user = findUserResponse.getUser();
-      String autoLoginCookieValue = URLEncoder.encode(user.getUserSeq() + "",
+      String autoLoginCookieValue = URLEncoder.encode(String.valueOf(user.getUserSeq()),
           StandardCharsets.UTF_8);
       Cookie autoLoginCookie = new Cookie("AUTOLOGIN", autoLoginCookieValue);
       autoLoginCookie.setHttpOnly(true);
       autoLoginCookie.setSecure(true);
-      autoLoginCookie.setMaxAge(60 * 60 * 24 * 30);
+      int COOKERIESMAXAGE = 60 * 60 * 24 * 30;
+      autoLoginCookie.setMaxAge(COOKERIESMAXAGE);
       response.addCookie(autoLoginCookie);
     }
     return new ResponseEntity<>(HttpStatus.OK);
