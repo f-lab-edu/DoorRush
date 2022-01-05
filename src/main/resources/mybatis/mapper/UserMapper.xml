@@ -48,4 +48,62 @@
     SET PASSWORD = #{password}
     WHERE USER_SEQ = #{userSeq}
   </update>
+
+  <select id="selectUserAddressAll" parameterType="Long"
+    resultType="com.flab.doorrush.domain.user.domain.Address">
+    SELECT A.ADDRESS_SEQ,
+           B.USER_SEQ,
+           A.POST,
+           A.SPOT_Y,
+           A.SPOT_X,
+           A.ADDRESS_DETAIL,
+           B.DEFAULT_YN
+    FROM ADDRESS A
+           INNER join USER_ADDRESS_MAPPING B
+                      ON A.ADDRESS_SEQ = B.ADDRESS_SEQ
+    WHERE B.USER_SEQ = #{userSeq}
+  </select>
+
+  <insert id="insertAddress" parameterType="com.flab.doorrush.domain.user.domain.Address"
+    keyProperty="addressSeq" useGeneratedKeys="true">
+    INSERT INTO `ADDRESS` (`POST`, `SPOT_Y`, `SPOT_X`, `ADDRESS_DETAIL`)
+    VALUES (#{post},
+            #{spotY},
+            #{spotX},
+            #{addressDetail})
+  </insert>
+
+  <insert id="insertUserAddressMapping"
+    parameterType="com.flab.doorrush.domain.user.domain.UserAddressMapping"
+    keyProperty="userAddressSeq" useGeneratedKeys="true">
+    INSERT INTO `USER_ADDRESS_MAPPING` (`USER_SEQ`, `ADDRESS_SEQ`, `DEFAULT_YN`)
+    VALUES (#{userSeq},
+            #{addressSeq},
+            #{defaultYn})
+  </insert>
+
+  <select id="isExistsDefaultAddress" parameterType="Long" resultType="boolean">
+    SELECT EXISTS
+             (SELECT DEFAULT_YN
+              FROM USER_ADDRESS_MAPPING
+              WHERE USER_SEQ = #{userSeq}
+                and DEFAULT_YN = 'Y')
+  </select>
+
+  <update id="updateUserAddressMapping" parameterType="Long">
+    UPDATE USER_ADDRESS_MAPPING
+    SET DEFAULT_YN = 'N'
+    WHERE USER_SEQ = #{userSeq}
+  </update>
+
+  <delete id="deleteAddress" parameterType="Long">
+    DELETE FROM ADDRESS WHERE ADDRESS_SEQ = #{addressSeq}
+  </delete>
+
+  <select id="selectAddressBySeq" parameterType="Long" resultType="boolean">
+    SELECT EXISTS
+             (SELECT ADDRESS_SEQ
+              FROM ADDRESS
+              WHERE ADDRESS_SEQ = #{addressSeq})
+  </select>
 </mapper>
