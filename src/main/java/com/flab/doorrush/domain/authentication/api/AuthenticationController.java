@@ -1,13 +1,13 @@
 package com.flab.doorrush.domain.authentication.api;
 
+import static com.flab.doorrush.global.util.CookieUtils.getAutoLoginCookie;
+
 import com.flab.doorrush.domain.authentication.dto.request.AutoLoginRequest;
 import com.flab.doorrush.domain.authentication.dto.request.LoginRequest;
 import com.flab.doorrush.domain.authentication.service.AuthenticationService;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.service.UserService;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,17 +34,10 @@ public class AuthenticationController {
     LoginRequest loginRequest = new LoginRequest(autoLoginRequest.getId(),
         autoLoginRequest.getPassword());
     authenticationService.login(loginRequest, session);
-
     if (autoLoginRequest.isAutoLogin()) {
       FindUserResponse findUserResponse = userService.getUserById(autoLoginRequest.getId());
       User user = findUserResponse.getUser();
-      String autoLoginCookieValue = URLEncoder.encode(String.valueOf(user.getUserSeq()),
-          StandardCharsets.UTF_8);
-      Cookie autoLoginCookie = new Cookie("AUTOLOGIN", autoLoginCookieValue);
-      autoLoginCookie.setHttpOnly(true);
-      autoLoginCookie.setSecure(true);
-      int COOKERIESMAXAGE = 60 * 60 * 24 * 30;
-      autoLoginCookie.setMaxAge(COOKERIESMAXAGE);
+      Cookie autoLoginCookie = getAutoLoginCookie(user);
       response.addCookie(autoLoginCookie);
     }
     return new ResponseEntity<>(HttpStatus.OK);

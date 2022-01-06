@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.doorrush.domain.authentication.dto.request.AutoLoginRequest;
 import com.flab.doorrush.domain.authentication.dto.request.LoginRequest;
+import com.flab.doorrush.domain.user.domain.User;
+import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
+import com.flab.doorrush.domain.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthenticationControllerTest {
+
+  @Autowired
+
+  UserService userService;
 
   @Autowired
   MockMvc mockMvc;
@@ -123,12 +130,14 @@ class AuthenticationControllerTest {
   }
 
   @Test
-  @DisplayName("자동 로그인 true 테스트 쿠키 추가 후 상태값 200을 발생시킨다.")
+  @DisplayName("자동 로그인 true 테스트 value 가 UserSeq 인 AUTOLOGIN 쿠키 추가 후 상태값 200을 발생시킨다.")
   public void autoLoginTrueTest() throws Exception {
     // Given
     AutoLoginRequest autoLoginRequest = new AutoLoginRequest("test6", "test6pw", true);
     String content = objectMapper.writeValueAsString(autoLoginRequest);
     MockHttpSession mockHttpSession = new MockHttpSession();
+    FindUserResponse findUserResponse = userService.getUserById("test6");
+    User user = findUserResponse.getUser();
 
     // When
     mockMvc.perform(post("/login").content(content)
@@ -138,6 +147,7 @@ class AuthenticationControllerTest {
         .andDo(print())
         // Then
         .andExpect(cookie().exists("AUTOLOGIN"))
+        .andExpect(cookie().value("AUTOLOGIN",String.valueOf(user.getUserSeq())))
         .andExpect(status().isOk());
   }
 

@@ -19,7 +19,6 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
       Object handler) {
     boolean result = true;
     Cookie[] cookies = request.getCookies();
-
     for (Cookie cookie : cookies) {
       if (cookie.getName().equals("AUTOLOGIN")) {
         String autoLoginCookieValue = cookie.getValue();
