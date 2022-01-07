@@ -6,6 +6,7 @@ import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.response.UserAddressResponse;
+import com.flab.doorrush.domain.user.service.UserAddressService;
 import com.flab.doorrush.domain.user.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
   private final UserService userService;
+  private final UserAddressService userAddressService;
 
   @PostMapping
   public ResponseEntity<JoinUserResponse> joinUser(
@@ -57,23 +59,23 @@ public class UserController {
     return ResponseEntity.ok(userService.changePassword(userSeq, changePasswordRequest));
   }
 
-  @GetMapping("/{userSeq}/address")
+  @GetMapping("/{userSeq}/addresses")
   public ResponseEntity<UserAddressResponse> getAddress(@PathVariable Long userSeq) {
     UserAddressResponse userAddressResponse = UserAddressResponse.builder()
-        .addressList(userService.getUserAddress(userSeq)).build();
+        .userAddresses(userAddressService.getUserAddress(userSeq)).build();
     return ResponseEntity.ok(userAddressResponse);
   }
 
-  @PostMapping("/{userSeq}/address")
-  public ResponseEntity<UserAddressResponse> registAddress(@PathVariable Long userSeq,
+  @PostMapping("/{userSeq}/addresses")
+  public ResponseEntity<UserAddressResponse> registerAddress(@PathVariable Long userSeq,
       @Valid @RequestBody UserAddressRequest userAddressRequest) {
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(userService.registAddress(userSeq, userAddressRequest));
+        .body(userAddressService.registerAddress(userSeq, userAddressRequest));
   }
 
-  @DeleteMapping("/{userSeq}/address/{addressSeq}")
+  @DeleteMapping("/{userSeq}/addresses/{addressSeq}")
   public ResponseEntity<Boolean> deleteAddress(@PathVariable Long addressSeq) {
-    return ResponseEntity.status(HttpStatus.OK).body(userService.deleteAddress(addressSeq));
+    return ResponseEntity.status(HttpStatus.OK).body(userAddressService.deleteAddress(addressSeq));
   }
 
 }

@@ -1,6 +1,7 @@
 package com.flab.doorrush.domain.user.dto.request;
 
 import com.flab.doorrush.domain.user.domain.Address;
+import com.flab.doorrush.domain.user.domain.DefaultStatus;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,16 +21,19 @@ public class UserAddressRequest {
   @NotNull
   private String addressDetail;
   @NotNull
-  private String defaultYn;
+  private DefaultStatus defaultStatus;
 
-  public Address toEntity(Long userSeq) {
+  public static boolean isDefault(DefaultStatus defaultStatus) {
+    return defaultStatus.getDefaultValue();
+  }
+
+  public Address toEntity() {
     return Address.builder()
-        .userSeq(userSeq)
         .post(this.getPost())
         .spotY(this.getSpotY())
         .spotX(this.getSpotX())
         .addressDetail(this.getAddressDetail())
-        .defaultYn(this.getDefaultYn())
         .build();
   }
+
 }

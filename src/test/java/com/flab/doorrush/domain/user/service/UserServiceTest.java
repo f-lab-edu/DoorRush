@@ -2,24 +2,18 @@ package com.flab.doorrush.domain.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.flab.doorrush.domain.user.domain.Address;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
-import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
-import com.flab.doorrush.domain.user.exception.NotExistsAddressException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
-import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -214,107 +208,4 @@ class UserServiceTest {
 
   }
 
-  @Test
-  @DisplayName("회원의 배달지 주소 조회 성공 테스트(맵핑된 주소가 있는 경우)")
-  public void getUserAddressSuccessTest() {
-    // Given
-    Long userSeq = 25L;
-
-    // When
-    List<Address> list = userService.getUserAddress(userSeq);
-
-    // Then
-    assertFalse(list.isEmpty());
-    assertEquals(list.get(0).getUserSeq(), (long) userSeq);
-    assertEquals(list.size(), 2);
-  }
-
-  @Test
-  @DisplayName("회원의 배달지 주소 조회 성공 테스트(맵핑된 주소가 없는 경우)")
-  public void getUserAddressEmptyTest() {
-    // Given
-    Long userSeq = 1L;
-
-    // When
-    List<Address> list = userService.getUserAddress(userSeq);
-
-    // Then
-    assertTrue(list.isEmpty());
-  }
-
-  @Test
-  @DisplayName("회원 배달지 주소 등록 성공 테스트 - 기본배달지로 설정")
-  public void registDefaultAddressSuccessTest() {
-
-    // Given
-    Long userSeq = 25L;
-    UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .post("12345")
-        .spotX(123.334433)
-        .spotY(24.5553443)
-        .addressDetail("꼭대기층 1230호")
-        .defaultYn("Y")
-        .build();
-
-    // When
-    userService.registAddress(userSeq, userAddressRequest);
-
-    // Then
-    List<Address> list = userService.getUserAddress(userSeq);
-    assertEquals(list.stream().filter(address -> address.getDefaultYn().equals("Y")).count(), 1);
-    assertFalse(list.isEmpty());
-    assertThat(list.get(0).getUserSeq()).isEqualTo(userSeq);
-  }
-
-
-  @Test
-  @DisplayName("회원 배달지 주소 등록 성공 테스트 - 기본배달지로 미설정")
-  public void registAddressSuccessTest() {
-
-    // Given
-    Long userSeq = 25L;
-    UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .post("54321")
-        .spotX(152.157482231)
-        .spotY(33.5486454853)
-        .addressDetail("B동 201호")
-        .defaultYn("N")
-        .build();
-
-    // When
-    userService.registAddress(userSeq, userAddressRequest);
-
-    // Then
-    List<Address> list = userService.getUserAddress(userSeq);
-    assertEquals(list.stream().filter(address -> address.getDefaultYn().equals("Y")).count(), 1);
-    assertFalse(list.isEmpty());
-    assertEquals(list.size(), 3);
-  }
-
-  @Test
-  @DisplayName("회원 배달지 삭제 성공 테스트")
-  public void deleteAddressSuccessTest() {
-
-    // Given
-    Long addressSeq = 4L;
-
-    // When
-    boolean isDelete = userService.deleteAddress(addressSeq);
-
-    //Then
-    assertTrue(isDelete);
-  }
-
-  @Test
-  @DisplayName("회원 배달지 삭제 실패 테스트")
-  public void deleteAddressFailTest() {
-
-    // Given
-    Long addressSeq = 123L;
-
-    // Then
-    assertThrows(NotExistsAddressException.class,
-        // When
-        () -> userService.deleteAddress(addressSeq));
-  }
 }

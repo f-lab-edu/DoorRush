@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.user.api;
+package com.flab.doorrush.global.exception;
 
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;

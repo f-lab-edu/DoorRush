@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flab.doorrush.domain.user.domain.DefaultStatus;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
@@ -31,7 +32,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -47,7 +47,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
  * */
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 @Transactional
 class UserControllerTest {
 
@@ -309,14 +308,14 @@ class UserControllerTest {
     Long userSeq = 25L;
 
     // When
-    ResultActions resultActions = mockMvc.perform(get("/users/25/address"))
+    ResultActions resultActions = mockMvc.perform(get("/users/25/addresses"))
         .andDo(print());
 
     // then
     MvcResult mvcResult = resultActions.andExpect(status().isOk()).andReturn();
     UserAddressResponse response = objectMapper.readValue(
         mvcResult.getResponse().getContentAsString(), UserAddressResponse.class);
-    assertThat(response.getAddressList().size()).isEqualTo(2);
+    assertThat(response.getUserAddresses().size()).isEqualTo(2);
   }
 
   @Test
@@ -325,7 +324,7 @@ class UserControllerTest {
     // Given
 
     // When
-    mockMvc.perform(get("/users/test/address"))
+    mockMvc.perform(get("/users/test/addresses"))
         .andDo(print())
         // Then
         .andExpect(status().isBadRequest())
@@ -335,11 +334,11 @@ class UserControllerTest {
 
   @Test
   @DisplayName("회원 배달지 등록 성공 테스트")
-  public void registSuccessAddress() throws Exception {
+  public void registerSuccessAddress() throws Exception {
     // Given
     Long userSeq = 25L;
     UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .defaultYn("Y")
+        .defaultStatus(DefaultStatus.Y)
         .spotY(127.5589423533)
         .spotX(27.1577889123)
         .post("14485")
@@ -349,24 +348,24 @@ class UserControllerTest {
     String content = objectMapper.writeValueAsString(userAddressRequest);
 
     // When
-    mockMvc.perform(post("/users/25/address")
+    mockMvc.perform(post("/users/25/addresses")
             .content(content)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         // Then
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.address.userSeq").value(userSeq))
-        .andExpect(jsonPath("$.address.addressSeq").isNotEmpty());
+        .andExpect(jsonPath("$.userSeq").value(userSeq))
+        .andExpect(jsonPath("$.addressSeq").isNotEmpty());
   }
 
   @Test
   @DisplayName("회원 배달지 등록 실패 테스트 - 유효성 검사 실패")
-  public void registFailAddress() throws Exception {
+  public void registerFailAddress() throws Exception {
     // Given
     Long userSeq = 25L;
     UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .defaultYn("Y")
+        .defaultStatus(DefaultStatus.Y)
         .spotY(127.5589423533)
         .spotX(27.1577889123)
         .build();
@@ -374,7 +373,7 @@ class UserControllerTest {
     String content = objectMapper.writeValueAsString(userAddressRequest);
 
     // When
-    mockMvc.perform(post("/users/25/address")
+    mockMvc.perform(post("/users/25/addresses")
             .content(content)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -392,7 +391,7 @@ class UserControllerTest {
     Long addressSeq = 4L;
 
     // When
-    mockMvc.perform(delete("/users/25/address/4"))
+    mockMvc.perform(delete("/users/25/addresses/4"))
         .andDo(print())
         // Then
         .andExpect(status().isOk())
@@ -406,7 +405,7 @@ class UserControllerTest {
     Long addressSeq = 152L;
 
     // When
-    mockMvc.perform(delete("/users/25/address/152"))
+    mockMvc.perform(delete("/users/25/addresses/152"))
         .andDo(print())
         // Then
         .andExpect(status().isBadRequest())
