@@ -2,11 +2,9 @@ package com.flab.doorrush.domain.authentication.api;
 
 import static com.flab.doorrush.global.util.CookieUtils.getAutoLoginCookie;
 
-import com.flab.doorrush.domain.authentication.dto.request.AutoLoginRequest;
 import com.flab.doorrush.domain.authentication.dto.request.LoginRequest;
 import com.flab.doorrush.domain.authentication.service.AuthenticationService;
 import com.flab.doorrush.domain.user.domain.User;
-import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.service.UserService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -29,14 +27,11 @@ public class AuthenticationController {
   private final AuthenticationService authenticationService;
 
   @PostMapping("/login")
-  public ResponseEntity<HttpStatus> login(@Valid @RequestBody AutoLoginRequest autoLoginRequest,
+  public ResponseEntity<HttpStatus> login(@Valid @RequestBody LoginRequest loginRequest,
       @NotNull HttpSession session, @NotNull HttpServletResponse response) {
-    LoginRequest loginRequest = new LoginRequest(autoLoginRequest.getId(),
-        autoLoginRequest.getPassword());
-    authenticationService.login(loginRequest, session);
-    if (autoLoginRequest.isAutoLogin()) {
-      FindUserResponse findUserResponse = userService.getUserById(autoLoginRequest.getId());
-      User user = findUserResponse.getUser();
+
+    User user = authenticationService.login(loginRequest, session);
+    if (loginRequest.isAutoLogin()) {
       Cookie autoLoginCookie = getAutoLoginCookie(user);
       response.addCookie(autoLoginCookie);
     }

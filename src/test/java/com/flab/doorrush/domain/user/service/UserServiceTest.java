@@ -86,7 +86,6 @@ class UserServiceTest {
     assertThat(user.getUser().getName()).isEqualTo("aaasssddd");
   }
 
-
   @Test
   @DisplayName("비밀번호 암호화 테스트")
   public void passwordEncryptTest() {

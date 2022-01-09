@@ -22,40 +22,40 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler
   public ResponseEntity<HttpStatus> loginExceptionHandler(IdNotFoundException e) {
-    log.error("등록된 아이디가 없습니다.", IdNotFoundException.class);
+    log.error("등록된 아이디가 없습니다.", e);
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler
   public ResponseEntity<HttpStatus> loginExceptionHandler(InvalidPasswordException e) {
-    log.error("아이디 혹은 패스워드가 일치하지 않습니다.!!", InvalidPasswordException.class);
+    log.error("아이디 혹은 패스워드가 일치하지 않습니다.!!", e);
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler
   public ResponseEntity<HttpStatus> sessionLoginIdNotFoundException(
       SessionLoginIdNotFoundException e) {
-    log.error("세션정보를 찾을 수 없습니다.", SessionLoginIdNotFoundException.class);
+    log.error("세션정보를 찾을 수 없습니다.", e);
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler
   public ResponseEntity<HttpStatus> sessionAuthenticationException(
       SessionAuthenticationException e) {
-    log.error("이미 해당 아이디로 로그인 중 입니다.", SessionAuthenticationException.class);
+    log.error("이미 해당 아이디로 로그인 중 입니다.", e);
     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
   }
 
   @ExceptionHandler(DuplicatedUserIdException.class)
   public ResponseEntity<String> duplicatedUserIdException(DuplicatedUserIdException e) {
-    log.error("이미 사용중인 아이디입니다.", DuplicatedUserIdException.class);
+    log.error("이미 사용중인 아이디입니다.", e);
     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(AutoLoginFailException.class)
   public ResponseEntity<String> autoLoginFailException(AutoLoginFailException e) {
-    log.error("자동 로그인에 실패했습니다.", AutoLoginFailException.class);
+    log.error("자동 로그인에 실패했습니다.", e);
     return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
   }
 

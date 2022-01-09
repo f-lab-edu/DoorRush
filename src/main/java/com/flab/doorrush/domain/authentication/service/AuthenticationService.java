@@ -25,7 +25,7 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
 
 
-  public void login(LoginRequest loginRequest,@NotNull HttpSession session) {
+  public User login(LoginRequest loginRequest, @NotNull HttpSession session) {
     if (loginRequest.getId().equals(session.getAttribute("loginId"))) {
       throw new SessionAuthenticationException("이미 해당 아이디로 로그인 중 입니다.");
     }
@@ -38,13 +38,14 @@ public class AuthenticationService {
     } else {
       throw new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다.");
     }
+    return user;
   }
 
   public void login(@NotNull String autoLoginCookieValue, @NotNull HttpSession session) {
     User user = userMapper.selectUserBySEQ(Long.parseLong(autoLoginCookieValue))
         .orElseThrow(() -> new AutoLoginFailException("자동 로그인에 실패했습니다."));
     String encodedPassword = user.getPassword();
-    LoginRequest loginRequest = new LoginRequest(user.getLoginId(), encodedPassword);
+    LoginRequest loginRequest = new LoginRequest(user.getLoginId(), encodedPassword, true);
     login(loginRequest, session);
   }
 

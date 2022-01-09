@@ -12,7 +12,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(autoLoginInterceptor())
-        .addPathPatterns("/users/autoLogin", "/users/login");
+        .addPathPatterns("/login");
   }
 
   @Bean

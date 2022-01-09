@@ -31,7 +31,7 @@ class AuthenticationServiceTest {
   public void loginSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginRequest loginRequest = new LoginRequest("test6", "test6pw");
+    LoginRequest loginRequest = new LoginRequest("test6", "test6pw", false);
 
     // When
     authenticationService.login(loginRequest, session);
@@ -45,7 +45,7 @@ class AuthenticationServiceTest {
   public void loginFailDuplicatedLoginTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginRequest loginRequest = new LoginRequest("test6", "test6pw");
+    LoginRequest loginRequest = new LoginRequest("test6", "test6pw", false);
     authenticationService.login(loginRequest, session);
 
     // Then
@@ -84,13 +84,14 @@ class AuthenticationServiceTest {
   public void loginFailTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginRequest idNotFoundExceptionLoginRequest = new LoginRequest("test111111", "test22222222pw");
+    LoginRequest idNotFoundExceptionLoginRequest = new LoginRequest("test111111", "test22222222pw",
+        false);
     // Then                                     // When
     assertThrows(IdNotFoundException.class,
         () -> authenticationService.login(idNotFoundExceptionLoginRequest, session));
 
     // Given
-    LoginRequest InvalidPasswordException = new LoginRequest("test6", "test222222222pw");
+    LoginRequest InvalidPasswordException = new LoginRequest("test6", "test222222222pw", false);
     // Then
     assertThrows(
         InvalidPasswordException.class,
@@ -103,7 +104,7 @@ class AuthenticationServiceTest {
   public void logoutSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();
-    LoginRequest loginRequest = new LoginRequest("test6", "test6pw");
+    LoginRequest loginRequest = new LoginRequest("test6", "test6pw", false);
     authenticationService.login(loginRequest, session);
 
     // When

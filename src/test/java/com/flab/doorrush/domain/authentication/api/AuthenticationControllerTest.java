@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flab.doorrush.domain.authentication.dto.request.AutoLoginRequest;
 import com.flab.doorrush.domain.authentication.dto.request.LoginRequest;
 import com.flab.doorrush.domain.user.domain.User;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
@@ -25,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 class AuthenticationControllerTest {
 
   @Autowired
-
   UserService userService;
 
   @Autowired
@@ -39,7 +37,7 @@ class AuthenticationControllerTest {
   @DisplayName("로그인 성공 테스트 상태값 200을 발생시킨다.")
   public void loginSuccessTest() throws Exception {
     // Given
-    LoginRequest loginRequest = new LoginRequest("test6", "test6pw");
+    LoginRequest loginRequest = new LoginRequest("test6", "test6pw", false);
     String content = objectMapper.writeValueAsString(loginRequest);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -57,7 +55,7 @@ class AuthenticationControllerTest {
   @DisplayName("로그인 실패 테스트 상태값 404를 발생시킨다.")
   public void loginFailTest() throws Exception {
     // Given
-    LoginRequest loginRequest = new LoginRequest("test6", "test12345567pw");
+    LoginRequest loginRequest = new LoginRequest("test6", "test12345567pw", false);
     String content = objectMapper.writeValueAsString(loginRequest);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -75,7 +73,7 @@ class AuthenticationControllerTest {
   @DisplayName("중복 로그인 실패 테스트 상태값 403을 발생시킨다.")
   public void loginFailDuplicatedLoginTest() throws Exception {
     // Given
-    LoginRequest loginRequest = new LoginRequest("test6", "test6pw");
+    LoginRequest loginRequest = new LoginRequest("test6", "test6pw", false);
     String content = objectMapper.writeValueAsString(loginRequest);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -133,8 +131,8 @@ class AuthenticationControllerTest {
   @DisplayName("자동 로그인 true 테스트 value 가 UserSeq 인 AUTOLOGIN 쿠키 추가 후 상태값 200을 발생시킨다.")
   public void autoLoginTrueTest() throws Exception {
     // Given
-    AutoLoginRequest autoLoginRequest = new AutoLoginRequest("test6", "test6pw", true);
-    String content = objectMapper.writeValueAsString(autoLoginRequest);
+    LoginRequest loginRequest = new LoginRequest("test6", "test6pw", true);
+    String content = objectMapper.writeValueAsString(loginRequest);
     MockHttpSession mockHttpSession = new MockHttpSession();
     FindUserResponse findUserResponse = userService.getUserById("test6");
     User user = findUserResponse.getUser();
@@ -147,7 +145,7 @@ class AuthenticationControllerTest {
         .andDo(print())
         // Then
         .andExpect(cookie().exists("AUTOLOGIN"))
-        .andExpect(cookie().value("AUTOLOGIN",String.valueOf(user.getUserSeq())))
+        .andExpect(cookie().value("AUTOLOGIN", String.valueOf(user.getUserSeq())))
         .andExpect(status().isOk());
   }
 
@@ -155,8 +153,8 @@ class AuthenticationControllerTest {
   @DisplayName("자동 로그인 flase 테스트 일반 로그인 처리 후 상태값 200을 발생시킨다.")
   public void autoLoginFalseTest() throws Exception {
     // Given
-    AutoLoginRequest autoLoginRequest = new AutoLoginRequest("test6", "test6pw", false);
-    String content = objectMapper.writeValueAsString(autoLoginRequest);
+    LoginRequest loginRequest = new LoginRequest("test6", "test6pw", false);
+    String content = objectMapper.writeValueAsString(loginRequest);
     MockHttpSession mockHttpSession = new MockHttpSession();
 
     // When

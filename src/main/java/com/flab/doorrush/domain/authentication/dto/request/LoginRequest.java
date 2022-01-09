@@ -16,4 +16,6 @@ public class LoginRequest {
   @NotNull
   private String password;
 
+  @NotNull
+  private boolean isAutoLogin;
 }
