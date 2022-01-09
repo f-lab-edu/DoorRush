@@ -1,6 +1,6 @@
 package com.flab.doorrush.domain.user.dto.response;
 
-import com.flab.doorrush.domain.user.domain.DefaultStatus;
+import com.flab.doorrush.domain.user.domain.YnStatus;
 import com.flab.doorrush.domain.user.domain.UserAddress;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,27 +17,29 @@ public class UserAddressResponse {
   private Double spotY;
   private Double spotX;
   private String addressDetail;
-  private DefaultStatus defaultStatus;
+  private YnStatus ynStatus;
   private List<UserAddressResponse> userAddresses;
 
   public static UserAddressResponse from(UserAddress userAddress) {
     return UserAddressResponse.builder()
-        .userSeq(userAddress.getUserSeq())
-        .addressSeq(userAddress.getAddressSeq())
-        .post(userAddress.getPost())
-        .spotX(userAddress.getSpotX())
-        .spotY(userAddress.getSpotY())
-        .addressDetail(userAddress.getAddressDetail())
-        .defaultStatus(userAddress.getDefaultStatus())
-        .build();
+            .userSeq(userAddress.getUserSeq())
+            .addressSeq(userAddress.getAddressSeq())
+            .post(userAddress.getPost())
+            .spotX(userAddress.getSpotX())
+            .spotY(userAddress.getSpotY())
+            .addressDetail(userAddress.getAddressDetail())
+            .ynStatus(userAddress.getYnStatus())
+            .build();
   }
 
-  public static List<UserAddressResponse> toUserAddressResponse(List<UserAddress> userAddress) {
-    return userAddress.stream().map(UserAddressResponse::from).collect(Collectors.toList());
+  public static List<UserAddressResponse> fromUserAddressResponse(List<UserAddress> userAddress) {
+    return userAddress.stream()
+            .map(UserAddressResponse::from)
+            .collect(Collectors.toList());
   }
 
-  public static boolean isDefault(DefaultStatus defaultStatus) {
-    return defaultStatus.getDefaultValue();
+  public boolean isDefault(YnStatus ynStatus) {
+    return ynStatus.getYnValue();
   }
 
 }

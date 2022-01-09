@@ -19,7 +19,7 @@ public class UserAddressService {
   private final UserAddressMapper userAddressMapper;
 
   public List<UserAddressResponse> getUserAddress(Long userSeq) {
-    return UserAddressResponse.toUserAddressResponse(userAddressMapper.selectUserAddressAll(userSeq));
+    return UserAddressResponse.fromUserAddressResponse(userAddressMapper.selectUserAddressAll(userSeq));
   }
 
   @Transactional
@@ -27,8 +27,7 @@ public class UserAddressService {
     Address address = userAddressRequest.toEntity();
     userAddressMapper.insertAddress(address);
 
-    if (userAddressMapper.isExistsDefaultAddress(userSeq)
-        && UserAddressRequest.isDefault(userAddressRequest.getDefaultStatus())) {
+    if (shouldUpdateUserAddress(userSeq, userAddressRequest)) {
       userAddressMapper.updateUserAddress(userSeq);
     }
 
@@ -39,7 +38,7 @@ public class UserAddressService {
         .spotY(address.getSpotY())
         .spotX(address.getSpotX())
         .addressDetail(address.getAddressDetail())
-        .defaultStatus(userAddressRequest.getDefaultStatus()).build();
+        .ynStatus(userAddressRequest.getYnStatus()).build();
 
     userAddressMapper.insertUserAddress(userAddress);
 
@@ -51,6 +50,11 @@ public class UserAddressService {
       throw new NotExistsAddressException("존재하지 않는 주소정보입니다.");
     }
     return userAddressMapper.deleteAddress(addressSeq) > 0;
+  }
+
+  private boolean shouldUpdateUserAddress(Long userSeq, UserAddressRequest userAddressRequest) {
+    return userAddressMapper.isExistsDefaultAddress(userSeq)
+        && userAddressRequest.isDefault(userAddressRequest.getYnStatus());
   }
 
 }

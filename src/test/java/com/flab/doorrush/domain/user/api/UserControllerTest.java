@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flab.doorrush.domain.user.domain.DefaultStatus;
+import com.flab.doorrush.domain.user.domain.YnStatus;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
@@ -338,7 +338,7 @@ class UserControllerTest {
     // Given
     Long userSeq = 25L;
     UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .defaultStatus(DefaultStatus.Y)
+        .ynStatus(YnStatus.Y)
         .spotY(127.5589423533)
         .spotX(27.1577889123)
         .post("14485")
@@ -365,7 +365,7 @@ class UserControllerTest {
     // Given
     Long userSeq = 25L;
     UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .defaultStatus(DefaultStatus.Y)
+        .ynStatus(YnStatus.Y)
         .spotY(127.5589423533)
         .spotX(27.1577889123)
         .build();

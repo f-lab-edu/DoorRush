@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.flab.doorrush.domain.user.domain.DefaultStatus;
+import com.flab.doorrush.domain.user.domain.YnStatus;
 import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
 import com.flab.doorrush.domain.user.dto.response.UserAddressResponse;
 import com.flab.doorrush.domain.user.exception.NotExistsAddressException;
@@ -61,7 +61,7 @@ public class UserAddressServiceTest {
         .spotX(123.334433)
         .spotY(24.5553443)
         .addressDetail("꼭대기층 1230호")
-        .defaultStatus(DefaultStatus.Y)
+        .ynStatus(YnStatus.Y)
         .build();
 
     // When
@@ -70,7 +70,7 @@ public class UserAddressServiceTest {
     // Then
     List<UserAddressResponse> list = userAddressService.getUserAddress(userSeq);
     assertEquals(
-        list.stream().filter(address -> UserAddressResponse.isDefault(address.getDefaultStatus()))
+        list.stream().filter(address -> address.isDefault(address.getYnStatus()))
             .count(), 1);
     assertFalse(list.isEmpty());
   }
@@ -87,7 +87,7 @@ public class UserAddressServiceTest {
         .spotX(152.157482231)
         .spotY(33.5486454853)
         .addressDetail("B동 201호")
-        .defaultStatus(DefaultStatus.N)
+        .ynStatus(YnStatus.N)
         .build();
 
     // When
@@ -95,9 +95,8 @@ public class UserAddressServiceTest {
 
     // Then
     List<UserAddressResponse> list = userAddressService.getUserAddress(userSeq);
-    assertEquals(
-        list.stream().filter(address -> UserAddressResponse.isDefault(address.getDefaultStatus()))
-            .count(), 1);
+    assertEquals(list.stream()
+        .filter(address -> address.isDefault(address.getYnStatus())).count(), 1);
     assertFalse(list.isEmpty());
     assertEquals(list.size(), 3);
   }

@@ -1,7 +1,7 @@
 package com.flab.doorrush.domain.user.dto.request;
 
 import com.flab.doorrush.domain.user.domain.Address;
-import com.flab.doorrush.domain.user.domain.DefaultStatus;
+import com.flab.doorrush.domain.user.domain.YnStatus;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +21,10 @@ public class UserAddressRequest {
   @NotNull
   private String addressDetail;
   @NotNull
-  private DefaultStatus defaultStatus;
+  private YnStatus ynStatus;
 
-  public static boolean isDefault(DefaultStatus defaultStatus) {
-    return defaultStatus.getDefaultValue();
+  public boolean isDefault(YnStatus ynStatus) {
+    return ynStatus.getYnValue();
   }
 
   public Address toEntity() {
