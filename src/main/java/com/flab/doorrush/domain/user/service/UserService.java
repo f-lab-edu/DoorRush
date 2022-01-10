@@ -4,17 +4,17 @@ import static java.util.Objects.isNull;
 
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
+import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
-import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
-import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class UserService {
     User user = userMapper.selectUserById(loginDto.getId())
         .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
 
-    if (passwordEncoder.matches(loginDto.getPassword(),user.getPassword())) {
+    if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
       session.setAttribute("loginId", loginDto.getId());
     } else {
       throw new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다.");
@@ -88,4 +88,5 @@ public class UserService {
         .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
     return passwordEncoder.matches(originPassword, user.getPassword());
   }
+
 }

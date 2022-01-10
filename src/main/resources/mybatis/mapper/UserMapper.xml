@@ -48,4 +48,5 @@
     SET PASSWORD = #{password}
     WHERE USER_SEQ = #{userSeq}
   </update>
+
 </mapper>

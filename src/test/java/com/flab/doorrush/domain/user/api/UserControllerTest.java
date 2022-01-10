@@ -1,16 +1,23 @@
 package com.flab.doorrush.domain.user.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flab.doorrush.domain.user.domain.YnStatus;
 import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
+import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
+import com.flab.doorrush.domain.user.dto.response.UserAddressResponse;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -26,7 +33,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 /* @RunWith : JUnit 프레임워크가 테스트를 실행할 시 테스트 실행방법을 확장할 때 쓰는 어노테이션
  * @WebMvcTest : MVC를 위한 테스트, 컨트롤러가 예상대로 동작하는지 테스트하는데 사용됩니다. Web과 관련된 다음 어노테이션만 스캔합니다.
@@ -105,7 +116,6 @@ class UserControllerTest {
     // When
     mockMvc.perform(post("/users/")
             .content(content)
-            //json 형식으로 데이터를 보낸다고 명시
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         // Then
@@ -289,6 +299,117 @@ class UserControllerTest {
 
     // Then
     assertThat(violations).isEmpty();
+  }
+
+  @Test
+  @DisplayName("회원 배달지 조회 성공 테스트")
+  public void getUserAddressSuccessTest() throws Exception {
+    // Given
+    Long userSeq = 25L;
+
+    // When
+    ResultActions resultActions = mockMvc.perform(get("/users/25/addresses"))
+        .andDo(print());
+
+    // then
+    MvcResult mvcResult = resultActions.andExpect(status().isOk()).andReturn();
+    UserAddressResponse response = objectMapper.readValue(
+        mvcResult.getResponse().getContentAsString(), UserAddressResponse.class);
+    assertThat(response.getUserAddresses().size()).isEqualTo(2);
+  }
+
+  @Test
+  @DisplayName("회원 배달지 조회 실패 테스트")
+  public void getUserAddressFailTest() throws Exception {
+    // Given
+
+    // When
+    mockMvc.perform(get("/users/test/addresses"))
+        .andDo(print())
+        // Then
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(
+            MethodArgumentTypeMismatchException.class)));
+  }
+
+  @Test
+  @DisplayName("회원 배달지 등록 성공 테스트")
+  public void registerSuccessAddress() throws Exception {
+    // Given
+    Long userSeq = 25L;
+    UserAddressRequest userAddressRequest = UserAddressRequest.builder()
+        .ynStatus(YnStatus.Y)
+        .spotY(127.5589423533)
+        .spotX(27.1577889123)
+        .post("14485")
+        .addressDetail("1324동 1208호")
+        .build();
+
+    String content = objectMapper.writeValueAsString(userAddressRequest);
+
+    // When
+    mockMvc.perform(post("/users/25/addresses")
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.userSeq").value(userSeq))
+        .andExpect(jsonPath("$.addressSeq").isNotEmpty());
+  }
+
+  @Test
+  @DisplayName("회원 배달지 등록 실패 테스트 - 유효성 검사 실패")
+  public void registerFailAddress() throws Exception {
+    // Given
+    Long userSeq = 25L;
+    UserAddressRequest userAddressRequest = UserAddressRequest.builder()
+        .ynStatus(YnStatus.Y)
+        .spotY(127.5589423533)
+        .spotX(27.1577889123)
+        .build();
+
+    String content = objectMapper.writeValueAsString(userAddressRequest);
+
+    // When
+    mockMvc.perform(post("/users/25/addresses")
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        // Then
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(
+            MethodArgumentNotValidException.class)));
+  }
+
+  @Test
+  @DisplayName("회원 배달지 삭제 성공 테스트")
+  public void deleteAddressSuccessTest() throws Exception {
+    // Given
+    Long addressSeq = 4L;
+
+    // When
+    mockMvc.perform(delete("/users/25/addresses/4"))
+        .andDo(print())
+        // Then
+        .andExpect(status().isOk())
+        .andExpect(content().string("true"));
+  }
+
+  @Test
+  @DisplayName("회원 배달지 삭제 실패 테스트")
+  public void deleteAddressFailTest() throws Exception {
+    // Given
+    Long addressSeq = 152L;
+
+    // When
+    mockMvc.perform(delete("/users/25/addresses/152"))
+        .andDo(print())
+        // Then
+        .andExpect(status().isBadRequest())
+        .andExpect(content().string("존재하지 않는 주소정보입니다."));
   }
 
 }
