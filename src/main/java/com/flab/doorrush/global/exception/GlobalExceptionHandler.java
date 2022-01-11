@@ -1,5 +1,6 @@
 package com.flab.doorrush.global.exception;
 
+import com.flab.doorrush.domain.user.dto.response.BasicResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
 import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
@@ -18,41 +19,43 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> loginExceptionHandler(IdNotFoundException e) {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+  public ResponseEntity<BasicResponse<?>> loginExceptionHandler(IdNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
   }
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> loginExceptionHandler(InvalidPasswordException e) {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+  public ResponseEntity<BasicResponse<?>> loginExceptionHandler(InvalidPasswordException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
   }
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> sessionLoginIdNotFoundException(
+  public ResponseEntity<BasicResponse<?>> sessionLoginIdNotFoundException(
       SessionLoginIdNotFoundException e) {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
   }
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> sessionAuthenticationException(
+  public ResponseEntity<BasicResponse<String>> sessionAuthenticationException(
       SessionAuthenticationException e) {
-    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new BasicResponse<>(false,e.getMessage()));
   }
 
   @ExceptionHandler(DuplicatedUserIdException.class)
-  public ResponseEntity<String> duplicatedUserIdException(DuplicatedUserIdException e) {
-    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+  public ResponseEntity<BasicResponse<String>> duplicatedUserIdException(
+      DuplicatedUserIdException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BasicResponse<>(false, e.getMessage()));
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-    return new ResponseEntity<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage(),
-        HttpStatus.BAD_REQUEST);
+  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(
+      MethodArgumentNotValidException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(new BasicResponse<>(false, e.getBindingResult().getAllErrors().get(0).getDefaultMessage()));
   }
 
   @ExceptionHandler(NotExistsAddressException.class)
-  public ResponseEntity<String> methodArgumentNotValidException(NotExistsAddressException e) {
-    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(NotExistsAddressException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BasicResponse<>(false, e.getMessage()));
   }
 
 }
