@@ -31,7 +31,7 @@ jobs:
       env:
         MYSQL_URL:  ${{ secrets.MYSQL_URL }}
         MYSQL_PORT:  ${{ secrets.MYSQL_PORT }}
-        MYSQL_DBNAME:  ${{ secrets.DBNAME }}
+        MYSQL_DBNAME:  ${{ secrets.MYSQL_DBNAME }}
         MYSQL_PASSWORD:  ${{ secrets.MYSQL_PASSWORD }}
         MYSQL_USERNAME:  ${{ secrets.MYSQL_USERNAME }}
       run: ./gradlew build
