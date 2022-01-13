@@ -28,6 +28,12 @@ jobs:
       run: chmod +x gradlew
       working-directory: ${{ env.working-directory }}
     - name: Build with Gradle
+      env:
+        MYSQL_URL:  ${{ secrets.MYSQL_URL }}
+        MYSQL_PORT:  ${{ secrets.MYSQL_PORT }}
+        MYSQL_DBNAME:  ${{ secrets.MYSQL_DBNAME }}
+        MYSQL_PASSWORD:  ${{ secrets.MYSQL_PASSWORD }}
+        MYSQL_USERNAME:  ${{ secrets.MYSQL_USERNAME }}
       run: ./gradlew build
       working-directory: ${{ env.working-directory }}
     - name: build result to slack
