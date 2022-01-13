@@ -37,7 +37,7 @@ public class UserController {
   public ResponseEntity<BasicResponse<JoinUserResponse>> joinUser(
       @Valid @RequestBody JoinUserRequest joinUserRequest) {
     JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
-    return ResponseEntity.status(HttpStatus.CREATED).body(new BasicResponse<>(userResponse));
+    return ResponseEntity.status(HttpStatus.CREATED).body(BasicResponse.success(userResponse));
   }
 
   @PostMapping("/login")
@@ -48,7 +48,7 @@ public class UserController {
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<BasicResponse<?>> logout(@NotNull HttpSession session) {
+  public ResponseEntity<BasicResponse> logout(@NotNull HttpSession session) {
     userService.logout(session);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
@@ -57,14 +57,14 @@ public class UserController {
   public ResponseEntity<BasicResponse<Boolean>> changePassword(@PathVariable Long userSeq,
       @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(new BasicResponse<>(userService.changePassword(userSeq, changePasswordRequest)));
+        .body(BasicResponse.success(userService.changePassword(userSeq, changePasswordRequest)));
   }
 
   @GetMapping("/{userSeq}/addresses")
   public ResponseEntity<BasicResponse<UserAddressResponse>> getAddress(@PathVariable Long userSeq) {
     UserAddressResponse userAddressResponse = UserAddressResponse.builder()
         .userAddresses(userAddressService.getUserAddress(userSeq)).build();
-    return ResponseEntity.ok(new BasicResponse<>(userAddressResponse));
+    return ResponseEntity.status(HttpStatus.OK).body(BasicResponse.success(userAddressResponse));
   }
 
   @PostMapping("/{userSeq}/addresses")
@@ -72,12 +72,12 @@ public class UserController {
       @PathVariable Long userSeq,
       @Valid @RequestBody UserAddressRequest userAddressRequest) {
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(new BasicResponse<>(userAddressService.registerAddress(userSeq, userAddressRequest)));
+        .body(BasicResponse.success(userAddressService.registerAddress(userSeq, userAddressRequest)));
   }
 
   @DeleteMapping("/{userSeq}/addresses/{addressSeq}")
   public ResponseEntity<BasicResponse<Boolean>> deleteAddress(@PathVariable Long addressSeq) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(new BasicResponse<>(userAddressService.deleteAddress(addressSeq)));
+        .body(BasicResponse.success(userAddressService.deleteAddress(addressSeq)));
   }
 }

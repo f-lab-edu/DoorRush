@@ -10,8 +10,16 @@ public class BasicResponse<T> {
   private boolean success;
   private T data;
 
-  public BasicResponse(T data) {
-    this.success = true;
-    this.data = data;
+  public static <T> BasicResponse<T> success(T data) {
+    return new BasicResponse<>(true, data);
   }
+
+  public static <T> BasicResponse<T> fail(T data) {
+    return new BasicResponse<>(false, data);
+  }
+
+  public static <T> BasicResponse<T> create(boolean success, T data) {
+    return new BasicResponse<>(success, data);
+  }
+
 }
