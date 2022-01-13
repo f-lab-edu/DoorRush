@@ -138,4 +138,5 @@ class UserServiceTest {
             .originPassword(originPassword).newPassword(newPassword)
             .build()));
   }
+
 }

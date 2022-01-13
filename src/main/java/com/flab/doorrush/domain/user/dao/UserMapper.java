@@ -16,5 +16,7 @@ public interface UserMapper {
   Optional<User> selectUserByUserSeq(Long userSeq);
 
   int updatePassword(User user);
+
+
 }
 

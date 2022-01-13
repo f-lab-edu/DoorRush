@@ -7,6 +7,11 @@ import com.flab.doorrush.domain.authentication.exception.SessionLoginIdNotFoundE
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import com.flab.doorrush.domain.user.exception.IdNotFoundException;
+import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
+import com.flab.doorrush.domain.user.exception.NotExistsAddressException;
+import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
+import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -64,4 +69,10 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage(),
         HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(NotExistsAddressException.class)
+  public ResponseEntity<String> methodArgumentNotValidException(NotExistsAddressException e) {
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
 }
