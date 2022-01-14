@@ -4,6 +4,7 @@ import com.flab.doorrush.domain.authentication.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.authentication.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.authentication.exception.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.user.dto.response.BasicResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -26,36 +27,31 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> loginExceptionHandler(IdNotFoundException e) {
-    log.error("등록된 아이디가 없습니다.", e);
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+  public ResponseEntity<BasicResponse> loginExceptionHandler(IdNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
   }
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> loginExceptionHandler(InvalidPasswordException e) {
-    log.error("아이디 혹은 패스워드가 일치하지 않습니다.!!", e);
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+  public ResponseEntity<BasicResponse> loginExceptionHandler(InvalidPasswordException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
   }
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> sessionLoginIdNotFoundException(
+  public ResponseEntity<BasicResponse> sessionLoginIdNotFoundException(
       SessionLoginIdNotFoundException e) {
-    log.error("세션정보를 찾을 수 없습니다.", e);
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
   }
 
   @ExceptionHandler
-  public ResponseEntity<HttpStatus> sessionAuthenticationException(
+  public ResponseEntity<BasicResponse<String>> sessionAuthenticationException(
       SessionAuthenticationException e) {
-    log.error("이미 해당 아이디로 로그인 중 입니다.", e);
-    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(BasicResponse.fail(e.getMessage()));
   }
 
   @ExceptionHandler(DuplicatedUserIdException.class)
-  public ResponseEntity<String> duplicatedUserIdException(DuplicatedUserIdException e) {
-    log.error("이미 사용중인 아이디입니다.", e);
-    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+  public ResponseEntity<BasicResponse<String>> duplicatedUserIdException(
+      DuplicatedUserIdException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
 
   @ExceptionHandler(AutoLoginFailException.class)
@@ -65,14 +61,15 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-    return new ResponseEntity<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage(),
-        HttpStatus.BAD_REQUEST);
+  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(
+      MethodArgumentNotValidException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(BasicResponse.fail(e.getBindingResult().getAllErrors().get(0).getDefaultMessage()));
   }
 
   @ExceptionHandler(NotExistsAddressException.class)
-  public ResponseEntity<String> methodArgumentNotValidException(NotExistsAddressException e) {
-    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(NotExistsAddressException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
 
 }

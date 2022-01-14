@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,7 +16,6 @@ import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
-import com.flab.doorrush.domain.user.dto.response.UserAddressResponse;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -32,7 +30,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -91,11 +88,12 @@ class UserControllerTest {
         .andDo(print())
         // Then
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.user.userSeq").isNotEmpty())
-        .andExpect(jsonPath("$.user.loginId").value("yeojae"))
-        .andExpect(jsonPath("$.user.name").value("yeojae"))
-        .andExpect(jsonPath("$.user.phoneNumber").value("01012341234"))
-        .andExpect(jsonPath("$.user.email").value("yeojae@naver.com"));
+        .andExpect(jsonPath("$.data.user.userSeq").isNotEmpty())
+        .andExpect(jsonPath("$.data.user.loginId").value("yeojae"))
+        .andExpect(jsonPath("$.data.user.name").value("yeojae"))
+        .andExpect(jsonPath("$.data.user.phoneNumber").value("01012341234"))
+        .andExpect(jsonPath("$.data.user.email").value("yeojae@naver.com"));
+
   }
 
   @Test
@@ -211,13 +209,11 @@ class UserControllerTest {
 
     // When
     ResultActions resultActions = mockMvc.perform(get("/users/25/addresses"))
-        .andDo(print());
+        .andDo(print())
+        // then
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.userAddresses").isNotEmpty());
 
-    // then
-    MvcResult mvcResult = resultActions.andExpect(status().isOk()).andReturn();
-    UserAddressResponse response = objectMapper.readValue(
-        mvcResult.getResponse().getContentAsString(), UserAddressResponse.class);
-    assertThat(response.getUserAddresses().size()).isEqualTo(2);
   }
 
   @Test
@@ -257,8 +253,8 @@ class UserControllerTest {
         .andDo(print())
         // Then
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.userSeq").value(userSeq))
-        .andExpect(jsonPath("$.addressSeq").isNotEmpty());
+        .andExpect(jsonPath("$.data.userSeq").value(userSeq))
+        .andExpect(jsonPath("$.data.addressSeq").isNotEmpty());
   }
 
   @Test
@@ -297,7 +293,7 @@ class UserControllerTest {
         .andDo(print())
         // Then
         .andExpect(status().isOk())
-        .andExpect(content().string("true"));
+        .andExpect(jsonPath("$.data").value(true));
   }
 
   @Test
@@ -311,7 +307,7 @@ class UserControllerTest {
         .andDo(print())
         // Then
         .andExpect(status().isBadRequest())
-        .andExpect(content().string("존재하지 않는 주소정보입니다."));
+        .andExpect(jsonPath("$.data").value("존재하지 않는 주소정보입니다."));
   }
 
 }

@@ -4,6 +4,7 @@ import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
+import com.flab.doorrush.domain.user.dto.response.BasicResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.response.UserAddressResponse;
 import com.flab.doorrush.domain.user.service.UserAddressService;
@@ -31,10 +32,10 @@ public class UserController {
   private final UserAddressService userAddressService;
 
   @PostMapping
-  public ResponseEntity<JoinUserResponse> joinUser(
+  public ResponseEntity<BasicResponse<JoinUserResponse>> joinUser(
       @Valid @RequestBody JoinUserRequest joinUserRequest) {
     JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
-    return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+    return ResponseEntity.status(HttpStatus.CREATED).body(BasicResponse.success(userResponse));
   }
 
   @PostMapping("/login")
@@ -44,36 +45,37 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-
   @PostMapping("/logout")
-  public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
+  public ResponseEntity<BasicResponse> logout(@NotNull HttpSession session) {
     userService.logout(session);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 
   @PatchMapping("/{userSeq}/password")
-  public ResponseEntity<Boolean> changePassword(@PathVariable Long userSeq,
+  public ResponseEntity<BasicResponse<Boolean>> changePassword(@PathVariable Long userSeq,
       @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
-    return ResponseEntity.ok(userService.changePassword(userSeq, changePasswordRequest));
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(BasicResponse.success(userService.changePassword(userSeq, changePasswordRequest)));
   }
 
   @GetMapping("/{userSeq}/addresses")
-  public ResponseEntity<UserAddressResponse> getAddress(@PathVariable Long userSeq) {
+  public ResponseEntity<BasicResponse<UserAddressResponse>> getAddress(@PathVariable Long userSeq) {
     UserAddressResponse userAddressResponse = UserAddressResponse.builder()
         .userAddresses(userAddressService.getUserAddress(userSeq)).build();
-    return ResponseEntity.ok(userAddressResponse);
+    return ResponseEntity.status(HttpStatus.OK).body(BasicResponse.success(userAddressResponse));
   }
 
   @PostMapping("/{userSeq}/addresses")
-  public ResponseEntity<UserAddressResponse> registerAddress(@PathVariable Long userSeq,
+  public ResponseEntity<BasicResponse<UserAddressResponse>> registerAddress(
+      @PathVariable Long userSeq,
       @Valid @RequestBody UserAddressRequest userAddressRequest) {
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(userAddressService.registerAddress(userSeq, userAddressRequest));
+        .body(BasicResponse.success(userAddressService.registerAddress(userSeq, userAddressRequest)));
   }
 
   @DeleteMapping("/{userSeq}/addresses/{addressSeq}")
-  public ResponseEntity<Boolean> deleteAddress(@PathVariable Long addressSeq) {
-    return ResponseEntity.status(HttpStatus.OK).body(userAddressService.deleteAddress(addressSeq));
+  public ResponseEntity<BasicResponse<Boolean>> deleteAddress(@PathVariable Long addressSeq) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(BasicResponse.success(userAddressService.deleteAddress(addressSeq)));
   }
-
 }
