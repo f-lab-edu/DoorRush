@@ -56,4 +56,5 @@ public class AuthenticationService {
       throw new SessionLoginIdNotFoundException("세션정보를 찾을 수 없습니다.");
     }
   }
+
 }

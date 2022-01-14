@@ -5,7 +5,7 @@ import static com.flab.doorrush.global.util.CookieUtils.getAutoLoginCookie;
 import com.flab.doorrush.domain.authentication.dto.request.LoginRequest;
 import com.flab.doorrush.domain.authentication.service.AuthenticationService;
 import com.flab.doorrush.domain.user.domain.User;
-import com.flab.doorrush.domain.user.service.UserService;
+import com.flab.doorrush.global.Response.BasicResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,25 +23,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-  private final UserService userService;
   private final AuthenticationService authenticationService;
 
   @PostMapping("/login")
-  public ResponseEntity<HttpStatus> login(@Valid @RequestBody LoginRequest loginRequest,
+  public ResponseEntity<BasicResponse> login(@Valid @RequestBody LoginRequest loginRequest,
       @NotNull HttpSession session, @NotNull HttpServletResponse response) {
 
     User user = authenticationService.login(loginRequest, session);
     if (loginRequest.isAutoLogin()) {
-      Cookie autoLoginCookie = getAutoLoginCookie(user);
+      Cookie autoLoginCookie = getAutoLoginCookie(String.valueOf(user.getUserSeq()));
       response.addCookie(autoLoginCookie);
     }
-    return new ResponseEntity<>(HttpStatus.OK);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 
   @PostMapping("/logout")
   public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
     authenticationService.logout(session);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
 

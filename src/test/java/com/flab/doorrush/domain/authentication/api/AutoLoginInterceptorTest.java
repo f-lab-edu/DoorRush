@@ -2,6 +2,7 @@ package com.flab.doorrush.domain.authentication.api;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.flab.doorrush.global.util.SecurityUtils;
 import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,9 +30,9 @@ class AutoLoginInterceptorTest {
 
   @BeforeEach
   public void setUp() {
-    handler = new MockHandler<AuthenticationController>() {
+    handler = new MockHandler<>() {
       @Override
-      public Object handle(Invocation invocation) throws Throwable {
+      public Object handle(Invocation invocation){
         return authenticationController;
       }
 
@@ -49,12 +50,12 @@ class AutoLoginInterceptorTest {
 
   @Test
   @DisplayName("preHandle 자동 로그인 테스트 결과 false 를 반환한다.")
-  void preHandleAutoLoginTest() throws Exception {
+  void preHandleAutoLoginTest(){
     // Given
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
     Cookie JSESSIONCookie = new MockCookie("JSESSION", "123456789");
-    Cookie AUTOLOGINCookie = new MockCookie("AUTOLOGIN", "25");
+    Cookie AUTOLOGINCookie = new MockCookie("AUTOLOGIN", SecurityUtils.getEncryptedValue("25"));
     request.setCookies(JSESSIONCookie, AUTOLOGINCookie);
 
     // When   Then
@@ -64,7 +65,7 @@ class AutoLoginInterceptorTest {
 
   @Test
   @DisplayName("preHandle 일반 로그인 테스트 결과 true 를 반환한다.")
-  void preHandleLoginTest() throws Exception {
+  void preHandleLoginTest(){
     // Given
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();

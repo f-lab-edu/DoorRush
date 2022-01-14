@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.user.dto.response;
+package com.flab.doorrush.global.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

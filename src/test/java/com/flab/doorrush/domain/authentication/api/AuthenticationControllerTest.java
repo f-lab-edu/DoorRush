@@ -145,7 +145,7 @@ class AuthenticationControllerTest {
         .andDo(print())
         // Then
         .andExpect(cookie().exists("AUTOLOGIN"))
-        .andExpect(cookie().value("AUTOLOGIN", String.valueOf(user.getUserSeq())))
+        .andExpect(cookie().value("AUTOLOGIN", "tWMTd2+86EqA8iNfApsQiQ=="))
         .andExpect(status().isOk());
   }
 

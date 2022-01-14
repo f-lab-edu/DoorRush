@@ -1,10 +1,9 @@
 package com.flab.doorrush.domain.user.api;
 
-import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
-import com.flab.doorrush.domain.user.dto.response.BasicResponse;
+import com.flab.doorrush.global.Response.BasicResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.dto.response.UserAddressResponse;
 import com.flab.doorrush.domain.user.service.UserAddressService;
@@ -36,19 +35,6 @@ public class UserController {
       @Valid @RequestBody JoinUserRequest joinUserRequest) {
     JoinUserResponse userResponse = userService.joinUser(joinUserRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(BasicResponse.success(userResponse));
-  }
-
-  @PostMapping("/login")
-  public ResponseEntity<HttpStatus> login(@RequestBody LoginDto loginDto,
-      HttpSession session) {
-    userService.login(loginDto, session);
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
-  @PostMapping("/logout")
-  public ResponseEntity<BasicResponse> logout(@NotNull HttpSession session) {
-    userService.logout(session);
-    return ResponseEntity.status(HttpStatus.OK).build();
   }
 
   @PatchMapping("/{userSeq}/password")
