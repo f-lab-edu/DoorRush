@@ -1,9 +1,7 @@
 package com.flab.doorrush.global.util;
 
 import javax.servlet.http.Cookie;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CookieUtils {
 
   final static int AUTOLOGIN_COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
