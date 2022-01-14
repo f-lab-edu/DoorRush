@@ -1,14 +1,14 @@
 package com.flab.doorrush.global.util;
 
-import com.flab.doorrush.global.exception.DecryptionByAES256FailException;
-import com.flab.doorrush.global.exception.EncryptionByAES256FailException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class SecurityUtils {
 
@@ -27,10 +27,9 @@ public class SecurityUtils {
       byte[] encryptedValue = cipher.doFinal(value.getBytes(StandardCharsets.UTF_8));
       encryptedValueToString = Base64.getEncoder().encodeToString(encryptedValue);
     } catch (Exception e) {
-      throw new EncryptionByAES256FailException("해당 값의 암호화 실패로 예외가 발생하였습니다.", e);
-    } finally {
-      return encryptedValueToString;
+      log.error("해당 값의 복호화 실패로 예외가 발생하였습니다.", e);
     }
+    return encryptedValueToString;
   }
 
 
@@ -46,9 +45,8 @@ public class SecurityUtils {
       byte[] decryptedBytes = cipher.doFinal(decodedBytes);
       decryptedValue = new String(decryptedBytes);
     } catch (Exception e) {
-      throw new DecryptionByAES256FailException("해당 값의 복호화 실패로 예외가 발생하였습니다.", e);
-    } finally {
-      return decryptedValue;
+      log.error("해당 값의 복호화 실패로 예외가 발생하였습니다.", e);
     }
+    return decryptedValue;
   }
 }

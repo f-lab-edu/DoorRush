@@ -70,19 +70,9 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(NotExistsAddressException.class)
-  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(NotExistsAddressException e) {
+  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(
+      NotExistsAddressException e) {
     log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
-
-  @ExceptionHandler(EncryptionByAES256FailException.class)
-  public void encryptionByAES256FailException(EncryptionByAES256FailException e) {
-    log.error(e.getMessage(), e, e.getCause());
-  }
-
-  @ExceptionHandler(DecryptionByAES256FailException.class)
-  public void decryptionByAES256FailException(DecryptionByAES256FailException e) {
-    log.error(e.getMessage(), e, e.getCause());
-  }
-
 }
