@@ -10,9 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SecurityUtils {
 
-  final static String ALG = "AES/CBC/PKCS5Padding";
+  final private String ALG = "AES/CBC/PKCS5Padding";
   final private String AESKEY = "flabdoorrushboombayahboombayahbo";// 32byte
   final private String AESIV = "jdpureummyeonjae"; //16byte
+
+  public String getALG() {
+    return ALG;
+  }
 
   private String getAESKEY() {
     return AESKEY;
@@ -26,7 +30,7 @@ public class SecurityUtils {
     String encryptedValueToString = "";
     SecurityUtils securityUtils = new SecurityUtils();
     try {
-      Cipher cipher = Cipher.getInstance(ALG);
+      Cipher cipher = Cipher.getInstance(securityUtils.getALG());
       SecretKeySpec keySpec = new SecretKeySpec(securityUtils.getAESKEY().getBytes(), "AES");
       IvParameterSpec ivParameterSpec = new IvParameterSpec(securityUtils.getAESIV().getBytes());
       cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
@@ -44,7 +48,7 @@ public class SecurityUtils {
     String decryptedValue = "";
     SecurityUtils securityUtils = new SecurityUtils();
     try {
-      Cipher cipher = Cipher.getInstance(ALG);
+      Cipher cipher = Cipher.getInstance(securityUtils.getALG());
       SecretKeySpec secretKeySpec = new SecretKeySpec(securityUtils.getAESKEY().getBytes(), "AES");
       IvParameterSpec ivParameterSpec = new IvParameterSpec(securityUtils.getAESIV().getBytes());
       // 복호화 실행 및 인코딩 설정값 입력
