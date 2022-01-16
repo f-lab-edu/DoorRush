@@ -38,7 +38,7 @@ public class UserAddressService {
         .spotY(address.getSpotY())
         .spotX(address.getSpotX())
         .addressDetail(address.getAddressDetail())
-        .ynStatus(userAddressRequest.getYnStatus()).build();
+        .defaultYn(userAddressRequest.getDefaultYn()).build();
 
     userAddressMapper.insertUserAddress(userAddress);
 
@@ -54,7 +54,7 @@ public class UserAddressService {
 
   private boolean shouldUpdateUserAddress(Long userSeq, UserAddressRequest userAddressRequest) {
     return userAddressMapper.isExistsDefaultAddress(userSeq)
-        && userAddressRequest.isDefault(userAddressRequest.getYnStatus());
+        && userAddressRequest.isDefault(userAddressRequest.getDefaultYn());
   }
 
 }
