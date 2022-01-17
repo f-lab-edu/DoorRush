@@ -54,7 +54,14 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(NotExistsAddressException.class)
-  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(NotExistsAddressException e) {
+  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(
+      NotExistsAddressException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
+  }
+
+  @ExceptionHandler(KakaoApiResponseException.class)
+  public ResponseEntity<BasicResponse<String>> KakaoApiResponseException(
+      KakaoApiResponseException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
 
