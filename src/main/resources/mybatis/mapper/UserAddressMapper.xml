@@ -13,7 +13,7 @@
            A.SPOT_Y,
            A.SPOT_X,
            A.ADDRESS_DETAIL,
-           B.DEFAULT_STATUS
+           B.DEFAULT_YN
     FROM ADDRESS A
            INNER JOIN USER_ADDRESS_MAPPING B
                       ON A.ADDRESS_SEQ = B.ADDRESS_SEQ
@@ -32,7 +32,7 @@
   <insert id="insertUserAddress"
     parameterType="com.flab.doorrush.domain.user.domain.UserAddress"
     keyProperty="userAddressSeq" useGeneratedKeys="true">
-    INSERT INTO `USER_ADDRESS_MAPPING` (`USER_SEQ`, `ADDRESS_SEQ`, `DEFAULT_STATUS`)
+    INSERT INTO `USER_ADDRESS_MAPPING` (`USER_SEQ`, `ADDRESS_SEQ`, `DEFAULT_YN`)
     VALUES (#{userSeq},
             #{addressSeq},
             #{ynStatus})
@@ -40,15 +40,15 @@
 
   <select id="isExistsDefaultAddress" parameterType="Long" resultType="boolean">
     SELECT EXISTS
-             (SELECT DEFAULT_STATUS
+             (SELECT DEFAULT_YN
               FROM USER_ADDRESS_MAPPING
               WHERE USER_SEQ = #{userSeq}
-                and DEFAULT_STATUS = 'Y')
+                and DEFAULT_YN = 'Y')
   </select>
 
   <update id="updateUserAddress" parameterType="Long">
     UPDATE USER_ADDRESS_MAPPING
-    SET DEFAULT_STATUS = 'N'
+    SET DEFAULT_YN = 'N'
     WHERE USER_SEQ = #{userSeq}
   </update>
 
