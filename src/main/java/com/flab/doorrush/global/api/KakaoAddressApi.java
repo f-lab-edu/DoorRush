@@ -23,19 +23,6 @@ public class KakaoAddressApi {
   @Value("${AUTHORIZATION}")
   private String AUTHORIZATION;
 
-  private ResponseEntity<KakaoApiGetAddressResponse> connectApi(URI url) {
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Authorization", "KakaoAK " + AUTHORIZATION);
-    headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-    headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8");
-
-    RestTemplate restTemplate = new RestTemplate();
-    HttpEntity entity = new HttpEntity<>(headers);
-
-    return restTemplate.exchange(url, HttpMethod.GET, entity, KakaoApiGetAddressResponse.class);
-  }
-
   public AddressDetail getAddressBySpot(KakaoApiGetAddressRequest getAddressRequest) {
 
     String apiUrl = "https://dapi.kakao.com/v2/local/geo/coord2address.json";
@@ -46,7 +33,16 @@ public class KakaoAddressApi {
         .build()
         .toUri();
 
-    ResponseEntity<KakaoApiGetAddressResponse> response = connectApi(url);
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Authorization", "KakaoAK " + AUTHORIZATION);
+    headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+    headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8");
+
+    RestTemplate restTemplate = new RestTemplate();
+    HttpEntity entity = new HttpEntity<>(headers);
+    ResponseEntity<KakaoApiGetAddressResponse> response = restTemplate.exchange(url, HttpMethod.GET,
+        entity, KakaoApiGetAddressResponse.class);
+
     return getAddressDetail(response.getBody());
   }
 

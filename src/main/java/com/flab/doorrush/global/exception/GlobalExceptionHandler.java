@@ -1,5 +1,6 @@
 package com.flab.doorrush.global.exception;
 
+import com.flab.doorrush.domain.order.exception.OrderException;
 import com.flab.doorrush.domain.user.dto.response.BasicResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.user.exception.IdNotFoundException;
@@ -62,6 +63,12 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(KakaoApiResponseException.class)
   public ResponseEntity<BasicResponse<String>> KakaoApiResponseException(
       KakaoApiResponseException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
+  }
+
+  @ExceptionHandler(OrderException.class)
+  public ResponseEntity<BasicResponse<String>> KakaoApiResponseException(
+      OrderException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
 

@@ -20,28 +20,30 @@ VALUES ('1', '13561', '37.35951219616309', '127.10522081658463', '301호'),
        ('9', '18869', '16.4507212341', '116.570667', '103호'),
        ('10', '14436', '37.078956155887', '127.423084873712', '105호');
 
-INSERT INTO `USER_ADDRESS_MAPPING` (`USER_ADDRESS_SEQ`, `USER_SEQ`, `ADDRESS_SEQ`, `DEFAULT_STATUS`)
+INSERT INTO `USER_ADDRESS_MAPPING` (`USER_ADDRESS_SEQ`, `USER_SEQ`, `ADDRESS_SEQ`,
+                                    `DEFAULT_YN`)
 VALUES ('1', '25', '1', 'Y'),
        ('2', '25', '2', 'N'),
        ('3', '23', '3', 'Y'),
        ('4', '23', '4', 'N');
 
-INSERT INTO `RESTAURANT` (`RESTAURANT_SEQ`, `OWNER_SEQ`, `CATEGORY`, `OPEN_STATUS`,
-                          `RESTAURANT_NAME`, `INFO`, `MINIMUM_ORDER_AMOUNT`,
-                          `ADDRESS_SEQ`, `NUMBER_OF_ORDERS`, `INPUT_DATE`, `UPDATE_DATE`)
-VALUES ('1', '1', '중식', 'Y', '중식중 최고집', '증식집 중 최고를 자랑합니다.', 12000, 5, 23, NOW(), null),
-       ('2', '5', '양식', 'Y', '양식중 최고집', '양식집 중 최고를 자랑합니다.', 15000, 6, 1014, NOW(), null),
-       ('3', '43', '일식', 'Y', '칸지돈부리', '10년 동안 돈부리만 고집한 사람이 차린 돈부리집.', 9000, 7, 405, NOW(), null),
-       ('4', '62', '중식', 'N', '성화반점', '탕수육이 기가 막힌집.', 7500, 8, 555, NOW(), null),
-       ('5', '12', '동남아', 'Y', '팟타이타이', '팟타이 맛집을 찾으신다면 여기가 답입니다. ', 13000, 9, 305, NOW(), null),
-       ('6', '1', '분식', 'Y', '떡순이네', '쌀떡과 부산오뎅의 기가막힌 조합 떡순이네', 12000, 10, 288, NOW(), null);
+INSERT INTO `RESTAURANT` (`RESTAURANT_SEQ`, `OWNER_SEQ`, `CATEGORY`, `OPEN_YN`,
+                          `RESTAURANT_NAME`, `INTRODUCTION`, `MINIMUM_ORDER_AMOUNT`,
+                          `ADDRESS_SEQ`, `INPUT_DATE`, `UPDATE_DATE`)
+VALUES ('1', '1', '중식', 'Y', '중식중 최고집', '증식집 중 최고를 자랑합니다.', 12000, 5, NOW(), null),
+       ('2', '2', '양식', 'Y', '양식중 최고집', '양식집 중 최고를 자랑합니다.', 15000, 6, NOW(), null),
+       ('3', '3', '일식', 'Y', '칸지돈부리', '10년 동안 돈부리만 고집한 사람이 차린 돈부리집.', 9000, 7, NOW(), null),
+       ('4', '4', '중식', 'N', '성화반점', '탕수육이 기가 막힌집.', 7500, 8, NOW(), null),
+       ('5', '5', '동남아', 'Y', '팟타이타이', '팟타이 맛집을 찾으신다면 여기가 답입니다. ', 13000, 9, NOW(), null),
+       ('6', '1', '분식', 'Y', '떡순이네', '쌀떡과 부산오뎅의 기가막힌 조합 떡순이네', 12000, 10, NOW(), null);
 
-INSERT INTO `ORDER` (ORDER_SEQ, USER_SEQ, ADDRESS, RESTAURANT_SEQ, ORDER_STATUS, AMOUNT, ORDER_TIME)
-VALUES ('1', '25', '경기도 남양주 123-12', '3', 2, 17500, NOW()),
-       ('2', '25', '서울특별시 강남구 55-8', '3', 2, 18500, NOW()),
-       ('3', '25', '분당구 불정로 66', '3', 2, 19500, NOW()),
-       ('4', '23', '분당구 불정로 66', '1', 2, 20500, NOW()),
-       ('5', '23', '분당구 불정로 66', '1', 1, 33500, NOW());
+INSERT INTO `ORDER` (ORDER_SEQ, USER_SEQ, ADDRESS, RESTAURANT_SEQ, RESTAURANT_NAME, ORDER_STATUS,
+                     AMOUNT, ORDER_TIME)
+VALUES ('1', '25', '경기도 남양주 123-12', 3, '칸지돈부리', 2, 17500, NOW()),
+       ('2', '25', '서울특별시 강남구 55-8', 3, '칸지돈부리', 2, 18500, NOW()),
+       ('3', '25', '분당구 불정로 66', 3, '칸지돈부리', 2, 19500, NOW()),
+       ('4', '23', '분당구 불정로 66', 1, '중식중 최고집', 2, 20500, NOW()),
+       ('5', '23', '분당구 불정로 66', 1, '중식중 최고집', 1, 33500, NOW());
 
 INSERT INTO `MENU` (`MENU_SEQ`, `RESTAURANT_SEQ`, `NAME`, `PRICE`)
 VALUES ('1', '1', '짜장면', 7500),
@@ -55,7 +57,3 @@ VALUES ('1', '1', '짜장면', 7500),
        ('9', '3', '규동', 9000),
        ('10', '3', '믹스나베', 11500),
        ('11', '3', '김치나베', 11000);
-
-
-
-
