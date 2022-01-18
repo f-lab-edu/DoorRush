@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class MenuDto {
+public class Menu {
   @NotNull
   private Long menuSeq;
   @NotNull

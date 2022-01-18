@@ -10,7 +10,7 @@ import lombok.Getter;
 public class OrderRequest {
 
   @NotNull
-  private List<MenuDto> menus;
+  private List<Menu> menus;
   @NotNull
   private Long restaurantSeq;
   @NotNull

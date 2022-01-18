@@ -4,7 +4,7 @@ import com.flab.doorrush.domain.order.dao.OrderMapper;
 import com.flab.doorrush.domain.order.domain.Order;
 import com.flab.doorrush.domain.order.domain.OrderMenu;
 import com.flab.doorrush.domain.order.domain.OrderStatus;
-import com.flab.doorrush.domain.order.dto.request.MenuDto;
+import com.flab.doorrush.domain.order.dto.request.Menu;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
 import com.flab.doorrush.domain.order.exception.OrderException;
@@ -69,13 +69,13 @@ public class OrderService {
     return addressDetail.getOriginAddress();
   }
 
-  private void addOrderMenu(List<MenuDto> menus, Long orderSeq) {
+  private void addOrderMenu(List<Menu> menus, Long orderSeq) {
     List<OrderMenu> orderMenus = new ArrayList<>();
     menus.forEach(menu -> orderMenus.add(menu.toEntity(orderSeq)));
     orderMapper.insertOrderMenu(orderMenus);
   }
 
-  public Long getTotalPrice(List<MenuDto> menus) {
+  public Long getTotalPrice(List<Menu> menus) {
     return orderMapper.selectTotalPrice(menus);
   }
 }

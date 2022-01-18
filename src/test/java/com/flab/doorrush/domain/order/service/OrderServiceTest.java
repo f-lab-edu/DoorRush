@@ -3,7 +3,7 @@ package com.flab.doorrush.domain.order.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.flab.doorrush.domain.order.dao.OrderMapper;
-import com.flab.doorrush.domain.order.dto.request.MenuDto;
+import com.flab.doorrush.domain.order.dto.request.Menu;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
 import com.flab.doorrush.domain.order.dto.response.OrderHistory;
@@ -27,16 +27,16 @@ class OrderServiceTest {
   @Autowired
   OrderMapper orderMapper;
 
-  List<MenuDto> orderMenus;
+  List<Menu> orderMenus;
 
   @BeforeEach
   public void setUp() {
     orderMenus = Arrays.asList(
-        new MenuDto(7L,  1),
-        new MenuDto(8L, 1),
-        new MenuDto(9L, 1),
-        new MenuDto(10L, 1),
-        new MenuDto(11L, 2)
+        new Menu(7L,  1),
+        new Menu(8L, 1),
+        new Menu(9L, 1),
+        new Menu(10L, 1),
+        new Menu(11L, 2)
     );
   }
 
@@ -64,10 +64,10 @@ class OrderServiceTest {
   @DisplayName("총 금액 조회 성공 테스트")
   public void getTotalPrice() {
     // Given
-    List<MenuDto> list = new ArrayList<>();
+    List<Menu> list = new ArrayList<>();
     list = Arrays.asList(
-        (new MenuDto(1L,2)),
-        (new MenuDto(2L,3)));
+        (new Menu(1L,2)),
+        (new Menu(2L,3)));
     // When
     Long totalPrice = orderService.getTotalPrice(list);
 

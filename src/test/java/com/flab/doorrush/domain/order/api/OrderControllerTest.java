@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flab.doorrush.domain.order.dto.request.MenuDto;
+import com.flab.doorrush.domain.order.dto.request.Menu;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ class OrderControllerTest {
   @Autowired
   ObjectMapper objectMapper;
 
-  private static List<MenuDto> orderMenus;
+  private static List<Menu> orderMenus;
   private static ValidatorFactory factory;
   private static Validator validator;
 
@@ -50,11 +50,11 @@ class OrderControllerTest {
     validator = factory.getValidator();
 
     orderMenus = Arrays.asList(
-        new MenuDto(7L,  1),
-        new MenuDto(8L, 1),
-        new MenuDto(9L, 1),
-        new MenuDto(10L, 1),
-        new MenuDto(11L, 2)
+        new Menu(7L,  1),
+        new Menu(8L, 1),
+        new Menu(9L, 1),
+        new Menu(10L, 1),
+        new Menu(11L, 2)
     );
   }
 

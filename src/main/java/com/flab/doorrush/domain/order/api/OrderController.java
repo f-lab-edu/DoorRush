@@ -1,6 +1,6 @@
 package com.flab.doorrush.domain.order.api;
 
-import com.flab.doorrush.domain.order.dto.request.MenuDto;
+import com.flab.doorrush.domain.order.dto.request.Menu;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
 import com.flab.doorrush.domain.order.service.OrderService;
@@ -25,7 +25,7 @@ public class OrderController {
   private final OrderService orderService;
 
   @GetMapping("checkPrice")
-  public ResponseEntity<BasicResponse<Long>> checkPrice(@RequestBody @Valid List<MenuDto> menus) {
+  public ResponseEntity<BasicResponse<Long>> checkPrice(@RequestBody @Valid List<Menu> menus) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(BasicResponse.success(orderService.getTotalPrice(menus)));
   }
