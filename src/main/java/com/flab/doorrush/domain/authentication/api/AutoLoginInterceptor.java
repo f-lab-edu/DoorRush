@@ -1,5 +1,8 @@
 package com.flab.doorrush.domain.authentication.api;
 
+
+import static com.flab.doorrush.global.util.CookieUtils.AUTOLOGIN_COOKIE_NAME;
+
 import com.flab.doorrush.domain.authentication.service.AuthenticationService;
 import com.flab.doorrush.global.util.SecurityUtils;
 import javax.annotation.Resource;
@@ -24,7 +27,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
       return result;
     }
     for (Cookie cookie : cookies) {
-      if (cookie.getName().equals("AUTOLOGIN")) {
+      if (cookie.getName().equals(AUTOLOGIN_COOKIE_NAME)) {
         String autoLoginCookieValue = cookie.getValue();
         String decryptedAutoLoginCookieValue = SecurityUtils.getDecryptedValue(
             autoLoginCookieValue);

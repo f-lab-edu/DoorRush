@@ -1,12 +1,13 @@
 package com.flab.doorrush.domain.authentication.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
 @Getter
+@Builder
 @AllArgsConstructor
 public class LoginRequest {
 
@@ -17,5 +18,6 @@ public class LoginRequest {
   private String password;
 
   @NotNull
+  @JsonProperty("autoLogin")
   private boolean isAutoLogin;
 }

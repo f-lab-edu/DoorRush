@@ -23,18 +23,19 @@ public class AuthenticationService {
 
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
+  public final  String LOGIN_SESSION = "loginId";
 
 
   public User login(LoginRequest loginRequest, @NotNull HttpSession session) {
-    if (loginRequest.getId().equals(session.getAttribute("loginId"))) {
+    if (loginRequest.getId().equals(session.getAttribute(LOGIN_SESSION))) {
       throw new SessionAuthenticationException("이미 해당 아이디로 로그인 중 입니다.");
     }
     User user = userMapper.selectUserById(loginRequest.getId())
         .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
     if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-      session.setAttribute("loginId", loginRequest.getId());
+      session.setAttribute(LOGIN_SESSION, loginRequest.getId());
     } else if (loginRequest.getPassword().equals(user.getPassword())) {
-      session.setAttribute("loginId", loginRequest.getId());
+      session.setAttribute(LOGIN_SESSION, loginRequest.getId());
     } else {
       throw new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다.");
     }

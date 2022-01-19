@@ -2,6 +2,7 @@ package com.flab.doorrush.domain.authentication.api;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.flab.doorrush.global.util.CookieUtils;
 import com.flab.doorrush.global.util.SecurityUtils;
 import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +56,7 @@ class AutoLoginInterceptorTest {
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
     Cookie JSESSIONCookie = new MockCookie("JSESSION", "123456789");
-    Cookie AUTOLOGINCookie = new MockCookie("AUTOLOGIN", SecurityUtils.getEncryptedValue("25"));
+    Cookie AUTOLOGINCookie = new MockCookie(CookieUtils.AUTOLOGIN_COOKIE_NAME, SecurityUtils.getEncryptedValue("25"));
     request.setCookies(JSESSIONCookie, AUTOLOGINCookie);
 
     // When   Then

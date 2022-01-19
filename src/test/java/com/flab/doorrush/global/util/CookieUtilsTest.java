@@ -1,5 +1,6 @@
 package com.flab.doorrush.global.util;
 
+import static com.flab.doorrush.global.util.CookieUtils.AUTOLOGIN_COOKIE_NAME;
 import static org.junit.jupiter.api.Assertions.*;
 
 import javax.servlet.http.Cookie;
@@ -23,7 +24,7 @@ class CookieUtilsTest {
     // When
     Cookie autoLoginCookie = CookieUtils.getAutoLoginCookie(testValue);
     // Then
-    assertEquals("AUTOLOGIN", autoLoginCookie.getName());
+    assertEquals(AUTOLOGIN_COOKIE_NAME, autoLoginCookie.getName());
     assertEquals(SecurityUtils.getEncryptedValue("testvaluetestvalue"), autoLoginCookie.getValue());
     assertEquals("testvaluetestvalue", SecurityUtils.getDecryptedValue(autoLoginCookie.getValue()));
   }
