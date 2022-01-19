@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class GetAddressInfoVO {
+public class GetAddressInfo {
 
   @JsonProperty("road_address")
-  private RoadAddressVO roadAddress;
+  private RoadAddress roadAddress;
 
-  private AddressVO address;
+  private Address address;
 
 }

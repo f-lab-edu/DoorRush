@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AddressDetailVO {
+public class AddressDetail {
 
   private String roadAddress;
   private String buildingName;

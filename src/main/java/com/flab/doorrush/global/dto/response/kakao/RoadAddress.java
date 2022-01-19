@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class AddressVO {
+public class RoadAddress {
 
   @JsonProperty("address_name")
   private String addressName;
@@ -18,17 +18,23 @@ public class AddressVO {
   @JsonProperty("region_3depth_name")
   private String region3DepthName;
 
-  @JsonProperty("mountain_yn")
-  private String mountainYn;
+  @JsonProperty("road_name")
+  private String roadName;
 
-  @JsonProperty("main_address_no")
-  private String mainAddressNo;
+  @JsonProperty("underground_yn")
+  private String undergroundYn;
 
-  @JsonProperty("sub_address_no")
-  private String subAddressNo;
+  @JsonProperty("main_building_no")
+  private String mainBuildingNo;
 
-  @JsonProperty("zip_code")
-  private String zipCode;
+  @JsonProperty("sub_building_no")
+  private String subBuildingNo;
+
+  @JsonProperty("building_name")
+  private String buildingName;
+
+  @JsonProperty("zone_no")
+  private String zoneNo;
 
   public boolean isExist() {
     return addressName.isEmpty();

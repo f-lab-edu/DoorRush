@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 public class KakaoApiGetAddressResponse {
 
-  private MetaVO meta;
-  private List<GetAddressInfoVO> documents;
+  private Meta meta;
+  private List<GetAddressInfo> documents;
 
-  public GetAddressInfoVO getFirstIndex() {
+  public GetAddressInfo getFirstIndex() {
     return documents.get(0);
   }
 

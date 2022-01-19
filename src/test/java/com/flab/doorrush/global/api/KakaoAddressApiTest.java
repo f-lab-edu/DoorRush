@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.flab.doorrush.global.dto.request.KakaoApiGetAddressRequest;
-import com.flab.doorrush.global.dto.response.kakao.AddressDetailVO;
+import com.flab.doorrush.global.dto.response.kakao.AddressDetail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ class KakaoAddressApiTest {
   @Test
   @DisplayName("좌표로 주소 받아오는 API 성공 테스트")
   public void getAddressSuccessTest() {
-    AddressDetailVO result = kakaoAddressApi.getAddressBySpot(KakaoApiGetAddressRequest.builder()
+    AddressDetail result = kakaoAddressApi.getAddressBySpot(KakaoApiGetAddressRequest.builder()
         .x("127.423084873712")
         .y("37.0789561558879")
         .build());

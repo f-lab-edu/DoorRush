@@ -1,7 +1,7 @@
 package com.flab.doorrush.global.api;
 
 import com.flab.doorrush.global.dto.request.KakaoApiGetAddressRequest;
-import com.flab.doorrush.global.dto.response.kakao.AddressDetailVO;
+import com.flab.doorrush.global.dto.response.kakao.AddressDetail;
 import com.flab.doorrush.global.dto.response.kakao.KakaoApiGetAddressResponse;
 import com.flab.doorrush.global.exception.KakaoApiResponseException;
 import java.net.URI;
@@ -32,7 +32,7 @@ public class KakaoAddressApi {
   public static final String KAKAO_HOST = "https://dapi.kakao.com";
   public static final String KAKAO_URL = "/v2/local/geo/coord2address.json";
 
-  public AddressDetailVO getAddressBySpot(KakaoApiGetAddressRequest getAddressRequest) {
+  public AddressDetail getAddressBySpot(KakaoApiGetAddressRequest getAddressRequest) {
 
     URI url = UriComponentsBuilder.fromHttpUrl(KAKAO_HOST + KAKAO_URL)
         .queryParam("x", getAddressRequest.getX())
@@ -54,7 +54,7 @@ public class KakaoAddressApi {
     return getAddressDetail(Objects.requireNonNull(response.getBody()));
   }
 
-  public static AddressDetailVO getAddressDetail(KakaoApiGetAddressResponse response) {
+  public static AddressDetail getAddressDetail(KakaoApiGetAddressResponse response) {
 
     if (response.getMeta().isInvalid()) {
       throw new KakaoApiResponseException("API 응답결과가 없습니다.");
@@ -70,6 +70,6 @@ public class KakaoAddressApi {
     if (!response.getFirstIndex().getAddress().isExist()) {
       originAddress = response.getFirstIndex().getAddress().getAddressName();
     }
-    return new AddressDetailVO(roadAddress, buildingName, originAddress);
+    return new AddressDetail(roadAddress, buildingName, originAddress);
   }
 }
