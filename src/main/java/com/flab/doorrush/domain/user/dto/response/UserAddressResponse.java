@@ -17,7 +17,7 @@ public class UserAddressResponse {
   private Double spotY;
   private Double spotX;
   private String addressDetail;
-  private YnStatus ynStatus;
+  private YnStatus defaultYn;
   private List<UserAddressResponse> userAddresses;
 
   public static UserAddressResponse from(UserAddress userAddress) {
@@ -28,7 +28,7 @@ public class UserAddressResponse {
             .spotX(userAddress.getSpotX())
             .spotY(userAddress.getSpotY())
             .addressDetail(userAddress.getAddressDetail())
-            .ynStatus(userAddress.getYnStatus())
+            .defaultYn(userAddress.getDefaultYn())
             .build();
   }
 

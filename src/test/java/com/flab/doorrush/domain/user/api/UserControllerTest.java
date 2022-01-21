@@ -235,7 +235,7 @@ class UserControllerTest {
     // Given
     Long userSeq = 25L;
     UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .ynStatus(YnStatus.Y)
+        .defaultYn(YnStatus.Y)
         .spotY(127.5589423533)
         .spotX(27.1577889123)
         .post("14485")
@@ -262,7 +262,7 @@ class UserControllerTest {
     // Given
     Long userSeq = 25L;
     UserAddressRequest userAddressRequest = UserAddressRequest.builder()
-        .ynStatus(YnStatus.Y)
+        .defaultYn(YnStatus.Y)
         .spotY(127.5589423533)
         .spotX(27.1577889123)
         .build();
