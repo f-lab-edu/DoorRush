@@ -45,7 +45,8 @@
 
   <update id="updatePassword" parameterType="com.flab.doorrush.domain.user.domain.User">
     UPDATE USER
-    SET PASSWORD = #{password}
+    SET PASSWORD    = #{password},
+        UPDATE_DATE = NOW()
     WHERE USER_SEQ = #{userSeq}
   </update>
 
