@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.doorrush.domain.user.domain.YnStatus;
-import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.request.UserAddressRequest;
@@ -29,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,104 +117,7 @@ class UserControllerTest {
         // Then
         .andExpect(status().isBadRequest())
         .andDo(print());
-
   }
-
-  @Test
-  @DisplayName("로그인 성공 테스트 상태값 200을 발생시킨다.")
-  public void loginSuccessTest() throws Exception {
-    // Given
-    LoginDto loginDto = new LoginDto("test6", "test6pw");
-    String content = objectMapper.writeValueAsString(loginDto);
-    MockHttpSession mockHttpSession = new MockHttpSession();
-
-    // When
-    mockMvc.perform(post("/users/login").content(content)
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        // Then
-        .andExpect(status().isOk());
-  }
-
-  @Test
-  @DisplayName("로그인 실패 테스트 상태값 404를 발생시킨다.")
-  public void loginFailTest() throws Exception {
-    // Given
-    LoginDto loginDto = new LoginDto("test6", "test12345567pw");
-    String content = objectMapper.writeValueAsString(loginDto);
-    MockHttpSession mockHttpSession = new MockHttpSession();
-
-    // When
-    mockMvc.perform(post("/users/login").content(content)
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        // Then
-        .andExpect(status().isNotFound());
-  }
-
-  @Test
-  @DisplayName("중복 로그인 실패 테스트 상태값 403을 발생시킨다.")
-  public void loginFailDuplicatedLoginTest() throws Exception {
-    // Given
-    LoginDto loginDto = new LoginDto("test6", "test6pw");
-    String content = objectMapper.writeValueAsString(loginDto);
-    MockHttpSession mockHttpSession = new MockHttpSession();
-
-    mockMvc.perform(post("/users/login").content(content)
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk());
-
-    // When
-    mockMvc.perform(post("/users/login").content(content)
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        // Then
-        .andExpect(status().isForbidden());
-
-  }
-
-  @Test
-  @DisplayName("로그아웃 성공 테스트 상태값 200을 발생시킨다.")
-  public void logoutSuccessTest() throws Exception {
-    // Given
-    MockHttpSession mockHttpSession = new MockHttpSession();
-    mockHttpSession.setAttribute("loginId", "yes");
-
-    // When
-    mockMvc.perform(post("/users/logout")
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        // Then
-        .andExpect(status().isOk());
-  }
-
-  @Test
-  @DisplayName("로그아웃 실패 테스트 상태값 404를 발생시킨다.")
-  public void logoutFailTest() throws Exception {
-    // Given
-    MockHttpSession mockHttpSession = new MockHttpSession();
-
-    // When
-    mockMvc.perform(post("/users/logout")
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        // Then
-        .andExpect(status().isNotFound());
-  }
-
   @Test
   @DisplayName("비밀번호 변경 성공 테스트 200을 반환")
   public void changePasswordSuccessTest() throws Exception {

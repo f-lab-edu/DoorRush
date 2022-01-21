@@ -1,22 +1,14 @@
 package com.flab.doorrush.domain.user.service;
 
-import static java.util.Objects.isNull;
-
+import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.domain.User;
-import com.flab.doorrush.domain.user.dto.LoginDto;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.dto.response.JoinUserResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
-import com.flab.doorrush.domain.user.exception.IdNotFoundException;
-import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
-import com.flab.doorrush.domain.user.exception.SessionAuthenticationException;
-import com.flab.doorrush.domain.user.exception.SessionLoginIdNotFoundException;
 import com.flab.doorrush.domain.user.exception.UserNotFoundException;
-import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,33 +34,7 @@ public class UserService {
   public FindUserResponse getUserById(String userId) {
     User user = userMapper.selectUserById(userId)
         .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
-
     return FindUserResponse.from(user);
-  }
-
-
-  public void login(LoginDto loginDto, HttpSession session) {
-    if (loginDto.getId().equals(session.getAttribute("loginId"))) {
-      throw new SessionAuthenticationException("이미 해당 아이디로 로그인 중 입니다.");
-    }
-
-    User user = userMapper.selectUserById(loginDto.getId())
-        .orElseThrow(() -> new IdNotFoundException("등록된 아이디가 없습니다."));
-
-    if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-      session.setAttribute("loginId", loginDto.getId());
-    } else {
-      throw new InvalidPasswordException("아이디 혹은 패스워드가 일치하지 않습니다.");
-    }
-  }
-
-
-  public void logout(@NotNull HttpSession session) {
-    if (!isNull(session.getAttribute("loginId"))) {
-      session.invalidate();
-    } else {
-      throw new SessionLoginIdNotFoundException("세션정보를 찾을 수 없습니다.");
-    }
   }
 
   public boolean changePassword(Long userSeq, ChangePasswordRequest changePasswordRequest) {
@@ -79,7 +45,6 @@ public class UserService {
         .userSeq(userSeq)
         .password(passwordEncoder.encode(changePasswordRequest.getNewPassword()))
         .build();
-
     return userMapper.updatePassword(user) == 1;
   }
 

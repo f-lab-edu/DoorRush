@@ -42,7 +42,6 @@ class UserMapperTest {
 
     // Then
     assertThat(user.getUserSeq()).isNotNull();
-
   }
 
   @Test
