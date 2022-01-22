@@ -14,6 +14,6 @@ public class UserAddress {
   private Double spotY;
   private Double spotX;
   private String addressDetail;
-  private YnStatus ynStatus;
+  private YnStatus defaultYn;
 
 }

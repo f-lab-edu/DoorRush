@@ -21,10 +21,10 @@ public class UserAddressRequest {
   @NotNull
   private String addressDetail;
   @NotNull
-  private YnStatus ynStatus;
+  private YnStatus defaultYn;
 
-  public boolean isDefault(YnStatus ynStatus) {
-    return ynStatus.getYnValue();
+  public boolean isDefault(YnStatus defaultStatusYn) {
+    return defaultStatusYn.getYnValue();
   }
 
   public Address toEntity() {
