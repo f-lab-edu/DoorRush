@@ -7,6 +7,12 @@ VALUES ('1', 'test1', 'test1pw', '11', '01000000001', '1@naver.com'),
        ('25', 'test6', '$2a$10$n87tHz0k0YzazutVDnZg3.BcD5kvDiPM/osWDhlKcZCDCf2g7zCse', '66',
         '01000000001', '6@naver.com');
 
+INSERT INTO `OWNER` (`OWNER_SEQ`, `LOGIN_ID`, `PASSWORD`)
+VALUES ('1', 'owner1', 'owner1pw'),
+       ('2', 'owner2', 'owner2pw'),
+       ('3', 'owner3', 'owner3pw'),
+       ('4', 'owner4', 'owner4pw'),
+       ('5', 'owner5', 'owner5pw');
 
 INSERT INTO `ADDRESS` (`ADDRESS_SEQ`, `POST`, `SPOT_Y`, `SPOT_X`, `ADDRESS_DETAIL`)
 VALUES ('1', '13561', '37.35951219616309', '127.10522081658463', '301호'),

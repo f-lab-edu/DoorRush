@@ -21,4 +21,6 @@ public interface UserAddressMapper {
   int deleteAddress(Long addressSeq);
 
   boolean isExistsAddress(Long addressSeq);
+
+  Long selectAddressSeq(Address address);
 }

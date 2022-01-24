@@ -56,7 +56,8 @@ public class UserController {
       @PathVariable Long userSeq,
       @Valid @RequestBody UserAddressRequest userAddressRequest) {
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(BasicResponse.success(userAddressService.registerAddress(userSeq, userAddressRequest)));
+        .body(
+            BasicResponse.success(userAddressService.registerAddress(userSeq, userAddressRequest)));
   }
 
   @DeleteMapping("/{userSeq}/addresses/{addressSeq}")

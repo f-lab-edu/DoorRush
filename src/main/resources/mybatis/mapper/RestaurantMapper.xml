@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.doorrush.domain.restaurant.dao.RestaurantMapper">
+
+  <insert id="insertRestaurant"
+    parameterType="com.flab.doorrush.domain.restaurant.domain.Restaurant"
+    keyProperty="restaurantSeq" useGeneratedKeys="true">
+    INSERT INTO RESTAURANT (OWNER_SEQ,
+                            CATEGORY,
+                            OPEN_YN,
+                            RESTAURANT_NAME,
+                            INTRODUCTION,
+                            MINIMUM_ORDER_AMOUNT,
+                            ADDRESS_SEQ)
+    VALUES ( #{ownerSeq}
+           , #{category}
+           , #{openYN}
+           , #{restaurantName}
+           , #{introduction}
+           , #{minimumOrderAmount}
+           , #{addressSeq})
+  </insert>
+
+  <select id="selectRestaurantByRestaurantSeq"
+    parameterType="Long"
+    resultType="com.flab.doorrush.domain.restaurant.domain.Restaurant">
+    SELECT RESTAURANT_SEQ,
+           OWNER_SEQ,
+           CATEGORY,
+           OPEN_YN,
+           RESTAURANT_NAME,
+           INTRODUCTION,
+           MINIMUM_ORDER_AMOUNT,
+           ADDRESS_SEQ
+    FROM RESTAURANT
+    WHERE RESTAURANT_SEQ = #{restaurantSeq}
+  </select>
+
+  <select id="selectRestaurantSeq"
+    parameterType="com.flab.doorrush.domain.restaurant.domain.Restaurant"
+    resultType="Long">
+    SELECT RESTAURANT_SEQ
+    FROM RESTAURANT
+    WHERE OWNER_SEQ = #{ownerSeq}
+      AND CATEGORY = #{category}
+      AND OPEN_YN = #{openYN}
+      AND RESTAURANT_NAME = #{restaurantName}
+      AND INTRODUCTION = #{introduction}
+      AND MINIMUM_ORDER_AMOUNT = #{minimumOrderAmount}
+      AND ADDRESS_SEQ = #{addressSeq};
+  </select>
+</mapper>
