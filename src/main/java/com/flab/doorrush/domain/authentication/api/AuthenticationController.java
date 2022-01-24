@@ -2,6 +2,7 @@ package com.flab.doorrush.domain.authentication.api;
 
 import static com.flab.doorrush.global.util.CookieUtils.getAutoLoginCookie;
 
+import com.flab.doorrush.domain.authentication.annotation.CheckLogin;
 import com.flab.doorrush.domain.authentication.dto.request.LoginRequest;
 import com.flab.doorrush.domain.authentication.service.AuthenticationService;
 import com.flab.doorrush.domain.user.domain.User;
@@ -26,7 +27,7 @@ public class AuthenticationController {
   private final AuthenticationService authenticationService;
 
   @PostMapping("/login")
-  public ResponseEntity<BasicResponse> login(@Valid @RequestBody LoginRequest loginRequest,
+  public ResponseEntity<BasicResponse<Void>> login(@Valid @RequestBody LoginRequest loginRequest,
       @NotNull HttpSession session, @NotNull HttpServletResponse response) {
 
     User user = authenticationService.login(loginRequest, session);
@@ -38,8 +39,14 @@ public class AuthenticationController {
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<HttpStatus> logout(@NotNull HttpSession session) {
+  public ResponseEntity<BasicResponse<Void>> logout(@NotNull HttpSession session) {
     authenticationService.logout(session);
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @CheckLogin
+  @PostMapping("/checklogintest")
+  public ResponseEntity<HttpStatus> checkLoginAOPTestMethod() {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

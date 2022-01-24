@@ -34,6 +34,7 @@ jacoco {
 dependencies {
     /* spring-boot-starter-web : Spring MVC 를 사용한 restful 서비스를 개발하는데 사용합니다. */
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:2.6.2'
     /* spring-boot-starter-test : JUnit Jupiter, Hamcrest 및 Mockito 를 포함한 라이브러리로 Spring Boot 애플리케이션을 테스트하기 위한 스타터 */
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-validation'

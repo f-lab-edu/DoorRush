@@ -33,7 +33,7 @@ class AutoLoginInterceptorTest {
   public void setUp() {
     handler = new MockHandler<>() {
       @Override
-      public Object handle(Invocation invocation){
+      public Object handle(Invocation invocation) {
         return authenticationController;
       }
 
@@ -51,12 +51,15 @@ class AutoLoginInterceptorTest {
 
   @Test
   @DisplayName("preHandle 자동 로그인 테스트 결과 false 를 반환한다.")
-  void preHandleAutoLoginTest(){
+  void preHandleAutoLoginTest() {
     // Given
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
     Cookie JSESSIONCookie = new MockCookie("JSESSION", "123456789");
-    Cookie AUTOLOGINCookie = new MockCookie(CookieUtils.AUTOLOGIN_COOKIE_NAME, SecurityUtils.getEncryptedValue("25"));
+    Cookie AUTOLOGINCookie = new MockCookie(CookieUtils.AUTOLOGIN_COOKIE_NAME,
+        SecurityUtils.getEncryptedValue("25"));
+    AUTOLOGINCookie.setSecure(true);
+    AUTOLOGINCookie.setHttpOnly(true);
     request.setCookies(JSESSIONCookie, AUTOLOGINCookie);
 
     // When   Then
@@ -66,7 +69,7 @@ class AutoLoginInterceptorTest {
 
   @Test
   @DisplayName("preHandle 일반 로그인 테스트 결과 true 를 반환한다.")
-  void preHandleLoginTest(){
+  void preHandleLoginTest() {
     // Given
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();

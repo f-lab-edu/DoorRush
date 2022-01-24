@@ -1,5 +1,6 @@
 package com.flab.doorrush.global.exception;
 
+import com.flab.doorrush.domain.authentication.exception.AuthenticationCredentialsNotFoundException;
 import com.flab.doorrush.domain.authentication.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.authentication.exception.SessionAuthenticationException;
@@ -23,22 +24,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler
-  public ResponseEntity<BasicResponse> loginExceptionHandler(IdNotFoundException e) {
+  public ResponseEntity<BasicResponse<String>> loginExceptionHandler(IdNotFoundException e) {
     log.error(e.getMessage(), e);
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BasicResponse.fail(e.getMessage()));
   }
 
   @ExceptionHandler
-  public ResponseEntity<BasicResponse> loginExceptionHandler(InvalidPasswordException e) {
+  public ResponseEntity<BasicResponse<String>> loginExceptionHandler(InvalidPasswordException e) {
     log.error(e.getMessage(), e);
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BasicResponse.fail(e.getMessage()));
   }
 
   @ExceptionHandler
-  public ResponseEntity<BasicResponse> sessionLoginIdNotFoundException(
+  public ResponseEntity<BasicResponse<String>> sessionLoginIdNotFoundException(
       SessionLoginIdNotFoundException e) {
     log.error(e.getMessage(), e);
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BasicResponse.fail(e.getMessage()));
   }
 
   @ExceptionHandler
@@ -56,9 +57,9 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(AutoLoginFailException.class)
-  public ResponseEntity<String> autoLoginFailException(AutoLoginFailException e) {
+  public ResponseEntity<BasicResponse<String>> autoLoginFailException(AutoLoginFailException e) {
     log.error(e.getMessage(), e);
-    return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BasicResponse.fail(e.getMessage()));
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -74,5 +75,12 @@ public class GlobalExceptionHandler {
       NotExistsAddressException e) {
     log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
+  }
+
+  @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+  public ResponseEntity<BasicResponse<String>> authenticationCredentialsNotFoundException(
+      AuthenticationCredentialsNotFoundException e) {
+    log.error(e.getMessage(), e);
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(BasicResponse.fail(e.getMessage()));
   }
 }
