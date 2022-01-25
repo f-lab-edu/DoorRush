@@ -1,5 +1,6 @@
 package com.flab.doorrush.domain.order.domain;
 
+import java.sql.Timestamp;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,6 +15,6 @@ public class Order {
   private String restaurantName;
   private OrderStatus orderStatus;
   private Long amount;
-  private String orderTime;
+  private Timestamp orderTime;
 
 }

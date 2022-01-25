@@ -1,6 +1,7 @@
 package com.flab.doorrush.domain.order.dto.request;
 
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +10,9 @@ import lombok.Getter;
 @Builder
 public class OrderRequest {
 
+  @NotEmpty
   @NotNull
-  private List<Menu> menus;
+  private List<MenuDTO> menus;
   @NotNull
   private Long restaurantSeq;
   @NotNull

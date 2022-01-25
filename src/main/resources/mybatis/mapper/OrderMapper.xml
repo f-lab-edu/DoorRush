@@ -8,8 +8,7 @@
   <insert id="insertOrder" parameterType="com.flab.doorrush.domain.order.domain.Order"
     keyProperty="orderSeq" useGeneratedKeys="true">
     INSERT INTO `ORDER` (`USER_SEQ`, `ADDRESS`, `RESTAURANT_SEQ`, `RESTAURANT_NAME`, `ORDER_STATUS`,
-                         `AMOUNT`,
-                         `ORDER_TIME`)
+                         `AMOUNT`, `ORDER_TIME`)
     VALUES (#{userSeq},
             #{address},
             #{restaurantSeq},
@@ -27,7 +26,7 @@
     </foreach>
   </insert>
 
-  <select id="selectTotalPrice" parameterType="list" resultType="long">
+  <select id="selectTotalPriceByMenus" parameterType="list" resultType="long">
     SELECT
     <foreach collection="menus" item="menu" separator="+">
       (SELECT PRICE FROM MENU WHERE MENU_SEQ = #{menu.menuSeq}) * #{menu.count}
@@ -44,7 +43,8 @@
            A.ORDER_STATUS,
            C.NAME AS MENU_NAME,
            C.PRICE AS MENU_PRICE,
-           B.COUNT AS MENU_COUNT
+           B.COUNT AS MENU_COUNT,
+           A.ORDER_TIME
     FROM `ORDER` A
            INNER JOIN ORDER_MENU B
                       ON A.ORDER_SEQ = B.ORDER_SEQ

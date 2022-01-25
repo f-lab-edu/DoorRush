@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Menu {
+public class MenuDTO {
   @NotNull
   private Long menuSeq;
   @NotNull
@@ -22,5 +22,4 @@ public class Menu {
         .count(this.count)
         .build();
   }
-
 }

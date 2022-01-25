@@ -4,9 +4,10 @@ import com.flab.doorrush.domain.order.dao.OrderMapper;
 import com.flab.doorrush.domain.order.domain.Order;
 import com.flab.doorrush.domain.order.domain.OrderMenu;
 import com.flab.doorrush.domain.order.domain.OrderStatus;
-import com.flab.doorrush.domain.order.dto.request.Menu;
+import com.flab.doorrush.domain.order.dto.request.MenuDTO;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
+import com.flab.doorrush.domain.order.dto.response.OrderHistory;
 import com.flab.doorrush.domain.order.exception.OrderException;
 import com.flab.doorrush.domain.restaurant.dao.RestaurantMapper;
 import com.flab.doorrush.domain.restaurant.domain.Restaurant;
@@ -22,10 +23,13 @@ import com.flab.doorrush.global.dto.response.AddressDetail;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
   private final OrderMapper orderMapper;
@@ -34,9 +38,14 @@ public class OrderService {
   private final RestaurantMapper restaurantMapper;
   private final KakaoAddressApi kakaoAddressApi;
 
+  @Transactional
   public CreateOrderResponse createOrder(OrderRequest orderRequest, String loginId) {
     User user = userMapper.selectUserById(loginId)
         .orElseThrow(() -> new UserNotFoundException("회원정보가 없습니다."));
+
+    if (orderRequest.getMenus().isEmpty()) {
+      throw new OrderException("메뉴 정보를 입력해주세요.");
+    }
 
     Restaurant restaurant = restaurantMapper.selectRestaurantBySeq(orderRequest.getRestaurantSeq());
 
@@ -50,9 +59,11 @@ public class OrderService {
         .build();
 
     orderMapper.insertOrder(order);
+
     if (order.getOrderSeq() == null) {
       throw new OrderException("주문이 정상적으로 처리되지 않았습니다. 다시 시도해주세요");
     }
+
     addOrderMenu(orderRequest.getMenus(), order.getOrderSeq());
     return CreateOrderResponse.from(order);
   }
@@ -69,13 +80,18 @@ public class OrderService {
     return addressDetail.getOriginAddress();
   }
 
-  private void addOrderMenu(List<Menu> menus, Long orderSeq) {
+  private void addOrderMenu(List<MenuDTO> menus, Long orderSeq) {
     List<OrderMenu> orderMenus = new ArrayList<>();
     menus.forEach(menu -> orderMenus.add(menu.toEntity(orderSeq)));
     orderMapper.insertOrderMenu(orderMenus);
+    List<OrderHistory> list = orderMapper.selectOrderBySeq(orderSeq);
+    if (list.isEmpty()) {
+      throw new OrderException("addOrderMenu 실행 중 오류가 발생했습니다.");
+    }
   }
 
-  public Long getTotalPrice(List<Menu> menus) {
-    return orderMapper.selectTotalPrice(menus);
+  public Long getTotalPrice(List<MenuDTO> menus) {
+    return orderMapper.selectTotalPriceByMenus(menus)
+        .orElseThrow(() -> new OrderException("가격 조회 중 오류가 발생했습니다."));
   }
 }

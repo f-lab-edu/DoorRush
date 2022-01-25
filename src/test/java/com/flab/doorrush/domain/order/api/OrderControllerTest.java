@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flab.doorrush.domain.order.dto.request.Menu;
+import com.flab.doorrush.domain.order.dto.request.MenuDTO;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import java.util.Arrays;
 import java.util.List;
@@ -39,10 +39,10 @@ class OrderControllerTest {
   @Autowired
   ObjectMapper objectMapper;
 
-  private static List<Menu> orderMenus;
+  private static List<MenuDTO> orderMenus;
   private static ValidatorFactory factory;
   private static Validator validator;
-
+  private static OrderRequest orderRequest;
 
   @BeforeAll
   public static void init() {
@@ -50,12 +50,19 @@ class OrderControllerTest {
     validator = factory.getValidator();
 
     orderMenus = Arrays.asList(
-        new Menu(7L,  1),
-        new Menu(8L, 1),
-        new Menu(9L, 1),
-        new Menu(10L, 1),
-        new Menu(11L, 2)
+        new MenuDTO(7L,  1),
+        new MenuDTO(8L, 1),
+        new MenuDTO(9L, 1),
+        new MenuDTO(10L, 1),
+        new MenuDTO(11L, 2)
     );
+
+    orderRequest = OrderRequest.builder()
+        .menus(orderMenus)
+        .addressSeq(1L)
+        .restaurantSeq(3L)
+        .amount(60500L)
+        .build();
   }
 
   @Test
@@ -64,13 +71,6 @@ class OrderControllerTest {
     // Given
     MockHttpSession mockHttpSession = new MockHttpSession();
     mockHttpSession.setAttribute("loginId", "test6");
-    OrderRequest orderRequest = OrderRequest.builder()
-        .menus(orderMenus)
-        .addressSeq(10L)
-        .restaurantSeq(3L)
-        .amount(60500L)
-        .build();
-
     String content = objectMapper.writeValueAsString(orderRequest);
 
    // When
@@ -89,13 +89,6 @@ class OrderControllerTest {
   @Test
   @DisplayName("주문 생성 유효성 검사 성공 테스트")
   public void createOrderValidSuccessTest() {
-    // Given
-    OrderRequest orderRequest = OrderRequest.builder()
-        .menus(orderMenus)
-        .addressSeq(10L)
-        .restaurantSeq(3L)
-        .amount(60500L)
-        .build();
 
     // When
     Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
@@ -133,7 +126,7 @@ class OrderControllerTest {
     String content = objectMapper.writeValueAsString(orderMenus);
 
     // When
-    mockMvc.perform(get("/orders/checkPrice")
+    mockMvc.perform(get("/orders/check-price")
             .content(content)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
