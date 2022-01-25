@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,7 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class KakaoAddressApi {
 
-  private final RestTemplateBuilder restTemplateBuilder;
+  private final RestTemplate restTemplate;
 
   @Value("${api.authorization}")
   private String AUTHORIZATION;
@@ -46,7 +45,6 @@ public class KakaoAddressApi {
     headers.add(HttpHeaders.CONTENT_TYPE, String.valueOf(MediaType.APPLICATION_JSON));
     headers.add(HttpHeaders.ACCEPT_CHARSET, String.valueOf(StandardCharsets.UTF_8));
 
-    RestTemplate restTemplate = restTemplateBuilder.build();
     HttpEntity entity = new HttpEntity<>(headers);
 
     ResponseEntity<KakaoApiGetAddressResponse> response = restTemplate.exchange(url, HttpMethod.GET,
