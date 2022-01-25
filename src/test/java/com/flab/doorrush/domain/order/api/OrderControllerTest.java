@@ -134,7 +134,8 @@ class OrderControllerTest {
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data").isNotEmpty())
-        .andExpect(jsonPath("$.data").value(60500));
+        .andExpect(jsonPath("$.data.totalPrice").value(60500))
+        .andExpect(jsonPath("$.data.orderMenuCarts").isNotEmpty());
   }
 
 }
