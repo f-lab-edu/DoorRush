@@ -1,4 +1,4 @@
-package com.flab.doorrush.domain.user.exception;
+package com.flab.doorrush.domain.authentication.exception;
 
 public class InvalidPasswordException extends RuntimeException {
 

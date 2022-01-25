@@ -38,7 +38,8 @@ VALUES ('1', '1', '중식', 'Y', '중식중 최고집', '증식집 중 최고를
        ('6', '1', '분식', 'Y', '떡순이네', '쌀떡과 부산오뎅의 기가막힌 조합 떡순이네', 12000, 10, NOW(), null);
 
 INSERT INTO `ORDER` (ORDER_SEQ, USER_SEQ, ADDRESS, RESTAURANT_SEQ, RESTAURANT_NAME, ORDER_STATUS,
-                     AMOUNT, ORDER_TIME)
+                     AMOUNT,
+                     ORDER_TIME)
 VALUES ('1', '25', '경기도 남양주 123-12', 3, '칸지돈부리', 2, 17500, NOW()),
        ('2', '25', '서울특별시 강남구 55-8', 3, '칸지돈부리', 2, 18500, NOW()),
        ('3', '25', '분당구 불정로 66', 3, '칸지돈부리', 2, 19500, NOW()),

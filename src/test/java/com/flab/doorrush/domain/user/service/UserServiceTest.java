@@ -1,25 +1,20 @@
 package com.flab.doorrush.domain.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.flab.doorrush.domain.user.dto.LoginDto;
+import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.user.dto.request.ChangePasswordRequest;
+import com.flab.doorrush.domain.user.exception.UserNotFoundException;
 import com.flab.doorrush.domain.user.dto.request.JoinUserRequest;
 import com.flab.doorrush.domain.user.dto.response.FindUserResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
-import com.flab.doorrush.domain.user.exception.IdNotFoundException;
-import com.flab.doorrush.domain.user.exception.InvalidPasswordException;
-import com.flab.doorrush.domain.user.exception.UserNotFoundException;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,69 +86,6 @@ class UserServiceTest {
     assertThat(user.getUser().getName()).isEqualTo("aaasssddd");
   }
 
-
-  @Test
-  @DisplayName("로그인 성공 테스트 login메소드 실행 후 세션의 loginId 속성 값을 아이디 값과 비교한다.")
-  public void loginSuccessTest() {
-    // Given
-    MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test6", "test6pw");
-
-    // When
-    userService.login(loginDto, session);
-
-    // Then
-    MatcherAssert.assertThat(session.getAttribute("loginId"), is("test6"));
-  }
-
-  @Test
-  @DisplayName("로그인 실패 테스트 없는 아이디일 경우 또는 일치하지않는 비밀번호 입력할 경우 예외를 발생시킨다.")
-  public void loginFailTest() {
-    // Given
-    MockHttpSession session = new MockHttpSession();
-    LoginDto IdNotFoundExceptionLoginDto = new LoginDto("test111111", "test22222222pw");
-    // Then                                     // When
-    assertThrows(IdNotFoundException.class,
-        () -> userService.login(IdNotFoundExceptionLoginDto, session));
-
-    // Given
-    LoginDto InvalidPasswordException = new LoginDto("test1", "test222222222pw");
-    // Then
-    assertThrows(
-        com.flab.doorrush.domain.user.exception.InvalidPasswordException.class,
-        // When
-        () -> userService.login(InvalidPasswordException, session));
-  }
-
-  @Test
-  @DisplayName("중복 로그인 실패 테스트 예외를 발생시킨다.")
-  public void loginFailDuplicatedLoginTest() {
-    // Given
-    MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test6", "test6pw");
-    userService.login(loginDto, session);
-
-    // Then
-    assertThrows(
-        com.flab.doorrush.domain.user.exception.SessionAuthenticationException.class,
-        // When
-        () -> userService.login(loginDto, session));
-  }
-
-  @Test
-  @DisplayName("로그아웃 성공 테스트 세션을 무효화한다.")
-  public void logoutSuccessTest() {
-    // Given
-    MockHttpSession session = new MockHttpSession();
-    LoginDto loginDto = new LoginDto("test6", "test6pw");
-    userService.login(loginDto, session);
-
-    // When
-    userService.logout(session);
-    // Then
-    assertTrue(session.isInvalid());
-  }
-
   @Test
   @DisplayName("비밀번호 암호화 테스트")
   public void passwordEncryptTest() {
@@ -205,7 +137,6 @@ class UserServiceTest {
         () -> userService.changePassword(userSeq, ChangePasswordRequest.builder()
             .originPassword(originPassword).newPassword(newPassword)
             .build()));
-
   }
 
 }

@@ -61,7 +61,7 @@ public class UserAddressServiceTest {
         .spotX(123.334433)
         .spotY(24.5553443)
         .addressDetail("꼭대기층 1230호")
-        .ynStatus(YnStatus.Y)
+        .defaultYn(YnStatus.Y)
         .build();
 
     // When
@@ -70,7 +70,7 @@ public class UserAddressServiceTest {
     // Then
     List<UserAddressResponse> list = userAddressService.getUserAddress(userSeq);
     assertEquals(
-        list.stream().filter(address -> address.isDefault(address.getYnStatus()))
+        list.stream().filter(address -> address.isDefault(address.getDefaultYn()))
             .count(), 1);
     assertFalse(list.isEmpty());
   }
@@ -87,7 +87,7 @@ public class UserAddressServiceTest {
         .spotX(152.157482231)
         .spotY(33.5486454853)
         .addressDetail("B동 201호")
-        .ynStatus(YnStatus.N)
+        .defaultYn(YnStatus.N)
         .build();
 
     // When
@@ -96,7 +96,7 @@ public class UserAddressServiceTest {
     // Then
     List<UserAddressResponse> list = userAddressService.getUserAddress(userSeq);
     assertEquals(list.stream()
-        .filter(address -> address.isDefault(address.getYnStatus())).count(), 1);
+        .filter(address -> address.isDefault(address.getDefaultYn())).count(), 1);
     assertFalse(list.isEmpty());
     assertEquals(list.size(), 3);
   }

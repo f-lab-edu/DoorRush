@@ -28,7 +28,19 @@
            PHONE_NUMBER,
            EMAIL
     FROM USER
-    WHERE LOGIN_ID = #{loginId}
+    WHERE LOGIN_ID = #{id}
+  </select>
+
+  <select id="selectUserBySEQ" parameterType="Long"
+    resultType="com.flab.doorrush.domain.user.domain.User">
+    SELECT USER_SEQ,
+           LOGIN_ID,
+           PASSWORD,
+           NAME,
+           PHONE_NUMBER,
+           EMAIL
+    FROM USER
+    WHERE USER_SEQ = #{userSeq}
   </select>
 
   <select id="selectUserByUserSeq" parameterType="Long"
@@ -45,7 +57,8 @@
 
   <update id="updatePassword" parameterType="com.flab.doorrush.domain.user.domain.User">
     UPDATE USER
-    SET PASSWORD = #{password}
+    SET PASSWORD    = #{password},
+        UPDATE_DATE = NOW()
     WHERE USER_SEQ = #{userSeq}
   </update>
 

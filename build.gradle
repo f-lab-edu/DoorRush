@@ -91,7 +91,9 @@ jacocoTestCoverageVerification {
             element = 'CLASS'
             excludes = ['com.flab.doorrush.domain.**.dto.*',
                         'com.flab.doorrush.domain.**.domain.*',
-                        'com.flab.doorrush.domain.**.exception.*'
+                        'com.flab.doorrush.domain.**.exception.*',
+                        'com.flab.doorrush.global.Response.*',
+                        'com.flab.doorrush.global.exception.*'
             ]
 
             limit {
