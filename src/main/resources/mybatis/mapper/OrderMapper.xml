@@ -26,13 +26,6 @@
     </foreach>
   </insert>
 
-  <select id="selectTotalPriceByMenus" parameterType="list" resultType="long">
-    SELECT
-    <foreach collection="menus" item="menu" separator="+">
-      (SELECT PRICE FROM MENU WHERE MENU_SEQ = #{menu.menuSeq}) * #{menu.count}
-    </foreach>
-  </select>
-
   <select id="selectOrderBySeq" parameterType="Long"
     resultType="com.flab.doorrush.domain.order.dto.response.OrderHistory">
     SELECT A.ORDER_SEQ,
@@ -41,7 +34,7 @@
            A.RESTAURANT_NAME,
            A.AMOUNT,
            A.ORDER_STATUS,
-           C.NAME AS MENU_NAME,
+           C.NAME  AS MENU_NAME,
            C.PRICE AS MENU_PRICE,
            B.COUNT AS MENU_COUNT,
            A.ORDER_TIME
@@ -51,5 +44,15 @@
            INNER JOIN MENU C
                       ON B.MENU_SEQ = C.MENU_SEQ
     WHERE A.ORDER_SEQ = #{orderSeq}
+  </select>
+
+  <select id="selectPriceByMenuDTO" parameterType="com.flab.doorrush.domain.order.dto.request.MenuDTO"
+    resultType="com.flab.doorrush.domain.order.dto.response.OrderMenuCart">
+    SELECT
+           NAME,
+           PRICE,
+           ((SELECT PRICE FROM MENU WHERE MENU_SEQ = #{menuSeq}) * #{count}) AS MENU_SUM_PRICE
+    FROM MENU
+    WHERE MENU_SEQ = #{menuSeq}
   </select>
 </mapper>

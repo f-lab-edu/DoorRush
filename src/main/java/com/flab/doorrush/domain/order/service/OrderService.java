@@ -8,6 +8,8 @@ import com.flab.doorrush.domain.order.dto.request.MenuDTO;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
 import com.flab.doorrush.domain.order.dto.response.OrderHistory;
+import com.flab.doorrush.domain.order.dto.response.OrderMenuCart;
+import com.flab.doorrush.domain.order.dto.response.OrderMenusCartResponse;
 import com.flab.doorrush.domain.order.exception.OrderException;
 import com.flab.doorrush.domain.restaurant.dao.RestaurantMapper;
 import com.flab.doorrush.domain.restaurant.domain.Restaurant;
@@ -90,8 +92,17 @@ public class OrderService {
     }
   }
 
-  public Long getTotalPrice(List<MenuDTO> menus) {
-    return orderMapper.selectTotalPriceByMenus(menus)
-        .orElseThrow(() -> new OrderException("가격 조회 중 오류가 발생했습니다."));
+  public OrderMenusCartResponse getTotalPrice(List<MenuDTO> menus) {
+    List<OrderMenuCart> orderMenuCarts = new ArrayList<>();
+    menus.forEach(menu -> orderMenuCarts.add(orderMapper.selectPriceByMenuDTO(menu)
+        .orElseThrow(() -> new OrderException("메뉴 정보를 확인해주세요."))));
+
+    Long totalPrice = orderMenuCarts.stream().map(OrderMenuCart::getMenuSumPrice)
+        .mapToLong(a -> Math.toIntExact((Long) a)).sum();
+
+    return OrderMenusCartResponse.builder()
+        .orderMenuCarts(orderMenuCarts)
+        .totalPrice(totalPrice)
+        .build();
   }
 }

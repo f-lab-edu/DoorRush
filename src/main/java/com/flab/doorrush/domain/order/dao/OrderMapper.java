@@ -4,6 +4,7 @@ import com.flab.doorrush.domain.order.domain.Order;
 import com.flab.doorrush.domain.order.domain.OrderMenu;
 import com.flab.doorrush.domain.order.dto.request.MenuDTO;
 import com.flab.doorrush.domain.order.dto.response.OrderHistory;
+import com.flab.doorrush.domain.order.dto.response.OrderMenuCart;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,8 +16,7 @@ public interface OrderMapper {
 
   void insertOrderMenu(List<OrderMenu> orderMenus);
 
-  Optional<Long> selectTotalPriceByMenus(List<MenuDTO> menus);
-
   List<OrderHistory> selectOrderBySeq(Long orderSeq);
 
+  Optional<OrderMenuCart> selectPriceByMenuDTO(MenuDTO menuDTO);
 }

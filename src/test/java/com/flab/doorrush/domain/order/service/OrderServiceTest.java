@@ -8,6 +8,7 @@ import com.flab.doorrush.domain.order.dto.request.MenuDTO;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
 import com.flab.doorrush.domain.order.dto.response.OrderHistory;
+import com.flab.doorrush.domain.order.dto.response.OrderMenusCartResponse;
 import com.flab.doorrush.domain.order.exception.OrderException;
 import com.flab.doorrush.domain.user.exception.NotExistsAddressException;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ class OrderServiceTest {
   }
 
   @Test
-  @DisplayName("총 금액 조회 성공 테스트")
+  @DisplayName("메뉴별 금액 및 총 금액 조회 성공 테스트")
   public void getTotalPrice() {
     // Given
     List<MenuDTO> list = new ArrayList<>();
@@ -108,9 +109,12 @@ class OrderServiceTest {
         (new MenuDTO(1L, 2)),
         (new MenuDTO(2L, 3)));
     // When
-    Long totalPrice = orderService.getTotalPrice(list);
+    OrderMenusCartResponse response = orderService.getTotalPrice(list);
 
     // Then
-    assertThat(totalPrice).isEqualTo(40500L);
+    assertThat(response.getTotalPrice()).isEqualTo(40500L);
+    assertThat(response.getOrderMenuCarts().size()).isEqualTo(2);
+    assertThat(response.getOrderMenuCarts().get(0).getMenuSumPrice()).isEqualTo(15000L);
+    assertThat(response.getOrderMenuCarts().get(1).getMenuSumPrice()).isEqualTo(25500L);
   }
 }
