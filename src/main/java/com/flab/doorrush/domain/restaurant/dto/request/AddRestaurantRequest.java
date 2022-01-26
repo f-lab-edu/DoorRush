@@ -1,8 +1,6 @@
 package com.flab.doorrush.domain.restaurant.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flab.doorrush.domain.restaurant.domain.Restaurant;
-import com.flab.doorrush.domain.restaurant.restaurantEnum.RestaurantCategory;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

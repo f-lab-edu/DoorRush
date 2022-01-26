@@ -57,9 +57,4 @@ public class AuthenticationService {
       throw new SessionLoginIdNotFoundException("세션정보를 찾을 수 없습니다.");
     }
   }
-
-  public String getCurrentId(HttpSession httpSession) {
-    return String.valueOf(httpSession.getAttribute(LOGIN_SESSION));
-  }
-
 }

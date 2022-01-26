@@ -29,6 +29,5 @@ public class RestaurantService {
     } catch (Exception e) {
       throw new AddRestaurantException(e, "식당 insert 처리 중 예외 발생");
     }
-
   }
 }

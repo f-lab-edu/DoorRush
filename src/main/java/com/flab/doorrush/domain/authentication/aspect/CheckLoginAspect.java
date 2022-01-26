@@ -13,12 +13,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CheckLoginAspect {
 
-  private final AuthenticationService authenticationService;
   private final HttpSession httpSession;
 
   @Before("@annotation(com.flab.doorrush.domain.authentication.annotation.CheckLogin)")
   public void checkLogin() throws AuthenticationCredentialsNotFoundException {
-    String currentId = authenticationService.getCurrentId(httpSession);
+    String currentId = (String) httpSession.getAttribute(AuthenticationService.LOGIN_SESSION);
     if (currentId == null || currentId.equals("null")) {
       throw new AuthenticationCredentialsNotFoundException("로그인이 필요합니다.");
     }

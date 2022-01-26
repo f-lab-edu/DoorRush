@@ -180,42 +180,4 @@ class AuthenticationControllerTest {
         // Then
         .andExpect(status().isOk());
   }
-
-  @Test
-  @DisplayName("checkLogin success 테스트 일반 로그인 처리 후 상태값 200을 발생시킨다.")
-  public void checkLoginSuccessTest() throws Exception {
-    // Given
-
-    MockHttpSession mockHttpSession = new MockHttpSession();
-    mockHttpSession.setAttribute(LOGIN_SESSION, "test1");
-
-    // When
-    mockMvc.perform(post("/checklogintest")
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        // Then
-        .andExpect(status().isOk());
-  }
-
-  @Test
-  @DisplayName("checkLogin flase 테스트 @CheckLogin 적용 메소드 실행후 AuthenticationCredentialsNotFoundException 발생, HttpStatus.FORBIDDEN 시킨다.")
-  public void checkLoginFailTest() throws Exception {
-    // Given
-
-    MockHttpSession mockHttpSession = new MockHttpSession();
-
-    // When
-    mockMvc.perform(post("/checklogintest")
-            .session(mockHttpSession)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        // Then
-        /* 테스트 통과가 안됩니다.
-        .andExpect(result -> assertTrue(
-            result.getResolvedException() instanceof AuthenticationCredentialsNotFoundException))*/
-        .andExpect(status().isForbidden());
-  }
 }
