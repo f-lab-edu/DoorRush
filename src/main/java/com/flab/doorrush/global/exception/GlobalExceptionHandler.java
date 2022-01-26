@@ -75,4 +75,11 @@ public class GlobalExceptionHandler {
     log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
+
+  @ExceptionHandler(KakaoApiResponseException.class)
+  public ResponseEntity<BasicResponse<String>> KakaoApiResponseException(
+      KakaoApiResponseException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
+  }
+
 }
