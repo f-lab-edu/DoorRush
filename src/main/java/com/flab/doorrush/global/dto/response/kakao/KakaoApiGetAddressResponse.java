@@ -9,7 +9,7 @@ public class KakaoApiGetAddressResponse {
   private Meta meta;
   private List<GetAddressInfo> documents;
 
-  public GetAddressInfo getFirstIndex() {
+  public GetAddressInfo getMainAddress() {
     return documents.get(0);
   }
 

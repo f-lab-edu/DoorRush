@@ -7,7 +7,7 @@ public class Meta {
   @JsonProperty("total_count")
   private String totalCount;
 
-  public boolean isInvalid() {
-    return totalCount.equals("0");
+  public boolean isExist() {
+    return !totalCount.equals("0");
   }
 }
