@@ -5,6 +5,7 @@ import com.flab.doorrush.domain.authentication.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.authentication.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.authentication.exception.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.restaurant.exception.AddRestaurantException;
 import com.flab.doorrush.global.Response.BasicResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
@@ -71,7 +72,7 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(NotExistsAddressException.class)
-  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(
+  public ResponseEntity<BasicResponse<String>> NotExistsAddressException(
       NotExistsAddressException e) {
     log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
@@ -82,5 +83,12 @@ public class GlobalExceptionHandler {
       AuthenticationCredentialsNotFoundException e) {
     log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(BasicResponse.fail(e.getMessage()));
+  }
+
+  @ExceptionHandler(AddRestaurantException.class)
+  public ResponseEntity<BasicResponse<String>> addRestaurantException(
+      AddRestaurantException e) {
+    log.error(e.getMessage(), e);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
 }

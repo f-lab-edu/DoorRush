@@ -20,6 +20,7 @@ public class AddRestaurantRequest {
 
   private Long ownerSeq;
 
+  @NotNull
   private String category;
 
   private char openYN;

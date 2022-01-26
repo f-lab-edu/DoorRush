@@ -1,7 +1,7 @@
 package com.flab.doorrush.domain.authentication.exception;
 
 public class AuthenticationCredentialsNotFoundException extends
-    Exception {
+    RuntimeException {
 
   public AuthenticationCredentialsNotFoundException(String message) {
     super(message);

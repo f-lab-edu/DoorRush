@@ -113,4 +113,9 @@ class AuthenticationServiceTest {
     // Then
     assertTrue(session.isInvalid());
   }
+
+  @Test
+  void getCurrentId() {
+  }
+
 }

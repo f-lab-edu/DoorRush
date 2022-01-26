@@ -23,7 +23,6 @@ public class RestaurantController {
   @PostMapping("/{ownerSeq}/addRestaurant")
   public ResponseEntity<BasicResponse<Void>> addRestaurant(@PathVariable Long ownerSeq,
       @Valid @RequestBody AddRestaurantRequest addRestaurantRequest) {
-
     addRestaurantRequest.setOwnerSeq(ownerSeq);
     restaurantService.addRestaurant(addRestaurantRequest);
     return ResponseEntity.status(HttpStatus.OK).build();
