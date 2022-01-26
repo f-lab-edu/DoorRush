@@ -1,15 +1,14 @@
 package com.flab.doorrush.global.exception;
 
 import com.flab.doorrush.domain.authentication.exception.AutoLoginFailException;
-import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
 import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.authentication.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.authentication.exception.SessionLoginIdNotFoundException;
-import com.flab.doorrush.domain.order.exception.OrderException;
-import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
-import com.flab.doorrush.domain.user.exception.NotExistsAddressException;
 import com.flab.doorrush.global.Response.BasicResponse;
+import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
+import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import com.flab.doorrush.domain.user.exception.NotExistsAddressException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
