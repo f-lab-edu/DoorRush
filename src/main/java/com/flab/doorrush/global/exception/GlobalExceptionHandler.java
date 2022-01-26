@@ -4,6 +4,7 @@ import com.flab.doorrush.domain.authentication.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.authentication.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.authentication.exception.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.order.exception.OrderException;
 import com.flab.doorrush.global.Response.BasicResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
