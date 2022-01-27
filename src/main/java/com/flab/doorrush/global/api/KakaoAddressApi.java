@@ -36,6 +36,11 @@ public class KakaoAddressApi {
   public static final String KAKAO_URL = "/v2/local/geo/coord2address.json";
   public static final String CUSTOM_CIRCUIT_BREAKER = "customCircuitBreaker";
 
+  /**
+   * @CircuitBreaker
+   * resilience4j Spring Boot2 스타터에서 제공되는 어노테이션으로 AOP 측면을 제공하는 역할입니다.
+   * CircuitBreaker라는 것을 명시하고 이름과 콜백 메소드를 지정할 수 있습니다.
+  */
   @CircuitBreaker(name = CUSTOM_CIRCUIT_BREAKER, fallbackMethod = "fallbackMethod")
   public ResponseEntity<KakaoApiGetAddressResponse> getAddressBySpot(
       KakaoApiGetAddressRequest getAddressRequest) {
