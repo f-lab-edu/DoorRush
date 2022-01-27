@@ -25,6 +25,10 @@ jacoco {
     reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
 }
 
+ext {
+    set('springCloudVersion', "2020.0.4")
+}
+
 /*
   - dependencies : 라이브러리 같은 의존성 추가 시 작성하는 곳
   - implementation : 개발할 때 내가 필요한 라이브러리를 적는 부분. 해당 부분에 적힌 라이브러리를 가져온다.
@@ -34,9 +38,12 @@ jacoco {
 dependencies {
     /* spring-boot-starter-web : Spring MVC 를 사용한 restful 서비스를 개발하는데 사용합니다. */
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     /* spring-boot-starter-test : JUnit Jupiter, Hamcrest 및 Mockito 를 포함한 라이브러리로 Spring Boot 애플리케이션을 테스트하기 위한 스타터 */
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    /* spring-cloud-starter-circuitbreaker-resilience4j : resilience4j 라이브러리를 사용하기 위한 스타터 */
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
     /* spring-security-crypto : 대칭 암호화, 키 생성, 비밀번호 인코딩을 지원합니다. 스프링 시큐리티 코드에 대한 의존성이 없습니다. */
     implementation 'org.springframework.security:spring-security-crypto'
@@ -50,6 +57,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     /* Junit, Hamcrest, Mockito 포함하는 스프링 어플리케이션을 테스트 가능하도록 합니다. */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 test {
