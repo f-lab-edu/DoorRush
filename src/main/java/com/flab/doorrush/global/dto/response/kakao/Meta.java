@@ -1,7 +1,9 @@
 package com.flab.doorrush.global.dto.response.kakao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class Meta {
 
   @JsonProperty("total_count")
