@@ -1,4 +1,4 @@
-# Door Rush
+# DoorRush
 
 
 <img width="600" alt="README 이미지_2" src="https://user-images.githubusercontent.com/56250078/151295612-86d6cf93-49ea-4c92-ba8a-d3c7c55d2400.png">
@@ -23,11 +23,17 @@
 
 ### ![:축구공:](https://a.slack-edge.com/production-standard-emoji-assets/13.0/google-medium/26bd@2x.png)  기술적 이슈와 해결 과정
 
-- 외부  API가 응답 코드조차 보낼 수 없는 장애가 발생했다면? Circuit Breaker Pattern로 해결하기<br>
-  https://github.com/f-lab-edu/DoorRush/issues/67<br>
+- 외부  API가 응답 코드조차 보낼 수 없는 장애가 발생했다면? Circuit Breaker Pattern로 해결하기 <br>
+  https://github.com/f-lab-edu/DoorRush/issues/67 <br>
+- 인증 기능에는 어떤 기술을 사용해야 할까? <br>
+  https://github.com/ypr821/TIL/blob/main/2022_01/%EC%9D%B8%EC%A6%9D(Authentication)%EA%B3%BC_%EC%9D%B8%EA%B0%80(Authorization).md <br>
+- 인증 관련 보안 이슈 
+  https://github.com/ypr821/TIL/blob/main/2022_01/%EC%9E%90%EB%8F%99%EB%A1%9C%EA%B7%B8%EC%9D%B8%EA%B8%B0%EB%8A%A5_%EB%B3%B4%EC%95%88%EC%9D%B4%EC%8A%88_%EA%B3%A0%EB%AF%BC.md
+- 로그인 체크는 어떻게 하면 좋을까? <br>
+  https://dev-promise.tistory.com/entry/%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%B2%B4%ED%81%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B8%B0%EC%88%A0%EC%A0%81-%EA%B3%A0%EB%AF%BC <br>
+
 
 <br><br>
-
 ### ![:구급차:](https://a.slack-edge.com/production-standard-emoji-assets/13.0/google-large/1f691@2x.png) 서버 구조도
 
 
