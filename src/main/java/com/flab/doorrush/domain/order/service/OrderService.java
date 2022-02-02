@@ -8,7 +8,7 @@ import com.flab.doorrush.domain.order.dto.request.MenuDTO;
 import com.flab.doorrush.domain.order.dto.request.OrderRequest;
 import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
 import com.flab.doorrush.domain.order.dto.response.OrderHistory;
-import com.flab.doorrush.domain.order.dto.response.OrderMenuCart;
+import com.flab.doorrush.domain.order.dto.response.OrderMenuPrice;
 import com.flab.doorrush.domain.order.dto.response.OrderMenusCartResponse;
 import com.flab.doorrush.domain.order.exception.OrderException;
 import com.flab.doorrush.domain.restaurant.dao.RestaurantMapper;
@@ -75,12 +75,12 @@ public class OrderService {
   }
 
   public OrderMenusCartResponse getTotalPrice(List<MenuDTO> menus) {
-    List<OrderMenuCart> orderMenuCarts = new ArrayList<>();
+    List<OrderMenuPrice> orderMenuCarts = new ArrayList<>();
     menus.forEach(menu -> orderMenuCarts.add(orderMapper.selectPriceByMenuDTO(menu)
         .orElseThrow(() -> new OrderException("메뉴 정보를 확인해주세요."))));
 
     Long totalPrice = orderMenuCarts.stream()
-        .map(OrderMenuCart::getMenuSumPrice)
+        .map(OrderMenuPrice::getMenuSumPrice)
         .mapToLong(Math::toIntExact)
         .sum();
 

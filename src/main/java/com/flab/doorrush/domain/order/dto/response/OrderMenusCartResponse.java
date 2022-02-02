@@ -8,5 +8,5 @@ import lombok.Getter;
 @Builder
 public class OrderMenusCartResponse {
   private Long totalPrice;
-  private List<OrderMenuCart> orderMenuCarts;
+  private List<OrderMenuPrice> orderMenuCarts;
 }

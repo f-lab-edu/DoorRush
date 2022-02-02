@@ -1,7 +1,7 @@
 package com.flab.doorrush.domain.order.dto.response;
 
 import com.flab.doorrush.domain.order.domain.OrderStatus;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +20,6 @@ public class OrderHistory {
   private String menuName;
   private String menuPrice;
   private String menuCount;
-  private Timestamp orderTime;
+  private LocalDateTime orderTime;
 
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class OrderMenuCart {
+public class OrderMenuPrice {
 
   private String name;
   private Long price;

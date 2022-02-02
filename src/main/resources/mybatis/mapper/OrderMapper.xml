@@ -47,7 +47,7 @@
   </select>
 
   <select id="selectPriceByMenuDTO" parameterType="com.flab.doorrush.domain.order.dto.request.MenuDTO"
-    resultType="com.flab.doorrush.domain.order.dto.response.OrderMenuCart">
+    resultType="com.flab.doorrush.domain.order.dto.response.OrderMenuPrice">
     SELECT
            NAME,
            PRICE,
