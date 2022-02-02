@@ -4,6 +4,7 @@ import com.flab.doorrush.domain.authentication.exception.AutoLoginFailException;
 import com.flab.doorrush.domain.authentication.exception.InvalidPasswordException;
 import com.flab.doorrush.domain.authentication.exception.SessionAuthenticationException;
 import com.flab.doorrush.domain.authentication.exception.SessionLoginIdNotFoundException;
+import com.flab.doorrush.domain.order.exception.OrderException;
 import com.flab.doorrush.global.Response.BasicResponse;
 import com.flab.doorrush.domain.user.exception.DuplicatedUserIdException;
 import com.flab.doorrush.domain.authentication.exception.IdNotFoundException;
@@ -79,6 +80,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(KakaoApiResponseException.class)
   public ResponseEntity<BasicResponse<String>> KakaoApiResponseException(
       KakaoApiResponseException e) {
+    log.error(e.getMessage(), e);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
+  }
+
+  @ExceptionHandler(OrderException.class)
+  public ResponseEntity<BasicResponse<String>> OrderException(OrderException e) {
+    log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.doorrush.domain.order.dao.OrderMapper">
+
+  <insert id="insertOrder" parameterType="com.flab.doorrush.domain.order.domain.Order"
+    keyProperty="orderSeq" useGeneratedKeys="true">
+    INSERT INTO `ORDER` (`USER_SEQ`, `ADDRESS`, `RESTAURANT_SEQ`, `RESTAURANT_NAME`, `ORDER_STATUS`,
+                         `AMOUNT`, `ORDER_TIME`)
+    VALUES (#{userSeq},
+            #{address},
+            #{restaurantSeq},
+            #{restaurantName},
+            #{orderStatus},
+            #{amount},
+            NOW())
+  </insert>
+
+  <insert id="insertOrderMenu" parameterType="list">
+    INSERT INTO `ORDER_MENU` (`MENU_SEQ`, `ORDER_SEQ`, `COUNT`)
+    VALUES
+    <foreach collection="orderMenus" item="menu" separator=",">
+      (#{menu.menuSeq},#{menu.orderSeq},#{menu.count})
+    </foreach>
+  </insert>
+
+  <select id="selectOrderBySeq" parameterType="Long"
+    resultType="com.flab.doorrush.domain.order.dto.response.OrderHistory">
+    SELECT A.ORDER_SEQ,
+           A.ADDRESS,
+           A.RESTAURANT_SEQ,
+           A.RESTAURANT_NAME,
+           A.AMOUNT,
+           A.ORDER_STATUS,
+           C.NAME  AS MENU_NAME,
+           C.PRICE AS MENU_PRICE,
+           B.COUNT AS MENU_COUNT,
+           A.ORDER_TIME
+    FROM `ORDER` A
+           INNER JOIN ORDER_MENU B
+                      ON A.ORDER_SEQ = B.ORDER_SEQ
+           INNER JOIN MENU C
+                      ON B.MENU_SEQ = C.MENU_SEQ
+    WHERE A.ORDER_SEQ = #{orderSeq}
+  </select>
+
+  <select id="selectPriceByMenuDTO" parameterType="com.flab.doorrush.domain.order.dto.request.MenuDTO"
+    resultType="com.flab.doorrush.domain.order.dto.response.OrderMenuPrice">
+    SELECT
+           NAME,
+           PRICE,
+           ((SELECT PRICE FROM MENU WHERE MENU_SEQ = #{menuSeq}) * #{count}) AS MENU_SUM_PRICE
+    FROM MENU
+    WHERE MENU_SEQ = #{menuSeq}
+  </select>
+</mapper>
