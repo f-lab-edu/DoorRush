@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.doorrush.domain.restaurant.dao.RestaurantMapper">
+
+  <select id="selectRestaurantBySeq" parameterType="Long"
+    resultType="com.flab.doorrush.domain.restaurant.domain.Restaurant">
+    SELECT RESTAURANT_SEQ,
+           OWNER_SEQ,
+           CATEGORY,
+           OPEN_YN,
+           RESTAURANT_NAME,
+           INTRODUCTION,
+           MINIMUM_ORDER_AMOUNT,
+           ADDRESS_SEQ
+    FROM RESTAURANT
+    WHERE RESTAURANT_SEQ = #{restaurantSeq}
+  </select>
+
+</mapper>

@@ -65,4 +65,15 @@
               FROM ADDRESS
               WHERE ADDRESS_SEQ = #{addressSeq})
   </select>
+
+  <select id="selectAddressBySeq" parameterType="Long"
+    resultType="com.flab.doorrush.domain.user.domain.Address">
+    SELECT ADDRESS_SEQ,
+           POST,
+           SPOT_Y,
+           SPOT_X,
+           ADDRESS_DETAIL
+    FROM ADDRESS
+    WHERE ADDRESS_SEQ = #{addressSeq}
+  </select>
 </mapper>
