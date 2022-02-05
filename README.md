@@ -33,18 +33,13 @@
    <br>
 
 
-<br><br>
-### ![:구급차:](https://a.slack-edge.com/production-standard-emoji-assets/13.0/google-large/1f691@2x.png) 서버 구조도
-
-
 
 <br><br>
 
 ### ![:렌치:](https://a.slack-edge.com/production-standard-emoji-assets/13.0/google-medium/1f527@2x.png)  **기술 스택**
 
-<img width="407" alt="README 이미지_10" src="https://user-images.githubusercontent.com/56250078/151295669-eab59277-9c09-49e5-a4df-0eae2e726b55.png">
+### **Java 11, Spring Boot 2.5.6, Spring MVC, MyBatis, gradle, MySQL**
 
-[상세 기술 스택](https://github.com/f-lab-edu/DoorRush/wiki/1.-Introduction#%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D)
 
 
 
@@ -54,12 +49,20 @@
 
 ### ![:책갈피_탭:](https://a.slack-edge.com/production-standard-emoji-assets/13.0/google-large/1f4d1@2x.png)**ERD**
 
-![ERD](https://user-images.githubusercontent.com/56250078/151295690-5d45af8d-944a-452d-a323-25290544bad3.png)
-
+![image](https://user-images.githubusercontent.com/56250078/152634236-79887af9-5b27-4265-ba99-e737e57c6016.png)
 
 
 <br><br>
 
 ### 주요 기능 시퀀스 다이어그램
 
+- 로그인 기능
+![로그인시퀀스다이어그램](https://user-images.githubusercontent.com/56250078/152634301-141280e0-93ec-4b59-87e6-1f5c4f229603.png)
+
+
+
+
+<br><br>
+### ![:구급차:](https://a.slack-edge.com/production-standard-emoji-assets/13.0/google-large/1f691@2x.png) 서버 구조도
 - 링크 업데이트 예정
+
