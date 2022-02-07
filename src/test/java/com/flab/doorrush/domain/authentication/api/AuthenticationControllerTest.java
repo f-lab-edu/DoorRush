@@ -1,6 +1,5 @@
 package com.flab.doorrush.domain.authentication.api;
 
-import static com.flab.doorrush.domain.authentication.service.AuthenticationService.LOGIN_SESSION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
