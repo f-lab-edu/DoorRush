@@ -46,7 +46,7 @@ class RestaurantMapperTest {
     assertEquals(1, restaurant.getRestaurantSeq());
     assertEquals(1, restaurant.getOwnerSeq());
     assertEquals("중식", restaurant.getCategory());
-    assertEquals('Y', restaurant.getOpenYn());
+    assertEquals(YnStatus.Y, restaurant.getOpenYn());
     assertEquals("중식중 최고집", restaurant.getRestaurantName());
     assertEquals("증식집 중 최고를 자랑합니다.", restaurant.getIntroduction());
     assertEquals(12000, restaurant.getMinimumOrderAmount());
