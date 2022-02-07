@@ -18,8 +18,12 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*Mapper.xml
 
+# api
 api:
-  authorization: ${AUTHORIZATION}
+  kakao:
+    authorization: ${AUTHORIZATION}
+    host: https://dapi.kakao.com
+    url: /v2/local/geo/coord2address.json
 
 # resilience4j
 resilience4j.circuitbreaker:
@@ -32,8 +36,8 @@ resilience4j.circuitbreaker:
       maxWaitDurationInHalfOpenState: 1000
       slidingWindowType: COUNT_BASED
       slidingWindowSize: 10
-      minimumNumberOfCalls: 10
+      minimumNumberOfCalls: 5
       waitDurationInOpenState: 10000
   instances:
-    customCircuitBreaker:
+    kakaoAddressApiCircuitBreaker:
       baseConfig: default

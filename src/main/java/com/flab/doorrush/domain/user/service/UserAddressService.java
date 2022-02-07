@@ -14,7 +14,6 @@ import com.flab.doorrush.global.dto.response.kakao.KakaoApiGetAddressResponse;
 import com.flab.doorrush.global.exception.KakaoApiResponseException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,12 +72,11 @@ public class UserAddressService {
         .x(address.getSpotX().toString())
         .y(address.getSpotY().toString())
         .build();
-    return parseKakaoApiGetAddressResponse(kakaoAddressApi.getAddressBySpot(request));
+    return parseKakaoApiGetAddressResponse(kakaoAddressApi.getAddressBySpot(request).getBody());
   }
 
   private AddressInfoDTO parseKakaoApiGetAddressResponse(
-      ResponseEntity<KakaoApiGetAddressResponse> kakaoApiGetAddressResponse) {
-    KakaoApiGetAddressResponse response = kakaoApiGetAddressResponse.getBody();
+      KakaoApiGetAddressResponse response) {
 
     if (!response.getMeta().isExist()) {
       throw new KakaoApiResponseException("API 응답결과가 없습니다.");

@@ -26,22 +26,26 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 public class KakaoAddressApi {
 
+  public static final String KAKAO_HEADER = "KakaoAK ";
+  public static final String CUSTOM_CIRCUIT_BREAKER = "kakaoAddressApiCircuitBreaker";
+
   private final RestTemplate restTemplate;
 
-  @Value("${api.authorization}")
+  @Value("${api.kakao.authorization}")
   private String AUTHORIZATION;
 
-  public static final String KAKAO_HEADER = "KakaoAK ";
-  public static final String KAKAO_HOST = "https://dapi.kakao.com";
-  public static final String KAKAO_URL = "/v2/local/geo/coord2address.json";
-  public static final String CUSTOM_CIRCUIT_BREAKER = "customCircuitBreaker";
+  @Value("${api.kakao.host}")
+  public String KAKAO_HOST;
+
+  @Value("${api.kakao.url}")
+  public String KAKAO_URL;
+
 
   /**
-   * @CircuitBreaker
-   * resilience4j Spring Boot2 스타터에서 제공되는 어노테이션으로 AOP 측면을 제공하는 역할입니다.
+   * @CircuitBreaker resilience4j Spring Boot2 스타터에서 제공되는 어노테이션으로 AOP 측면을 제공하는 역할입니다.
    * CircuitBreaker라는 것을 명시하고 이름과 콜백 메소드를 지정할 수 있습니다.
-  */
-  @CircuitBreaker(name = CUSTOM_CIRCUIT_BREAKER, fallbackMethod = "fallbackMethod")
+   */
+  @CircuitBreaker(name = CUSTOM_CIRCUIT_BREAKER, fallbackMethod = "fallback")
   public ResponseEntity<KakaoApiGetAddressResponse> getAddressBySpot(
       KakaoApiGetAddressRequest getAddressRequest) {
 
@@ -62,16 +66,16 @@ public class KakaoAddressApi {
     return restTemplate.exchange(url, HttpMethod.GET, entity, KakaoApiGetAddressResponse.class);
   }
 
-  private ResponseEntity<KakaoApiGetAddressResponse> fallbackMethod(
+  private ResponseEntity<KakaoApiGetAddressResponse> fallback(
       KakaoApiGetAddressRequest getAddressRequest, Throwable t) {
-    log.info("KakaoAddressApi fallback Method running, Exception ={}", t.getMessage());
+
+    log.info("KakaoAddressApi fallback Method running, Exception = {}", t.getMessage());
+
     List<GetAddressInfo> documents = new ArrayList<>();
-    new Meta("0");
-    KakaoApiGetAddressResponse response = KakaoApiGetAddressResponse.builder()
-        .meta(new Meta("0"))
-        .documents(documents)
-        .build();
-    return ResponseEntity.ok().body(response);
+    return ResponseEntity.ok().body(KakaoApiGetAddressResponse.builder()
+                                      .meta(Meta.builder().totalCount(0).build())
+                                      .documents(documents)
+                                      .build());
   }
 
 }

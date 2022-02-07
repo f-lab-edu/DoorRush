@@ -57,6 +57,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     /* Junit, Hamcrest, Mockito 포함하는 스프링 어플리케이션을 테스트 가능하도록 합니다. */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 }
 
 dependencyManagement {
