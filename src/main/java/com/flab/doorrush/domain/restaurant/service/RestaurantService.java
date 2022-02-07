@@ -19,12 +19,12 @@ public class RestaurantService {
 
 
   @Transactional
-  public void addRestaurant(AddRestaurantRequest addRestaurantRequest) {
+  public void addRestaurant(AddRestaurantRequest addRestaurantRequest, Long ownerSeq) {
     Address address = addRestaurantRequest.getRestaurantAddressRequest().toEntity();
     try {
       userAddressMapper.insertAddress(address);
       Long addressSeq = userAddressMapper.selectAddressSeq(address);
-      Restaurant restaurant = addRestaurantRequest.toEntity(addressSeq);
+      Restaurant restaurant = addRestaurantRequest.toEntity(addressSeq, ownerSeq);
       restaurantMapper.insertRestaurant(restaurant);
     } catch (Exception e) {
       throw new AddRestaurantException(e, "식당 insert 처리 중 예외 발생");

@@ -11,6 +11,7 @@ import com.flab.doorrush.domain.restaurant.dto.request.RestaurantAddressRequest;
 import com.flab.doorrush.domain.restaurant.exception.AddRestaurantException;
 import com.flab.doorrush.domain.restaurant.restaurantEnum.RestaurantCategory;
 import com.flab.doorrush.domain.user.dao.UserAddressMapper;
+import com.flab.doorrush.domain.user.domain.YnStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,25 +42,25 @@ class RestaurantServiceTest {
 
     AddRestaurantRequest addRestaurantRequest = AddRestaurantRequest.builder()
         .restaurantAddressRequest(restaurantAddressRequest)
-        .ownerSeq(1L)
         .category(RestaurantCategory.CHINESE.category)
-        .openYN('N')
+        .openYn(YnStatus.N)
         .restaurantName("맛맛집")
         .introduction("아주 맛있습니다")
         .minimumOrderAmount(0L).build();
 
+    Long ownerSeq = 1L;
     // When
-    restaurantService.addRestaurant(addRestaurantRequest);
+    restaurantService.addRestaurant(addRestaurantRequest, ownerSeq);
 
     // Then
     Long addressSeq = userAddressMapper.selectAddressSeq(restaurantAddressRequest.toEntity());
     Long restaurantSeq = restaurantMapper.selectRestaurantSeq(
-        addRestaurantRequest.toEntity(addressSeq));
+        addRestaurantRequest.toEntity(addressSeq, ownerSeq));
     Restaurant restaurant = restaurantMapper.selectRestaurantByRestaurantSeq(restaurantSeq);
     assertEquals(restaurantSeq, restaurant.getRestaurantSeq());
     assertEquals(1L, restaurant.getOwnerSeq());
     assertEquals(RestaurantCategory.CHINESE.category, restaurant.getCategory());
-    assertEquals('N', restaurant.getOpenYN());
+    assertEquals(YnStatus.N, restaurant.getOpenYn());
     assertEquals("맛맛집", restaurant.getRestaurantName());
     assertEquals("아주 맛있습니다", restaurant.getIntroduction());
     assertEquals(0L, restaurant.getMinimumOrderAmount());
@@ -78,16 +79,16 @@ class RestaurantServiceTest {
 
     AddRestaurantRequest addRestaurantRequest = AddRestaurantRequest.builder()
         .restaurantAddressRequest(restaurantAddressRequest)
-        .ownerSeq(1L)
         .category(RestaurantCategory.CHINESE.category)
-        .openYN('N')
+        .openYn(YnStatus.N)
         .restaurantName("맛맛집")
         .introduction("아주 맛있습니다")
         .minimumOrderAmount(0L).build();
+    Long ownerSeq = 1L;
 
     // Then
     assertThrows(AddRestaurantException.class, () ->
         // When
-        restaurantService.addRestaurant(addRestaurantRequest));
+        restaurantService.addRestaurant(addRestaurantRequest, ownerSeq));
   }
 }

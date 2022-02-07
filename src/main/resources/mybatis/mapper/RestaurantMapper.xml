@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
@@ -16,7 +17,7 @@
                             ADDRESS_SEQ)
     VALUES ( #{ownerSeq}
            , #{category}
-           , #{openYN}
+           , #{openYn}
            , #{restaurantName}
            , #{introduction}
            , #{minimumOrderAmount}
@@ -45,10 +46,7 @@
     FROM RESTAURANT
     WHERE OWNER_SEQ = #{ownerSeq}
       AND CATEGORY = #{category}
-      AND OPEN_YN = #{openYN}
       AND RESTAURANT_NAME = #{restaurantName}
-      AND INTRODUCTION = #{introduction}
-      AND MINIMUM_ORDER_AMOUNT = #{minimumOrderAmount}
       AND ADDRESS_SEQ = #{addressSeq};
   </select>
 </mapper>

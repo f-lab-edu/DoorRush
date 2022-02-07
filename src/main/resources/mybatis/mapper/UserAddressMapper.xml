@@ -66,6 +66,17 @@
               WHERE ADDRESS_SEQ = #{addressSeq})
   </select>
 
+  <select id="selectAddressBySeq" parameterType="Long"
+    resultType="com.flab.doorrush.domain.user.domain.Address">
+    SELECT ADDRESS_SEQ,
+           POST,
+           SPOT_Y,
+           SPOT_X,
+           ADDRESS_DETAIL
+    FROM ADDRESS
+    WHERE ADDRESS_SEQ = #{addressSeq}
+  </select>
+
   <select id="selectAddressSeq"
     parameterType="com.flab.doorrush.domain.restaurant.dto.request.RestaurantAddressRequest"
     resultType="Long">

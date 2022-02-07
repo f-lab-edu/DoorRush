@@ -20,11 +20,11 @@ public class RestaurantController {
 
   private final RestaurantService restaurantService;
 
+
   @PostMapping("/{ownerSeq}/addRestaurant")
   public ResponseEntity<BasicResponse<Void>> addRestaurant(@PathVariable Long ownerSeq,
       @Valid @RequestBody AddRestaurantRequest addRestaurantRequest) {
-    addRestaurantRequest.setOwnerSeq(ownerSeq);
-    restaurantService.addRestaurant(addRestaurantRequest);
+    restaurantService.addRestaurant(addRestaurantRequest, ownerSeq);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
