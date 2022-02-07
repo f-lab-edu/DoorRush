@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(NotExistsAddressException.class)
-  public ResponseEntity<BasicResponse<String>> methodArgumentNotValidException(
+  public ResponseEntity<BasicResponse<String>> NotExistsAddressException(
       NotExistsAddressException e) {
     log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
@@ -103,7 +103,9 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(AddRestaurantException.class)
   public ResponseEntity<BasicResponse<String>> addRestaurantException(
       AddRestaurantException e) {
-    log.error(e.getMessage(), e.getCause());
+    log.error(e.getMessage(), e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BasicResponse.fail(e.getMessage()));
   }
+
+
 }
