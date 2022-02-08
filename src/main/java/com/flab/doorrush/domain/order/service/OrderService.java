@@ -43,7 +43,7 @@ public class OrderService {
       throw new OrderException("메뉴 정보를 입력해주세요.");
     }
 
-    Restaurant restaurant = restaurantMapper.selectRestaurantBySeq(orderRequest.getRestaurantSeq());
+    Restaurant restaurant = restaurantMapper.selectRestaurantByRestaurantSeq(orderRequest.getRestaurantSeq());
 
     Order order = Order.builder()
         .userSeq(user.getUserSeq())
