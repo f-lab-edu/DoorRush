@@ -24,4 +24,6 @@ public interface UserAddressMapper {
   boolean isExistsAddress(Long addressSeq);
 
   Optional<Address> selectAddressBySeq(Long addressSeq);
+
+  Long selectAddressSeq(Address address);
 }

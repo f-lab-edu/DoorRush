@@ -23,7 +23,7 @@ public class AuthenticationService {
 
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
-  public final  String LOGIN_SESSION = "loginId";
+  public static final String LOGIN_SESSION = "loginId";
 
 
   public User login(LoginRequest loginRequest, @NotNull HttpSession session) {
@@ -57,5 +57,4 @@ public class AuthenticationService {
       throw new SessionLoginIdNotFoundException("세션정보를 찾을 수 없습니다.");
     }
   }
-
 }

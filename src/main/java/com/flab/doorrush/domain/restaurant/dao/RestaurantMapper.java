@@ -7,4 +7,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface RestaurantMapper {
 
   Restaurant selectRestaurantBySeq(long restaurantSeq);
+
+  int insertRestaurant(Restaurant restaurant);
+
+  Restaurant selectRestaurantByRestaurantSeq(Long restaurantSeq);
+
+  Long selectRestaurantSeq(Restaurant restaurant);
 }
