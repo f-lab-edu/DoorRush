@@ -1,0 +1,6 @@
+# api
+api:
+  kakao:
+    authorization: ${AUTHORIZATION}
+    host: http://localhost:${wiremock.server.port}
+    url: /v2/local/geo/coord2address.json
