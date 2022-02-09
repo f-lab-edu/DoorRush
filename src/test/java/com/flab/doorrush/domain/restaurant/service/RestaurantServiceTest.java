@@ -4,13 +4,11 @@ package com.flab.doorrush.domain.restaurant.service;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.flab.doorrush.domain.restaurant.dao.RestaurantMapper;
 import com.flab.doorrush.domain.restaurant.dto.request.AddRestaurantRequest;
 import com.flab.doorrush.domain.restaurant.dto.request.RestaurantAddressRequest;
 import com.flab.doorrush.domain.restaurant.dto.response.AddRestaurantResponse;
 import com.flab.doorrush.domain.restaurant.exception.AddRestaurantException;
 import com.flab.doorrush.domain.restaurant.restaurantEnum.RestaurantCategory;
-import com.flab.doorrush.domain.user.dao.UserAddressMapper;
 import com.flab.doorrush.domain.user.domain.YnStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,12 +22,6 @@ class RestaurantServiceTest {
 
   @Autowired
   private RestaurantService restaurantService;
-
-  @Autowired
-  private RestaurantMapper restaurantMapper;
-
-  @Autowired
-  private UserAddressMapper userAddressMapper;
 
   @Test
   @DisplayName("addRestaurant 성공 테스트 식당 정보 insert 결과 확인")

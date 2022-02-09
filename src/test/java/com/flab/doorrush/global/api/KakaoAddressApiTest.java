@@ -30,7 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 
 @ActiveProfiles("test")
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@SpringBootTest
 @AutoConfigureWireMock(port = 0)
 class KakaoAddressApiTest {
 
