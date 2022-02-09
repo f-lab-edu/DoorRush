@@ -2,11 +2,13 @@ package com.flab.doorrush.domain.restaurant.dto.request;
 
 import com.flab.doorrush.domain.user.domain.Address;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class RestaurantAddressRequest {
 
   @NotNull
