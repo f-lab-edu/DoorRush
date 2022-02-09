@@ -60,7 +60,7 @@ class RestaurantControllerTest {
   }
 
   @Test
-  @DisplayName("addRestaurant 실패 테스트 기존에 저장된 address 정보로 요청 시 AddRestaurantException 발생, HttpStatus.BAD_REQUEST 를 반환한다.")
+  @DisplayName("addRestaurant 실패 테스트 존재하지 않는 사장님 정보로 요청 시 AddRestaurantException 발생, HttpStatus.BAD_REQUEST 를 반환한다.")
   public void addRestaurantFailTest() throws Exception {
     // Given
     RestaurantAddressRequest restaurantAddressRequest = RestaurantAddressRequest.builder()
@@ -80,7 +80,7 @@ class RestaurantControllerTest {
     String content = objectMapper.writeValueAsString(addRestaurantRequest);
 
     // When
-    mockMvc.perform(post("/restaurants/1/addRestaurant").content(content)
+    mockMvc.perform(post("/restaurants/0/addRestaurant").content(content)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())

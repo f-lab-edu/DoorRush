@@ -53,23 +53,4 @@ class RestaurantMapperTest {
     assertEquals(5, restaurant.getAddressSeq());
   }
 
-
-  @Test
-  @DisplayName("selectRestaurantSeq 성공 테스트 select 결과 restaurantSeq 값 반환 한다.")
-  public void selectRestaurantSeqTest() {
-    // Given
-    Restaurant restaurant = Restaurant.builder()
-        .ownerSeq(1L)
-        .category("중식")
-        .openYn(YnStatus.Y)
-        .restaurantName("중식중 최고집")
-        .introduction("증식집 중 최고를 자랑합니다.")
-        .minimumOrderAmount(12000L)
-        .addressSeq(5L)
-        .build();
-
-    // Then              When
-    Long restaurantSeq = restaurantMapper.selectRestaurantSeq(restaurant);
-    assertEquals(1, restaurantSeq);
-  }
 }
