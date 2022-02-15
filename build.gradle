@@ -49,6 +49,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-crypto'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.h2database:h2'
     /* 롬복 설정 : 어노테이션 기반으로 코드를 자동화해주는 라이브러리로
      * @setter @getter 뿐만 아니라,
      * @AllArgsConstructor 는 사용하여 모든 변수를 사용하는 생성자를
@@ -57,6 +58,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     /* Junit, Hamcrest, Mockito 포함하는 스프링 어플리케이션을 테스트 가능하도록 합니다. */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'com.h2database:h2'
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 }
 
@@ -107,11 +109,12 @@ jacocoTestCoverageVerification {
                         'com.flab.doorrush.domain.**.domain.*',
                         'com.flab.doorrush.domain.**.exception.*',
                         'com.flab.doorrush.global.Response.*',
-                        'com.flab.doorrush.global.exception.*'
+                        'com.flab.doorrush.global.exception.*',
+                        'com.flab.doorrush.global.dto.*'
             ]
 
             limit {
-                counter = 'CLASS'
+                counter = 'BRANCH'
                 value = 'COVEREDRATIO'
                 minimum = 0.7
             }

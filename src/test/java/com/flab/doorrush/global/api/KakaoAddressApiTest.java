@@ -20,7 +20,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.cloud.contract.spec.internal.HttpStatus;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpHeaders;
@@ -29,11 +28,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@ActiveProfiles("test-api")
+@SpringBootTest
 @AutoConfigureWireMock(port = 0)
 class KakaoAddressApiTest {
-
 
   @Autowired
   KakaoAddressApi kakaoAddressApi;
@@ -60,8 +58,8 @@ class KakaoAddressApiTest {
         createKakaoApiRequest());
 
     // Then
-    assertEquals(objectMapper.writeValueAsString(response.getBody()),
-        objectMapper.writeValueAsString(createKakaoApiSuccessResponse()));
+    assertEquals(objectMapper.writeValueAsString(createKakaoApiSuccessResponse()),
+        objectMapper.writeValueAsString(response.getBody()));
     assertEquals(HttpStatus.OK, response.getStatusCode().value());
   }
 

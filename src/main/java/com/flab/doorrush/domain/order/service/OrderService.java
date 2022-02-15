@@ -75,17 +75,17 @@ public class OrderService {
   }
 
   public OrderMenusCartResponse getTotalPrice(List<MenuDTO> menus) {
-    List<OrderMenuPrice> orderMenuCarts = new ArrayList<>();
-    menus.forEach(menu -> orderMenuCarts.add(orderMapper.selectPriceByMenuDTO(menu)
+    List<OrderMenuPrice> orderMenuPrices = new ArrayList<>();
+    menus.forEach(menu -> orderMenuPrices.add(orderMapper.selectPriceByMenuDTO(menu)
         .orElseThrow(() -> new OrderException("메뉴 정보를 확인해주세요."))));
 
-    Long totalPrice = orderMenuCarts.stream()
+    Long totalPrice = orderMenuPrices.stream()
         .map(OrderMenuPrice::getMenuSumPrice)
         .mapToLong(Math::toIntExact)
         .sum();
 
     return OrderMenusCartResponse.builder()
-        .orderMenuCarts(orderMenuCarts)
+        .orderMenuCarts(orderMenuPrices)
         .totalPrice(totalPrice)
         .build();
   }

@@ -18,8 +18,8 @@ public class OrderHistory {
   private Long amount;
   private OrderStatus orderStatus;
   private String menuName;
-  private String menuPrice;
-  private String menuCount;
+  private Long menuPrice;
+  private int menuCount;
   private LocalDateTime orderTime;
 
 }
