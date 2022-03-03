@@ -1,9 +1,6 @@
 package com.flab.doorrush.domain.restaurant.restaurantEnum;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum RestaurantCategory {
 
   WESTERN("양식"),
@@ -12,16 +9,12 @@ public enum RestaurantCategory {
   SOUTHEAST_ASIAN("동남아"),
   SNACK("분식");
 
-  public final String category;
+  public final String categoryValue;
 
-  RestaurantCategory(String category) {
-    this.category = category;
+  RestaurantCategory(String categoryValue) {
+    this.categoryValue = categoryValue;
   }
 
-  @JsonCreator
-  public static RestaurantCategory from(@JsonProperty("category") String category) {
-    return valueOf(category);
-  }
 
 
 }

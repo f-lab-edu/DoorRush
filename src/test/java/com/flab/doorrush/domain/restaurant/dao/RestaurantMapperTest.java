@@ -3,6 +3,7 @@ package com.flab.doorrush.domain.restaurant.dao;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.flab.doorrush.domain.restaurant.domain.Restaurant;
+import com.flab.doorrush.domain.restaurant.restaurantEnum.RestaurantCategory;
 import com.flab.doorrush.domain.user.domain.YnStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class RestaurantMapperTest {
     // Given
     Restaurant restaurant = Restaurant.builder()
         .ownerSeq(5L)
-        .category("중식")
+        .category(RestaurantCategory.CHINESE.categoryValue)
         .openYn(YnStatus.Y)
         .restaurantName("냠냠식당")
         .introduction("맛좋습니다.")

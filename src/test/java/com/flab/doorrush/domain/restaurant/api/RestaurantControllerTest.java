@@ -43,7 +43,7 @@ class RestaurantControllerTest {
 
     AddRestaurantRequest addRestaurantRequest = AddRestaurantRequest.builder()
         .restaurantAddressRequest(restaurantAddressRequest)
-        .category(RestaurantCategory.CHINESE.category)
+        .category(RestaurantCategory.CHINESE)
         .openYn(YnStatus.N)
         .restaurantName("맛맛집")
         .introduction("아주 맛있습니다")
@@ -71,7 +71,7 @@ class RestaurantControllerTest {
 
     AddRestaurantRequest addRestaurantRequest = AddRestaurantRequest.builder()
         .restaurantAddressRequest(restaurantAddressRequest)
-        .category(RestaurantCategory.CHINESE.category)
+        .category(RestaurantCategory.CHINESE)
         .openYn(YnStatus.N)
         .restaurantName("맛맛집")
         .introduction("아주 맛있습니다")

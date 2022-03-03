@@ -35,7 +35,7 @@ class RestaurantServiceTest {
 
     AddRestaurantRequest addRestaurantRequest = AddRestaurantRequest.builder()
         .restaurantAddressRequest(restaurantAddressRequest)
-        .category(RestaurantCategory.CHINESE.category)
+        .category(RestaurantCategory.CHINESE)
         .openYn(YnStatus.N)
         .restaurantName("맛맛집")
         .introduction("아주 맛있습니다")
@@ -48,7 +48,7 @@ class RestaurantServiceTest {
 
     // Then
     assertEquals(1L, restaurantResponse.getRestaurant().getOwnerSeq());
-    assertEquals(RestaurantCategory.CHINESE.category,
+    assertEquals(RestaurantCategory.CHINESE.categoryValue,
         restaurantResponse.getRestaurant().getCategory());
     assertEquals(YnStatus.N, restaurantResponse.getRestaurant().getOpenYn());
     assertEquals("맛맛집", restaurantResponse.getRestaurant().getRestaurantName());
@@ -68,7 +68,7 @@ class RestaurantServiceTest {
 
     AddRestaurantRequest addRestaurantRequest = AddRestaurantRequest.builder()
         .restaurantAddressRequest(restaurantAddressRequest)
-        .category(RestaurantCategory.CHINESE.category)
+        .category(RestaurantCategory.CHINESE)
         .openYn(YnStatus.N)
         .restaurantName("맛맛집")
         .introduction("아주 맛있습니다")
