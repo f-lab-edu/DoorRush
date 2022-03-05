@@ -39,14 +39,4 @@
     WHERE RESTAURANT_SEQ = #{restaurantSeq}
   </select>
 
-  <select id="selectRestaurantSeq"
-    parameterType="com.flab.doorrush.domain.restaurant.domain.Restaurant"
-    resultType="Long">
-    SELECT RESTAURANT_SEQ
-    FROM RESTAURANT
-    WHERE OWNER_SEQ = #{ownerSeq}
-      AND CATEGORY = #{category}
-      AND RESTAURANT_NAME = #{restaurantName}
-      AND ADDRESS_SEQ = #{addressSeq};
-  </select>
 </mapper>

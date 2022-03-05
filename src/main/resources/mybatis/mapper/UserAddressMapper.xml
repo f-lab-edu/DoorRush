@@ -77,14 +77,4 @@
     WHERE ADDRESS_SEQ = #{addressSeq}
   </select>
 
-  <select id="selectAddressSeq"
-    parameterType="com.flab.doorrush.domain.restaurant.dto.request.RestaurantAddressRequest"
-    resultType="Long">
-    SELECT ADDRESS_SEQ
-    FROM ADDRESS
-    WHERE POST = #{post}
-      AND SPOT_Y = #{spotY}
-      AND SPOT_X = #{spotX}
-      AND ADDRESS_DETAIL = #{addressDetail}
-  </select>
 </mapper>
