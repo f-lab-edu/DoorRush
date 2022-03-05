@@ -27,7 +27,7 @@ class AuthenticationServiceTest {
 
 
   @Test
-  @DisplayName("로그인 성공 테스트 login메소드 실행 후 세션의 loginId 속성 값을 아이디 값과 비교한다.")
+  @DisplayName("로그인 성공 테스트 login 메소드 실행 후 세션의 loginId 속성 값을 아이디 값과 비교한다.")
   public void loginSuccessTest() {
     // Given
     MockHttpSession session = new MockHttpSession();

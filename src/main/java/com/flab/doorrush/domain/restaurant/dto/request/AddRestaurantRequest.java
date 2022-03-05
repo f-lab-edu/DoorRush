@@ -1,6 +1,7 @@
 package com.flab.doorrush.domain.restaurant.dto.request;
 
 import com.flab.doorrush.domain.restaurant.domain.Restaurant;
+import com.flab.doorrush.domain.restaurant.restaurantEnum.RestaurantCategory;
 import com.flab.doorrush.domain.user.domain.YnStatus;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class AddRestaurantRequest {
   private RestaurantAddressRequest restaurantAddressRequest;
 
   @NotNull
-  private String category;
+  private RestaurantCategory category;
 
   @NotNull
   private YnStatus openYn;
@@ -34,7 +35,7 @@ public class AddRestaurantRequest {
   public Restaurant toEntity(Long addressSeq, Long ownerSeq) {
     return Restaurant.builder()
         .ownerSeq(ownerSeq)
-        .category(this.category)
+        .category(this.category.categoryValue)
         .openYn(this.openYn)
         .restaurantName(this.restaurantName)
         .introduction(this.introduction)

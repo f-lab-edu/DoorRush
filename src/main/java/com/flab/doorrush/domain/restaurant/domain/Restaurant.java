@@ -20,4 +20,5 @@ public class Restaurant {
   private String introduction;
   private Long minimumOrderAmount;
   private Long addressSeq;
+
 }
