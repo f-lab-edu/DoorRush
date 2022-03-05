@@ -27,7 +27,6 @@ public class RestaurantController {
     restaurantService.addRestaurant(addRestaurantRequest, ownerSeq);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
-
 }
 
 
