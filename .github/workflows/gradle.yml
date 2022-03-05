@@ -53,3 +53,4 @@ jobs:
         with:
           badges-directory: badges
           generate-branches-badge: true
+          jacoco-csv-file: ./build/customJacocoReportDir/test/jacocoTestReport.csv
