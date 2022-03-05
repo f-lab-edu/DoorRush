@@ -1,4 +1,4 @@
-[![coverage](../badges/jacoco.svg)](https://github.com/f-lab-edu/DoorRush/actions/workflows/gradle.yml)
+[![coverage](.github/badges/jacoco.svg)](https://github.com/f-lab-edu/DoorRush/actions/workflows/gradle.yml)
 # DoorRush
 
 ---
