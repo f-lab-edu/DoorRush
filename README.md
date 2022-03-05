@@ -1,3 +1,4 @@
+[![coverage](.github/badges/jacoco.svg)](https://github.com/f-lab-edu/DoorRush/actions/workflows/gradle.yml)
 # DoorRush
 
 ---
@@ -47,7 +48,6 @@
 ## 📌 **기술적 이슈와 해결 과정**
 
 - [외부  API가 응답 코드조차 보낼 수 없는 장애가 발생했다면? Circuit Breaker Pattern로 해결하기](https://github.com/f-lab-edu/DoorRush/issues/67) <br>
-- [인증 기능에는 어떤 기술을 사용해야 할까?](https://github.com/ypr821/TIL/blob/main/2022_01/%EC%9D%B8%EC%A6%9D(Authentication)%EA%B3%BC_%EC%9D%B8%EA%B0%80(Authorization).md) <br>
 - [인증 관련 보안 이슈](https://github.com/ypr821/TIL/blob/main/2022_01/%EC%9E%90%EB%8F%99%EB%A1%9C%EA%B7%B8%EC%9D%B8%EA%B8%B0%EB%8A%A5_%EB%B3%B4%EC%95%88%EC%9D%B4%EC%8A%88_%EA%B3%A0%EB%AF%BC.md) <br>
 - [로그인 체크는 어떻게 하면 좋을까?](https://dev-promise.tistory.com/entry/%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%B2%B4%ED%81%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B8%B0%EC%88%A0%EC%A0%81-%EA%B3%A0%EB%AF%BC)
 - <a href="https://yeoonjae.tistory.com/entry/Project-Github-action%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-PR%EC%8B%9C-%EC%9E%90%EB%8F%99-Build-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0-CI%EC%84%A4%EC%A0%95?category=1023285">Github Action을 통해 CI 설정하기</a>

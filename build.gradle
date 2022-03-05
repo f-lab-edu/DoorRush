@@ -87,8 +87,9 @@ jacocoTestReport {
     }
     reports {
         xml.required = false
-        csv.required = false
+        csv.required = true
         html.required = true
+        csv.enabled true
     }
 
     finalizedBy jacocoTestCoverageVerification
