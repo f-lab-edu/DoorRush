@@ -11,11 +11,11 @@ class RestaurantCategoryTest {
   @Test
   public void confirmRestaurantCategoryTest() {
 
-    assertEquals("양식", RestaurantCategory.WESTERN.category);
-    assertEquals("중식", RestaurantCategory.CHINESE.category);
-    assertEquals("일식", RestaurantCategory.JAPANESE.category);
-    assertEquals("동남아", RestaurantCategory.SOUTHEAST_ASIAN.category);
-    assertEquals("분식", RestaurantCategory.SNACK.category);
+    assertEquals("양식", RestaurantCategory.WESTERN.categoryValue);
+    assertEquals("중식", RestaurantCategory.CHINESE.categoryValue);
+    assertEquals("일식", RestaurantCategory.JAPANESE.categoryValue);
+    assertEquals("동남아", RestaurantCategory.SOUTHEAST_ASIAN.categoryValue);
+    assertEquals("분식", RestaurantCategory.SNACK.categoryValue);
 
   }
 }

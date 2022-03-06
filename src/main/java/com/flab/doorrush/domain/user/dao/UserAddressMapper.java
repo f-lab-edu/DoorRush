@@ -25,5 +25,4 @@ public interface UserAddressMapper {
 
   Optional<Address> selectAddressBySeq(Long addressSeq);
 
-  Long selectAddressSeq(Address address);
 }
