@@ -57,6 +57,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     /* Junit, Hamcrest, Mockito 포함하는 스프링 어플리케이션을 테스트 가능하도록 합니다. */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'com.h2database:h2'
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 }
 
@@ -107,7 +108,8 @@ jacocoTestCoverageVerification {
                         'com.flab.doorrush.domain.**.domain.*',
                         'com.flab.doorrush.domain.**.exception.*',
                         'com.flab.doorrush.global.Response.*',
-                        'com.flab.doorrush.global.exception.*'
+                        'com.flab.doorrush.global.exception.*',
+                        'com.flab.doorrush.global.dto.*'
             ]
 
             limit {

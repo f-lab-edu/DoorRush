@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("test")
 class UserControllerTest {
 
   @Autowired
@@ -118,6 +120,7 @@ class UserControllerTest {
         .andExpect(status().isBadRequest())
         .andDo(print());
   }
+
   @Test
   @DisplayName("비밀번호 변경 성공 테스트 200을 반환")
   public void changePasswordSuccessTest() throws Exception {

@@ -1,14 +1,9 @@
 # YAML 파일은 사람이 쉽게 읽을 수 있는 데이터 직렬화 양식이다.
 # properties 보다 가독성이 좋다.
 
-# Spring
 spring:
-  datasource:
-    url: jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DBNAME}?serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+  profiles:
+    active: local
   # spring.sql.init.mode : 유형에 관계없이 항상 SQL 데이터베이스를 초기화
   sql:
     init:
@@ -41,3 +36,14 @@ resilience4j.circuitbreaker:
   instances:
     kakaoAddressApiCircuitBreaker:
       baseConfig: default
+
+--- # local 환경
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DBNAME}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver

@@ -29,7 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 
-@ActiveProfiles("test")
+@ActiveProfiles("test-api")
 @SpringBootTest
 @AutoConfigureWireMock(port = 0)
 class KakaoAddressApiTest {
@@ -60,8 +60,8 @@ class KakaoAddressApiTest {
         createKakaoApiRequest());
 
     // Then
-    assertEquals(objectMapper.writeValueAsString(response.getBody()),
-        objectMapper.writeValueAsString(createKakaoApiSuccessResponse()));
+    assertEquals(objectMapper.writeValueAsString(createKakaoApiSuccessResponse()),
+        objectMapper.writeValueAsString(response.getBody()));
     assertEquals(HttpStatus.OK, response.getStatusCode().value());
   }
 

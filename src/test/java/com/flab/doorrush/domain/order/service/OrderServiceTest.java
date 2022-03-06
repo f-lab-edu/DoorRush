@@ -10,7 +10,10 @@ import com.flab.doorrush.domain.order.dto.response.CreateOrderResponse;
 import com.flab.doorrush.domain.order.dto.response.OrderHistory;
 import com.flab.doorrush.domain.order.dto.response.OrderMenusCartResponse;
 import com.flab.doorrush.domain.order.exception.OrderException;
+import com.flab.doorrush.domain.restaurant.dao.RestaurantMapper;
+import com.flab.doorrush.domain.user.dao.UserMapper;
 import com.flab.doorrush.domain.user.exception.NotExistsAddressException;
+import com.flab.doorrush.domain.user.service.UserAddressService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,10 +22,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class OrderServiceTest {
 
   @Autowired
@@ -31,8 +36,18 @@ class OrderServiceTest {
   @Autowired
   OrderMapper orderMapper;
 
+  @Autowired
+  UserMapper userMapper;
+
+  @Autowired
+  RestaurantMapper restaurantMapper;
+
+  @Autowired
+  UserAddressService userAddressService;
+
   List<MenuDTO> orderMenus;
   OrderRequest orderRequest;
+  List<MenuDTO> list;
 
   @BeforeEach
   public void setUp() {
@@ -46,10 +61,14 @@ class OrderServiceTest {
 
     orderRequest = OrderRequest.builder()
         .menus(orderMenus)
-        .addressSeq(1L)
+        .addressSeq(10L)
         .restaurantSeq(3L)
         .amount(60500L)
         .build();
+
+    list = Arrays.asList(
+        (new MenuDTO(1L, 2)),
+        (new MenuDTO(2L, 3)));
   }
 
   @Test
@@ -68,10 +87,11 @@ class OrderServiceTest {
   @Test
   @DisplayName("메뉴정보가 비어있을 경우 OrderException 예외 발생")
   public void createOrderFailTest() {
-    List<MenuDTO> list = new ArrayList<>();
+
+    List<MenuDTO> menuList = new ArrayList<>();
     //Given
     OrderRequest orderRequest = OrderRequest.builder()
-        .menus(list)
+        .menus(menuList)
         .addressSeq(10L)
         .restaurantSeq(3L)
         .amount(60500L)
@@ -103,11 +123,7 @@ class OrderServiceTest {
   @Test
   @DisplayName("메뉴별 금액 및 총 금액 조회 성공 테스트")
   public void getTotalPrice() {
-    // Given
-    List<MenuDTO> list = new ArrayList<>();
-    list = Arrays.asList(
-        (new MenuDTO(1L, 2)),
-        (new MenuDTO(2L, 3)));
+
     // When
     OrderMenusCartResponse response = orderService.getTotalPrice(list);
 
