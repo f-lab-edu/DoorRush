@@ -49,7 +49,6 @@ dependencies {
     implementation 'org.springframework.security:spring-security-crypto'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
-    runtimeOnly 'com.h2database:h2'
     /* 롬복 설정 : 어노테이션 기반으로 코드를 자동화해주는 라이브러리로
      * @setter @getter 뿐만 아니라,
      * @AllArgsConstructor 는 사용하여 모든 변수를 사용하는 생성자를
